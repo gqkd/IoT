@@ -2,7 +2,7 @@ from MyMQTT import *
 import json
 import time
 import requests
-
+#CIAO AMICIIIIIII
 class HR_Control():
     def __init__(self,ServiceID):
         self.ServiceID = ServiceID
