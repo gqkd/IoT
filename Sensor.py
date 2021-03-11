@@ -5,7 +5,6 @@ import random
 import threading
 import requests
 import sys
-sys.path.append("C://Users\marco\Dropbox (Politecnico Di Torino Studenti)\POLITO\I Programming for IoT application\Esercitazioni\MQTT")
 from MyMQTT import *
 
 class HeartRateSensor(threading.Thread):
