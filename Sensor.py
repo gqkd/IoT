@@ -4,8 +4,7 @@ import time
 import random
 import threading
 import requests
-import sys
-from MyMQTT import *
+#from progetto.MyMQTT import *
 
 class HeartRateSensor(threading.Thread):
     def __init__(self, sensorID, topic):
