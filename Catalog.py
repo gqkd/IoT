@@ -4,7 +4,7 @@ import requests
 import datetime
 import time
 import threading
-
+# Ti prego funiona
 class Catalog(threading.Thread):
     exposed=True
     def __init__(self):
