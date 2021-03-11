@@ -4,9 +4,7 @@ import time
 import random
 import threading
 import requests
-import sys
-sys.path.append("C://Users\marco\Dropbox (Politecnico Di Torino Studenti)\POLITO\I Programming for IoT application\Esercitazioni\MQTT")
-from MyMQTT import *
+from progetto.MyMQTT import *
 
 class Led(threading.Thread):
     def __init__(self, sensorID, topic):
@@ -34,7 +32,6 @@ class Led(threading.Thread):
         self.client.start()
     
     def sendData(self):
-        
         self.client.myPublish(self.topic,message)   
         time.sleep(2)
     
