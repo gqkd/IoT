@@ -4,7 +4,7 @@ import time
 import random
 import threading
 import requests
-from progetto.MyMQTT import *
+#from progetto.MyMQTT import *
 
 class Led(threading.Thread):
     def __init__(self, sensorID, topic):
