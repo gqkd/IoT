@@ -7,6 +7,8 @@ import requests
 import sys
 from MyMQTT import *
 
+#TODO: i sensori devono essere a se stanti e registrarsi alla scatola 
+
 class HeartRateSensor(threading.Thread):
     def __init__(self, boxID, topic):
         threading.Thread.__init__(self)
