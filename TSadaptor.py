@@ -5,11 +5,18 @@
 # 4. se non c'è crea il canale per la box in questione
 # 5. spedisce i dati in HTTP a thingspeak
 from MyMQTT2 import *
+import time
+import requests
+
 class TSadaptor:
-    def __init__(self):
-        pass
-    def 
+    def __init__(self): #unica cosa che serve per certo è l'indirizzo del box catalog
+        
+    def topicsearch(self):
+        
+
 if __name__ == "__main__":
-    ist=TSadaptor()
+    tsa=TSadaptor()
     # 1.chiedi al box i topic
-    ist.topicsearch()
+    while True:
+        tsa.topicsearch()
+        time.sleep(10)

@@ -69,7 +69,9 @@ class Catalog(threading.Thread):
                 if diz["DeviceID"] == id:
                     print(diz)
                     return json.dumps(diz)
-                
+        elif uri[0] == "GetTSadaptor": # serve tutto
+            pass       
+        
     def TimeControl(self):
         cont = -1
         for diz in self.catalog['devicesList']:
