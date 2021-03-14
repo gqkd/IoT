@@ -14,21 +14,19 @@ class TemperatureControl():
  
         
     def start_MyMQTT(self, broker, port, topic):
-        
-        self.payload["Timestamp"] = time.time()
-        r = requests.put(f"http://localhost:8070/Service", json=self.payload) # Sottoscrizione al Catalog
-        
 
-        
-
-        
         self.client = MyMQTT(self.serviceID, broker, port, self)
         
         self.client.start()
         self.client.mySubscribe(self.topic)
         print('{} has started'.format(self.serviceID))    
-        
-    def topicrequest(self):
+    
+    def topicRequest(self):
+        self.payload["Timestamp"] = time.time()
+        r = requests.put(f"http://localhost:8070/Service", json=self.payload) # Sottoscrizione al Catalog
+
+    
+    def topicRequest(self):
         r = requests.get("http://localhost:8070/GetTemperature") # Richiesta GET per topic
         jsonBody = json.loads(r.content)
         self.topicList = jsonBody["topics"]

@@ -44,11 +44,13 @@ class Catalog(threading.Thread):
         
     def GET(self,*uri):
         if uri[0] == "GetTemperature":
-            topic = {"topics" : []}
-            for sensor in self.boxList["sensors"]:
-                if sensor["Resource"] == "Temperature":
-                    topic["topics"].append(sensor["Topic"])
-            return json.dumps(topic)
+            # topic = {"topics" : []}
+            # for sensor in self.boxList["sensors"]:
+            #     if sensor["Resource"] == "Temperature":
+            #         topic["topics"].append(sensor["Topic"])
+            # return json.dumps(topic)
+            return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
+        
         
         #----------------
         
