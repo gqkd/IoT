@@ -4,31 +4,32 @@ import time
 import random
 import threading
 import requests
-import sys
-from MyMQTT import *
+from Sensor_Temperature import *
        
 if __name__ == '__main__':
     conf=json.load(open("settings.json"))
-    senorsID = "Publisher_sensHeartRate_Bonfanti2"
+    
+    
     topic = conf["baseTopic"]
     broker = conf["broker"]
     port = conf["port"]
     
-    thread_mqtt = HeartRateSensor(senorsID, topic)
+    temp1 = SensorTemperature("100", "001", topic)
+    # press = SensorPressure("200", "001", topic)
     
+    temp1.start_MyMQTT(broker, port)
+    # press.start_MyMQTT(broker, port)
     
-    thread_mqtt.start_MyMQTT(broker, port)
     time.sleep(1)
     
     
     while True:
-        # try:
-            thread_mqtt.sendData()
-            thread_rest = HeartRateSensor(senorsID, topic)
-            thread_rest.start()
-            thread_rest.join()
-            
-        # except KeyboardInterrupt:
-        #     thread_mqtt.stop_MyMQTT()
-        #     break
-            
+        temp1.sendData()
+        temp = SensorTemperature("100", "001", topic)      
+        temp.start()
+        temp.join()
+        print("3:thread finished")
+        # press.start()
+        # time.sleep(10)
+        
+    temp1.stop_MyMQTT()

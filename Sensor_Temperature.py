@@ -4,7 +4,6 @@ import time
 import random
 import threading
 import requests
-import sys
 from MyMQTT import *
 
 #TODO: i sensori devono essere a se stanti e registrarsi alla scatola 
@@ -12,7 +11,7 @@ from MyMQTT import *
 class SensorTemperature(threading.Thread):
     def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
-        self.deviceID = deviceID # ID deve essere numerico 
+        self.deviceID = boxID+deviceID # ID deve essere numerico 
         self.boxID = boxID
         self.topic = topic # self.topic= "Ipfsod"
         self.payload = {
@@ -33,13 +32,22 @@ class SensorTemperature(threading.Thread):
         
     
     def run(self):
+        
         self.payload["Timestamp"] = time.time()
         r = requests.put(f"http://localhost:8070/Device", json=self.payload)
         print(r)
-        time.sleep(10)
+    def sendData(self):
+        print("1:publishing data")
+        t = 100 #TODO simulazione output sensore 
+        message = self.__message
+        message['e'][0]['t'] = float(time.time())
+        message['e'][0]['v'] = t
+        self.client.myPublish(self.topic,message)   
+        # time.sleep(10)
+        print("2:run finished")
+
         
         
-        #TODO SENSORI 
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message={
@@ -55,13 +63,8 @@ class SensorTemperature(threading.Thread):
             }
         self.client.start()
     
-    def sendData(self):
-        t = random.randint(1,10) #TODO simulazione output sensore 
-        message = self.__message
-        message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = t
-        self.client.myPublish(self.topic,message)   
-        time.sleep(2)
+    
+        
     
     
     def stop_MyMQTT(self):
