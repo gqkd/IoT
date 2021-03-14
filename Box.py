@@ -10,63 +10,45 @@ from MyMQTT import *
 #TODO: i sensori devono essere a se stanti e registrarsi alla scatola 
 
 class HeartRateSensor(threading.Thread):
-    def __init__(self, boxID, topic):
+    def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
+        self.deviceID = deviceID # ID deve essere numerico 
         self.boxID = boxID
-         
         self.topic = topic # self.topic= "Ipfsod"
         self.payload = {
-            "boxID": self.boxID, 
-            "sensors": [
-                {
-                "Topic": self.topic+"/"+self.boxID+"/temperature",
-                "Resource": 'Temperature',
-                "Timestamp": None
-                },
-                {
-                "Topic": self.topic+"/"+self.boxID+"/accelerometer",
-                "Resource": 'Acceleration',
-                "Timestamp": None
-                },
-                {
-                "Topic": self.topic+"/"+self.boxID+"/weight",
-                "Resource": 'Weight',
-                "Timestamp": None
-                },
-                {
-                "Topic": self.topic+"/"+self.boxID+"/GPS",
-                "Resource": 'Position',
-                "Timestamp": None
-                }
-            ],
-            "actuator": [
-                {
-                "Topic": self.topic+"/"+self.boxID+"/speaker",
-                "Resource": 'Speaker',
-                "Timestamp": None
-                }
-            ]
-            }
+            "deviceID": self.deviceID,
+            "Topic": self.topic+"/"+ self.boxID +"/"+self.deviceID+"/temperature",
+            "Resource": 'Temperature',
+            "Timestamp": None
+        }
+                
+            # "actuator": [
+            #     {
+            #     "Topic": self.topic+"/"+self.boxID+"/speaker",
+            #     "Resource": 'Speaker',
+            #     "Timestamp": None
+            #     }
+
         
         
     
     def run(self):
         self.payload["Timestamp"] = time.time()
-        r = requests.put(f"http://localhost:8070/Box", json=self.payload)
+        r = requests.put(f"http://localhost:8070/Device", json=self.payload)
         print(r)
         time.sleep(10)
         
         
         #TODO SENSORI 
     def start_MyMQTT(self, broker, port):
-        self.client = MyMQTT(self.sensorID, broker, port, None)
+        self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message={
-            "bn": self.sensorID,
+            "bn": self.deviceID,
             "e": [
                     {
-                        "n": "heart rate",
-                        "u": "bpm",
-                        "t": "",
+                        "n": "temperature",
+                        "u": "Cel",
+                        "t": None,
                         "v": ""
                     }
                 ]
@@ -74,12 +56,10 @@ class HeartRateSensor(threading.Thread):
         self.client.start()
     
     def sendData(self):
-        shape, scale = 2., 2.  # mean=4, std=2*sqrt(2)
-        lista = 8*np.random.gamma(shape, scale, 1)+55
-        hr = round(lista[0])
+        t = random.randint(1,10) #TODO simulazione output sensore 
         message = self.__message
-        message['e'][0]['t'] = str(time.time())
-        message['e'][0]['v'] = hr
+        message['e'][0]['t'] = float(time.time())
+        message['e'][0]['v'] = t
         self.client.myPublish(self.topic,message)   
         time.sleep(2)
     

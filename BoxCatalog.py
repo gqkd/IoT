@@ -12,24 +12,24 @@ class Catalog(threading.Thread):
             "projectOwner": "Bonfanti_Pedroncelli_Quaglia_Zanchi", 
             "projectName": "IoT platform for smart organs delivery", 
             "lastUpdate": str(datetime.time()), 
-            "boxList": [],
+            "deviceList": [],
             "servicesList": []
         }
-        self.boxList = self.catalog['boxList']
+        self.deviceList = self.catalog['deviceList']
         self.servicesList = self.catalog['servicesList']
         
     def PUT(self,*uri): # Registrare Box o Service nel catalog
         body=cherrypy.request.body.read()
         jsonBody=json.loads(body)
-        if uri[0] == "Box":
+        if uri[0] == "Device":
             
             cont = -1
             for box in self.boxList:
                 cont += 1
-                if box["boxID"] == jsonBody["boxID"]: # Controllo se esiste gia la Box e nel caso la elimino
-                    self.boxList.pop(cont)
-            self.boxList.append(jsonBody)
-            print(self.boxList)
+                if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia la Box e nel caso la elimino
+                    self.deviceList.pop(cont)
+            self.deviceList.append(jsonBody)
+            print(self.deviceList)
             
         elif uri[0] == "Service":
             cont = -1
