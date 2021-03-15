@@ -10,8 +10,9 @@ import requests
 
 class TSadaptor:
     def __init__(self): #unica cosa che serve per certo è l'indirizzo del box catalog
-        
+        self.publicURL="https://boxcatalog.loca.lt"
     def topicsearch(self):
+        r=requests.get(publicURL+"/GetTSadaptor")
         
 
 if __name__ == "__main__":

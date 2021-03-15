@@ -44,34 +44,35 @@ class Catalog(threading.Thread):
         self.catalog["lastUpdate"] = str(datetime.time())
         
     def GET(self,*uri):
-        if uri[0] == "GetTemperature":
-            # topic = {"topics" : []}
-            # for sensor in self.boxList["sensors"]:
-            #     if sensor["Resource"] == "Temperature":
-            #         topic["topics"].append(sensor["Topic"])
-            # return json.dumps(topic)
-            return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
-        
-        
-        #----------------
-        
-        elif uri[0]=="GetDevice":
-            chiave = list(params.keys())
-            chiave = chiave[0]
-            id=params[chiave]
-            for diz in self.catalog["devicesList"]:
-                if diz["DeviceID"]==id:
-                    return json.dumps(diz)
-                    
-        elif uri[0] == "GetService":
-            id = params["DeviceID"]
+        if len(uri)!=0:
+            if uri[0] == "GetTemperature":
+                # topic = {"topics" : []}
+                # for sensor in self.boxList["sensors"]:
+                #     if sensor["Resource"] == "Temperature":
+                #         topic["topics"].append(sensor["Topic"])
+                # return json.dumps(topic)
+                return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
             
-            for diz in self.catalog["servicesList"]:
-                if diz["DeviceID"] == id:
-                    print(diz)
-                    return json.dumps(diz)
-        elif uri[0] == "GetTSadaptor": # serve tutto
-            pass       
+            
+            #----------------
+            
+            elif uri[0]=="GetDevice":
+                chiave = list(params.keys())
+                chiave = chiave[0]
+                id=params[chiave]
+                for diz in self.catalog["devicesList"]:
+                    if diz["DeviceID"]==id:
+                        return json.dumps(diz)
+                        
+            elif uri[0] == "GetService":
+                id = params["DeviceID"]
+                
+                for diz in self.catalog["servicesList"]:
+                    if diz["DeviceID"] == id:
+                        print(diz)
+                        return json.dumps(diz)
+            elif uri[0] == "GetTSadaptor": # serve tutto
+                return "sa,sa,sa prova 1,2,3, sa, sa"     
         
     def TimeControl(self):
         cont = -1
@@ -80,12 +81,7 @@ class Catalog(threading.Thread):
             if time.time()-float(diz["Timestamp"]) > 2:
                 self.catalog['devicesList'].pop(cont)
 
-        
-        
-        
-        
-        
-        
+               
 if __name__=="__main__":
     #Standard configuration to serve the url "localhost:8080"
     conf={
@@ -97,14 +93,16 @@ if __name__=="__main__":
     cherrypy.config.update({'server.socket_port': 8070})
     cherrypy.tree.mount(Catalog(),'/',conf)
     cherrypy.engine.start()
+    
     #tunneling il nostro url è https://boxcatalog.loca.lt
     # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
     # per l'installazione dei moduli
+    # nota se usate delle VPN disattivatele perchè non gli piacciono
     resp=os.system('lt --port 8070 --subdomain boxcatalog')
-
-    while True:
-        Catalog().TimeControl()
-        time.sleep(10)
-    cherrypy.engine.block()
+    print(resp)
+    # while True:
+    #     # Catalog().TimeControl()
+    #     time.sleep(10)
+    # cherrypy.engine.block()
     
     
