@@ -4,6 +4,7 @@ import requests
 import datetime
 import time
 import threading
+import os
 
 class Catalog(threading.Thread):
     exposed=True
@@ -96,6 +97,11 @@ if __name__=="__main__":
     cherrypy.config.update({'server.socket_port': 8070})
     cherrypy.tree.mount(Catalog(),'/',conf)
     cherrypy.engine.start()
+    #tunneling il nostro url è https://boxcatalog.loca.lt
+    # prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
+    # per l'installazione dei moduli
+    resp=os.system('lt --port 8070 --subdomain boxcatalog')
+
     while True:
         Catalog().TimeControl()
         time.sleep(10)
