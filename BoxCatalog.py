@@ -98,7 +98,7 @@ if __name__=="__main__":
     cherrypy.tree.mount(Catalog(),'/',conf)
     cherrypy.engine.start()
     #tunneling il nostro url è https://boxcatalog.loca.lt
-    # prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
+    # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
     # per l'installazione dei moduli
     resp=os.system('lt --port 8070 --subdomain boxcatalog')
 
