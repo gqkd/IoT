@@ -3,10 +3,9 @@ import json
 import requests
 import datetime
 import time
-import threading
 import os
 
-class Catalog(threading.Thread):
+class Catalog():
     exposed=True
     def __init__(self):
         self.catalog = {
@@ -24,12 +23,12 @@ class Catalog(threading.Thread):
         jsonBody=json.loads(body)
         if uri[0] == "Device":
             cont = -1
-            for box in self.boxList:
+            for box in self.deviceList:
                 cont += 1
                 if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia la Box e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            print(self.deviceList)
+            return json.dumps(self.deviceList)
             
         elif uri[0] == "Service":
             cont = -1
@@ -51,9 +50,7 @@ class Catalog(threading.Thread):
                 #         topic["topics"].append(sensor["Topic"])
                 # return json.dumps(topic)
                 return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
-            if uri[0] == "Device2":
-                return "ciao"
-            
+          
             #----------------
             
             # elif uri[0]=="GetDevice":
@@ -98,8 +95,9 @@ if __name__=="__main__":
     # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
     # per l'installazione dei moduli
     # nota se usate delle VPN disattivatele perchè non gli piacciono
-    resp=os.system('lt --port 8070 --subdomain boxcatalog')
-    print(resp)
+    # resp=os.system('lt --port 8070 --subdomain boxcatalog')
+    #inserire controllo per url giusto
+    # print(resp)
     # while True:
     #     # Catalog().TimeControl()
     #     time.sleep(10)

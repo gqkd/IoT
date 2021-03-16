@@ -20,12 +20,11 @@ if __name__ == '__main__':
     temp1.start_MyMQTT(broker, port)
     # press.start_MyMQTT(broker, port)
     
-    time.sleep(1)
-    
-    
     while True:
+        temp1 = SensorTemperature("100", "001", topic)
         temp1.start()
-        
+        print(threading.enumerate())
+        # temp1.join()
         time.sleep(timesenddata)
         print("3:thread finished")
 
