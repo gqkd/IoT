@@ -15,17 +15,13 @@ if __name__ == '__main__':
     port = conf["port"]
     
     temp1 = SensorTemperature("100", "001", topic)
+    temp2 = SensorTemperature("100", "002", topic)
     # press = SensorPressure("200", "001", topic)
     
     temp1.start_MyMQTT(broker, port)
+    temp2.start_MyMQTT(broker, port)
     # press.start_MyMQTT(broker, port)
-    
-    while True:
-        temp1 = SensorTemperature("100", "001", topic)
-        temp1.start()
-        print(threading.enumerate())
-        # temp1.join()
-        time.sleep(timesenddata)
-        print("3:thread finished")
+    temp1.start()
+    temp2.start()
 
-    temp1.stop_MyMQTT()
+    # temp1.stop_MyMQTT()

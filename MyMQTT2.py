@@ -3,10 +3,10 @@ import json
 import time
 
 class MyMQTT2:
-    def __init__(self, clientID, broker, port):
+    def __init__(self, clientID, broker, port, notifier):
         self.broker = broker
         self.port = port
-        # self.notifier = notifier
+        self.notifier = notifier
         self.client_id = clientID
         self._isSubscriber = False
         self._client = mqtt.Client(clientID, True) #creo istanza client
@@ -33,6 +33,7 @@ class MyMQTT2:
             print("message NOT published to topic %s" % (topic))
 
     def myon_message(self, _client, userdata, msg):
+        self.notifier.notify (msg.topic, msg.payload)
         print ("\nmessage: %s \n" % (str(msg.payload))) #c'è una cazzo di b' davanti che non capisco come cazzo si toglie porco dio
 
     def mysubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
