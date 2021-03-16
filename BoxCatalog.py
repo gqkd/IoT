@@ -23,7 +23,6 @@ class Catalog(threading.Thread):
         body=cherrypy.request.body.read()
         jsonBody=json.loads(body)
         if uri[0] == "Device":
-            
             cont = -1
             for box in self.boxList:
                 cont += 1
@@ -52,27 +51,28 @@ class Catalog(threading.Thread):
                 #         topic["topics"].append(sensor["Topic"])
                 # return json.dumps(topic)
                 return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
-            
+            if uri[0] == "Device2":
+                return "ciao"
             
             #----------------
             
-            elif uri[0]=="GetDevice":
-                chiave = list(params.keys())
-                chiave = chiave[0]
-                id=params[chiave]
-                for diz in self.catalog["devicesList"]:
-                    if diz["DeviceID"]==id:
-                        return json.dumps(diz)
+            # elif uri[0]=="GetDevice":
+            #     chiave = list(params.keys())
+            #     chiave = chiave[0]
+            #     id=params[chiave]
+            #     for diz in self.catalog["devicesList"]:
+            #         if diz["DeviceID"]==id:
+            #             return json.dumps(diz)
                         
-            elif uri[0] == "GetService":
-                id = params["DeviceID"]
+            # elif uri[0] == "GetService":
+            #     id = params["DeviceID"]
                 
-                for diz in self.catalog["servicesList"]:
-                    if diz["DeviceID"] == id:
-                        print(diz)
-                        return json.dumps(diz)
-            elif uri[0] == "GetTSadaptor": # serve tutto
-                return "sa,sa,sa prova 1,2,3, sa, sa"     
+            #     for diz in self.catalog["servicesList"]:
+            #         if diz["DeviceID"] == id:
+            #             print(diz)
+            #             return json.dumps(diz)
+            # elif uri[0] == "GetTSadaptor": # serve tutto
+            #     return "sa,sa,sa prova 1,2,3, sa, sa"     
         
     def TimeControl(self):
         cont = -1

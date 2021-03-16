@@ -8,8 +8,8 @@ from Sensor_Temperature import *
        
 if __name__ == '__main__':
     conf=json.load(open("settings.json"))
-    
-    
+    conf2=json.load(open("settingsboxcatalog.json"))
+    timesenddata = conf2["timesenddata"]
     topic = conf["baseTopic"]
     broker = conf["broker"]
     port = conf["port"]
@@ -24,12 +24,9 @@ if __name__ == '__main__':
     
     
     while True:
-        temp1.sendData()
-        temp = SensorTemperature("100", "001", topic)      
-        temp.start()
-        temp.join()
-        print("3:thread finished")
-        # press.start()
-        # time.sleep(10)
+        temp1.start()
         
+        time.sleep(timesenddata)
+        print("3:thread finished")
+
     temp1.stop_MyMQTT()

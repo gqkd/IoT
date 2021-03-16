@@ -20,8 +20,9 @@ class SensorTemperature(threading.Thread):
             "Resource": 'Temperature',
             "Timestamp": None
         }
-        self.tempo1=6
-        self.count = 0
+        conf2=json.load(open("settingsboxcatalog.json"))
+        self.timerequest=conf2["timerequest"]
+        self.count = 6
             # "actuator": [
             #     {
             #     "Topic": self.topic+"/"+self.boxID+"/speaker",
@@ -32,27 +33,29 @@ class SensorTemperature(threading.Thread):
         
     def request(self):
         self.payload["Timestamp"] = time.time()
-        r = requests.put(f"http://localhost:8070/Device", json=self.payload)
+        r = requests.put(f"https://boxcatalog.loca.lt/Device", json=self.payload)
         print(r)
     
     def run(self):
-        self.count += 1
+        print("1:publishing data")
+        
         self.sendData()
-        if self.count%self.tempo1 == 0: #tempo da impostare come parametro
+        if self.count % self.timerequest == 0: 
             self.request()
+            self.count=0
+        self.count += 1
+        print("2:run finished")
 
     def sendData(self):
-        print("1:publishing data")
+        
         t = 100 #TODO simulazione output sensore 
         message = self.__message
         message['e'][0]['t'] = float(time.time())
         message['e'][0]['v'] = t
         self.client.myPublish(self.topic,message)   
-        # time.sleep(10)
-        print("2:run finished")
+        
 
-        
-        
+           
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message={
@@ -68,10 +71,7 @@ class SensorTemperature(threading.Thread):
             }
         self.client.start()
     
-    
-        
-    
-    
+     
     def stop_MyMQTT(self):
         self.client.stop()
         
