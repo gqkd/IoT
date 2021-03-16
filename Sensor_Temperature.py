@@ -20,7 +20,8 @@ class SensorTemperature(threading.Thread):
             "Resource": 'Temperature',
             "Timestamp": None
         }
-                
+        self.tempo1=6
+        self.count = 0
             # "actuator": [
             #     {
             #     "Topic": self.topic+"/"+self.boxID+"/speaker",
@@ -29,13 +30,17 @@ class SensorTemperature(threading.Thread):
             #     }
 
         
-        
-    
-    def run(self):
-        
+    def request(self):
         self.payload["Timestamp"] = time.time()
         r = requests.put(f"http://localhost:8070/Device", json=self.payload)
         print(r)
+    
+    def run(self):
+        self.count += 1
+        self.sendData()
+        if self.count%self.tempo1 == 0: #tempo da impostare come parametro
+            self.request()
+
     def sendData(self):
         print("1:publishing data")
         t = 100 #TODO simulazione output sensore 
