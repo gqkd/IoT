@@ -44,11 +44,11 @@ class SensorAccelerometer(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
+        #Mantengo URL inserito da Giulio
         r = requests.put(f"https://boxcatalog.loca.lt/Device", json=self.payload)
         print(r)
 
     def run(self):
-
         while True:
             self.sendData()
             if self.count % self.timerequest == 0:
@@ -60,7 +60,7 @@ class SensorAccelerometer(threading.Thread):
     def sendData(self):
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = random.randrange(34, 39)
+        message['e'][0]['v'] = random.uniform(0.1, 1)
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):
