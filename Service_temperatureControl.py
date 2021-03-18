@@ -4,7 +4,7 @@ import requests
 from MyMQTT import *
 
 
-# NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOGUE E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
+# NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOG E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
 # DELLA TEMPERATURA. UNA VOLTA OTTENUTO, DEVE FARE TUTTA LA SUA MANFRINA DEL CONTROLLO
 # QUINDI, WORKFLOW:
 # - SOTTOSCRIVERSI IN LOOP A BOX CATALOG
@@ -63,6 +63,8 @@ class TemperatureControl(threading.Thread):
             self.client_publisher = MyMQTT(self.serviceID,self.broker,self.port, None)
             self.client_publisher.start()
             messaggio = {'Temperature':'alert'}
+            # DEVO DARE GIUSTO TOPIC, CHE SAREBBE TOPIC A CUI SI SOTTOSCRIVE ATTUATORE CHE è SINGOLO
+            # PER OGNI FOTTUTA SCATOLA
             self.client_publisher.myPublish(f"""{self.topic}/{self.serviceID}/temperatureControl""""",messaggio)
 
             #Mandare dato anche a thingspeak adaptor?
