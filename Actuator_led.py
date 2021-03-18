@@ -4,8 +4,13 @@ import time
 import random
 import threading
 import requests
-from progetto.MyMQTT import *
-
+from MyMQTT import *
+# "actuator": [
+            #     {
+            #     "Topic": self.topic+"/"+self.boxID+"/speaker",
+            #     "Resource": 'Speaker',
+            #     "Timestamp": None
+            #     }
 class Led(threading.Thread):
     def __init__(self, sensorID, topic):
         threading.Thread.__init__(self)
