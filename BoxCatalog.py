@@ -44,6 +44,7 @@ class Catalog():
         
     def GET(self,*uri):
         if len(uri)!=0:
+            # Posso farmi tornare anche topic a cui si sottoscrive speaker?
             if uri[0] == "GetTemperature":
                 return json.dumps({"topics" : "Ipfsod/+/+/temperature"})
             elif uri[0] == "GetAcceleration":

@@ -16,6 +16,7 @@ class SensorTemperature(threading.Thread):
             "Resource": "Temperature",
             "Timestamp": None
         }
+        #Dati utili per timing
         conf2=json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest=conf2["timerequest"]

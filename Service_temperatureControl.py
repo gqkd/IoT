@@ -1,4 +1,5 @@
 import time
+import threading
 import requests
 from MyMQTT import *
 
@@ -10,8 +11,9 @@ from MyMQTT import *
 # - CHIEDERE IN LOOP TOPIC DEI SENSORI CHE PUBBLICANO TEMPERATURA
 # - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
 
-class TemperatureControl():
+class TemperatureControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port):
+        threading.Thread.__init__(self)
         self.serviceID = serviceID
         self.topic = topic  # basetopic
         self.topicresource = '' # topic che verrà chiesto a box catalog
@@ -21,6 +23,11 @@ class TemperatureControl():
             "serviceID": self.serviceID,
             "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl"""""
         }
+        # Dati utili per il timing
+        conf2 = json.load(open("settingsboxcatalog.json"))
+        self.timesenddata = conf2["timesenddata"]
+        self.timerequest = conf2["timerequest"]
+        self.count = 6
 
     def request(self):
         # Sottoscrizione al boxcatalog
@@ -37,6 +44,17 @@ class TemperatureControl():
         self.client.start()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
         print('{} has started'.format(self.serviceID))
+
+    def run(self):
+        # Prima sottoscrizione in assoluto
+        self.request()
+        while True:
+            self.topicRequest()
+            if self.count % self.timerequest == 0:
+                self.request()
+                self.count=0
+            self.count += 1
+            time.sleep(self.timesenddata)
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
