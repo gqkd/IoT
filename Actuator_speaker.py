@@ -13,15 +13,13 @@ class Speaker(threading.Thread):
         threading.Thread.__init__(self)
         self.deviceID = f"{boxID}{deviceID}"  # ID deve essere numerico
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature"  # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/speaker"  # self.topic= "Ipfsod"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
             "Resource": "Temperature",
             "Timestamp": None
         }
-        
-        
     
     def run(self):
         self.payload["Timestamp"] = time.time()

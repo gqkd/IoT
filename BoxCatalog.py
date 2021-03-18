@@ -45,12 +45,13 @@ class Catalog():
     def GET(self,*uri):
         if len(uri)!=0:
             if uri[0] == "GetTemperature":
-                # topic = {"topics" : []}
-                # for sensor in self.boxList["sensors"]:
-                #     if sensor["Resource"] == "Temperature":
-                #         topic["topics"].append(sensor["Topic"])
-                # return json.dumps(topic)
-                return json.dumps({"topics" : "Ipfsod/+/+/Temperature"})
+                return json.dumps({"topics" : "Ipfsod/+/+/temperature"})
+            elif uri[0] == "GetAcceleration":
+                return json.dumps({"topics" : "Ipfsod/+/+/acceleration"})
+            elif uri[0] == "GetMass":
+                return json.dumps({"topics" : "Ipfsod/+/+/mass"})
+            elif uri[0] == "GetOxygenLevel":
+                return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
           
             #----------------
             
