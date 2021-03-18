@@ -1,9 +1,7 @@
 import cherrypy
 import json
-import requests
 import datetime
 import time
-import os
 
 class Catalog():
     exposed=True
@@ -18,16 +16,17 @@ class Catalog():
         self.deviceList = self.catalog['deviceList']
         self.servicesList = self.catalog['servicesList']
         
-    def PUT(self,*uri): # Registrare Box o Service nel catalog
+    def PUT(self,*uri): # Registrare Sensori o Service nel catalog
         body=cherrypy.request.body.read()
         jsonBody=json.loads(body)
         if uri[0] == "Device":
             cont = -1
             for box in self.deviceList:
                 cont += 1
-                if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia la Box e nel caso la elimino
+                if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia il sensore e nel caso la elimino
+                    #
                     self.deviceList.pop(cont)
-            self.deviceList.append(jsonBody)
+                self.deviceList.append(jsonBody)
             print(self.deviceList)
             return json.dumps(self.deviceList)
 
