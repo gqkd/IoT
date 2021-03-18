@@ -35,9 +35,9 @@ class Speaker(threading.Thread):
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
-        #for topic in listatopicService:
+        for topic in listatopicService:
         #self.client.unsubscribe()
-        self.client.mySubscribe("Ipfsod/+/temperatureControl")  # TOPIC RICHIESTO A CATALOG
+            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
 
     def run(self):
         while True:
