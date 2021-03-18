@@ -29,6 +29,7 @@ class Catalog():
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
             return json.dumps(self.deviceList)
+            print(self.deviceList)
             
         elif uri[0] == "Service":
             cont = -1
@@ -95,7 +96,7 @@ if __name__=="__main__":
     # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
     # per l'installazione dei moduli
     # nota se usate delle VPN disattivatele perchè non gli piacciono
-    resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
+    # resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
     #inserire controllo per url giusto
     # print(resp)
     # while True:

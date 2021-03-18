@@ -38,7 +38,7 @@ class SensorTemperature(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
-        r = requests.put(f"https://boxcatalog.loca.lt/Device", json=self.payload)
+        r = requests.put(f"http://127.0.0.1:8070/Device", json=self.payload)
         print(r)
     
     def run(self):
