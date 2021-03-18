@@ -33,7 +33,7 @@ class SensorMass(threading.Thread):
                     "n": "mass",
                     "u": "kg",
                     "t": None,
-                    "v": ""
+                    "v": None
                 }
             ]
         }

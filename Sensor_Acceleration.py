@@ -33,9 +33,9 @@ class SensorAcceleration(threading.Thread):
                     "n": "acceleration",
                     "u": "m/s^2",
                     "t": None,
-                    "v_xaxis": "",      #accelerometri misurano accelerazione in tutte e tre le direzioni spaziali
-                    "v_yaxis":"",       #sarebbe conveniente spezzare il sensore in tre sottosensori ma viene fuori un casino
-                    "v_zaxis":""
+                    "v_xaxis": None,      #accelerometri misurano accelerazione in tutte e tre le direzioni spaziali
+                    "v_yaxis":None,       #sarebbe conveniente spezzare il sensore in tre sottosensori ma viene fuori un casino
+                    "v_zaxis":None
                 }
             ]
         }

@@ -33,7 +33,7 @@ class SensorOxygen(threading.Thread):
                     "n": "Oxygen Level",
                     "u": "%",
                     "t": None,
-                    "v": ""
+                    "v": None
                 }
             ]
         }

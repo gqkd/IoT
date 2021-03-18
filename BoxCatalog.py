@@ -23,7 +23,7 @@ class Catalog():
             cont = -1
             for box in self.deviceList:
                 cont += 1
-                if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia il sensore e nel caso la elimino
+                if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     #
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)

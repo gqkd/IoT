@@ -30,7 +30,7 @@ class SensorTemperature(threading.Thread):
                         "n": "temperature",
                         "u": "Cel",
                         "t": None,
-                        "v": ""
+                        "v": None
                     }
                 ]
             }
