@@ -14,7 +14,7 @@ class Speaker(threading.Thread):
         self.mode = 0
         self.payload = {
             "deviceID": self.speakerID,
-            "Resource": 'Boolean',
+            "Resource": 'Speaker',
             "Timestamp": None
         }
         # Dati utili per timing
@@ -30,7 +30,7 @@ class Speaker(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
-        r = requests.get("http://localhost:8070/GetTopicTemperature")
+        r = requests.get("http://localhost:8070/GetTopic")
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -38,7 +38,6 @@ class Speaker(threading.Thread):
         self.client.start()
         for topic in listatopicService:
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
-            print('{} has started'.format(self.speakerID))
 
     def run(self):
         self.request()

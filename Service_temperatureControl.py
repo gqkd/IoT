@@ -43,7 +43,6 @@ class TemperatureControl(threading.Thread):
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
-        print('{} has started'.format(self.serviceID))
 
     def run(self):
         # Prima sottoscrizione in assoluto

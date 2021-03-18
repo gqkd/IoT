@@ -12,25 +12,18 @@ if __name__ == '__main__':
     topic = conf["baseTopic"]
     broker = conf["broker"]
     port = conf["port"]
-
     #Temperatura:
     temp1 = SensorTemperature("100", "001", topic)
-
     #Accelerazione:
     acc1 = SensorAcceleration("200","001",topic)
-
     #Massa:
     mass1 = SensorMass("300","001",topic)
-
     #Livello di ossigenazione:
     oxy1 = SensorOxygen("400",'001',topic)
-
     #Speaker
     speak1 = Speaker('500','001',broker,port)
-
     #Controllo temperatura
     contTemp1 = TemperatureControl('1',topic,broker,port)
-
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
     acc1.start_MyMQTT(broker, port)

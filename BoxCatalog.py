@@ -26,18 +26,19 @@ class Catalog():
                 if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            print(self.deviceList)
+            print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
-            
         elif uri[0] == "Service":
             cont = -1
             for service in self.servicesList:
                 cont += 1
-                if service["serviceID"] == jsonBody["serviceID"]:
+                if str(service["serviceID"]) == str(jsonBody["serviceID"]):
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
-            print(self.servicesList)
+            print(f"""Lista servizi attivi: \n {self.servicesList}""")
+            return json.dumps(self.servicesList)
+
             
         self.catalog["lastUpdate"] = str(datetime.time())
         
@@ -52,7 +53,7 @@ class Catalog():
                 return json.dumps({"topics" : "Ipfsod/+/+/mass"})
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
-            elif uri[0] == "GetTopicTemperature":
+            elif uri[0] == "GetTopic":
                 return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl"]}))
             #----------------
 
