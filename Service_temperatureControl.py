@@ -57,15 +57,15 @@ class TemperatureControl(threading.Thread):
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
+        print(f"Messaggio ricevuto da servizio: {payload}")
         self.client_publisher = MyMQTT(self.serviceID, self.broker, self.port, None)
         self.client_publisher.start()
         # Avvisare speaker e mandare dato a thingspeak
         if payload['e'][0]['v'] < 35:
             messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
-            self.client_publisher.myPublish(self.topic,messaggio)
         else:
             messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE
-            self.client_publisher.myPublish(self.topic, messaggio)
+        self.client_publisher.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()

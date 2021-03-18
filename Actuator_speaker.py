@@ -11,7 +11,6 @@ class Speaker(threading.Thread):
         self.boxID = boxID
         self.broker = broker
         self.port = port
-        self.mode = 0
         self.payload = {
             "deviceID": self.speakerID,
             "Resource": 'Speaker',
@@ -36,8 +35,8 @@ class Speaker(threading.Thread):
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
-        for topic in listatopicService:
-            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+        #for topic in listatopicService:
+        self.client.mySubscribe("Ipfsod/+/temperatureControl")  # TOPIC RICHIESTO A CATALOG
 
     def run(self):
         self.request()
@@ -51,9 +50,10 @@ class Speaker(threading.Thread):
 
     def notify(self, topic, msg):
         messaggio = json.loads(msg)
+        print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        d = {'Temperature': None, 'Acceleration': None, 'Oxygen': None}
+        d = {'Temperature': None, 'Acceleration': 0, 'Oxygen': 0}
         if self.boxID == deviceID[0:3]:
             if 'Temperature' in listachiavi:
                 d['Temperature'] = messaggio['Temperature']
@@ -63,10 +63,9 @@ class Speaker(threading.Thread):
                 d['Oxygen'] = messaggio['Oxygen']
             listavalori = list(d.values())
             if sum(listavalori) > 0:
-                self.mode = 1
                 print('A T T E N Z I O N E: \n ALLARME ATTIVO')
             else:
-                self.mode = 0
+                pass
 
     def stop_MyMQTT(self):
         self.client.stop()
