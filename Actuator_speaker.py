@@ -1,7 +1,4 @@
-import numpy as np
-import json
 import time
-import random
 import threading
 import requests
 from MyMQTT import *
@@ -11,18 +8,18 @@ from MyMQTT import *
             #     "Resource": 'Speaker',
             #     "Timestamp": None
             #     }
-class Led(threading.Thread):
-    def __init__(self, sensorID, topic):
+class Speaker(threading.Thread):
+    def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
-        self.sensorID = sensorID
-         
-        self.topic = topic
+        self.deviceID = f"{boxID}{deviceID}"  # ID deve essere numerico
+        self.boxID = boxID
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature"  # self.topic= "Ipfsod"
         self.payload = {
-            "DeviceID": self.sensorID, 
+            "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": 'Led',
+            "Resource": "Temperature",
             "Timestamp": None
-            }
+        }
         
         
     

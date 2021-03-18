@@ -7,8 +7,6 @@ from MyMQTT import *
 class SensorTemperature(threading.Thread):
     def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
-        conf2=json.load(open("settingsboxcatalog.json"))
-        self.timesenddata = conf2["timesenddata"]
         self.deviceID = f"{boxID}{deviceID}" # ID deve essere numerico 
         self.boxID = boxID
         self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature" # self.topic= "Ipfsod"
@@ -19,6 +17,7 @@ class SensorTemperature(threading.Thread):
             "Timestamp": None
         }
         conf2=json.load(open("settingsboxcatalog.json"))
+        self.timesenddata = conf2["timesenddata"]
         self.timerequest=conf2["timerequest"]
         self.count = 6
 
