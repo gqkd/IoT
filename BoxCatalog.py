@@ -28,8 +28,9 @@ class Catalog():
                 if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia la Box e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            return json.dumps(self.deviceList)
             print(self.deviceList)
+            return json.dumps(self.deviceList)
+
             
         elif uri[0] == "Service":
             cont = -1
