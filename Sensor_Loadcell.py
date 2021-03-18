@@ -11,11 +11,11 @@ class SensorAccelerometer(threading.Thread):
         #Topic nella forma: base_topic/numero_box/numero_box_numero_sensore/risorsa_misurata
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/acceleration"  # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/weight"  # self.topic= "Ipfsod"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": "Acceleration",
+            "Resource": "Weigth",
             "Timestamp": None
         }
         #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
@@ -30,8 +30,8 @@ class SensorAccelerometer(threading.Thread):
             "bn": self.deviceID,
             "e": [
                 {
-                    "n": "acceleration",
-                    "u": "m/s",
+                    "n": "weight",
+                    "u": "kg",
                     "t": None,
                     "v": ""
                 }
@@ -55,9 +55,11 @@ class SensorAccelerometer(threading.Thread):
             time.sleep(self.timesenddata)
 
     def sendData(self):
+        #Mi aspetto che il peso dell'organo sia fisso e non vari con il tempo
+        peso = 0.2
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = random.uniform(0.1, 1)
+        message['e'][0]['v'] = peso
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):
