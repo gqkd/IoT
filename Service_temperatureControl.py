@@ -25,7 +25,7 @@ class TemperatureControl(threading.Thread):
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
-        self.timesenddata = conf2["timesenddata"]
+        self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
         self.count = 6
 
@@ -42,30 +42,28 @@ class TemperatureControl(threading.Thread):
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
+        #self.client.unsubscribe()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
 
+
     def run(self):
-        # Prima sottoscrizione in assoluto
-        self.request()
         while True:
             self.topicRequest()
-            if self.count % self.timerequest == 0:
+            if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
                 self.count=0
             self.count += 1
-            time.sleep(self.timesenddata)
+            time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
-        self.client_publisher = MyMQTT(self.serviceID, self.broker, self.port, None)
-        self.client_publisher.start()
         # Avvisare speaker e mandare dato a thingspeak
-        if payload['e'][0]['v'] < 35:
+        if payload['e'][0]['v'] < 37:
             messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
         else:
             messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE
-        self.client_publisher.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
+        self.client.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()

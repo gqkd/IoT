@@ -45,7 +45,7 @@ class SensorTemperature(threading.Thread):
     def run(self):
         while True:
             self.sendData()
-            if self.count % self.timerequest == 0: 
+            if self.count % (self.timerequest/self.timesenddata) == 0:
                 self.request()
                 self.count=0
             self.count += 1

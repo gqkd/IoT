@@ -1,4 +1,5 @@
 {
-    "timerequest":6,
-    "timesenddata":10
+    "timerequest":60,
+    "timesenddata":10,
+    "timerequestTopic": 30
 }

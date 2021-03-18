@@ -18,7 +18,7 @@ class Speaker(threading.Thread):
         }
         # Dati utili per timing
         conf2 = json.load(open("settingsboxcatalog.json"))
-        self.timesenddata = conf2["timesenddata"]
+        self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
         self.count = 6
 
@@ -36,25 +36,25 @@ class Speaker(threading.Thread):
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
         #for topic in listatopicService:
+        #self.client.unsubscribe()
         self.client.mySubscribe("Ipfsod/+/temperatureControl")  # TOPIC RICHIESTO A CATALOG
 
     def run(self):
-        self.request()
         while True:
             self.topicRequest()
             if self.count % self.timerequest == 0:
                 self.request()
                 self.count=0
             self.count += 1
-            time.sleep(self.timesenddata)
+            time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
         messaggio = json.loads(msg)
-        print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        d = {'Temperature': None, 'Acceleration': 0, 'Oxygen': 0}
+        d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
         if self.boxID == deviceID[0:3]:
+            print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
             if 'Temperature' in listachiavi:
                 d['Temperature'] = messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
