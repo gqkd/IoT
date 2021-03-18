@@ -15,7 +15,7 @@ class SensorOxygen(threading.Thread):
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": "mass",
+            "Resource": "oxygen level",
             "Timestamp": None
         }
         #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore

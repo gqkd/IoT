@@ -26,7 +26,7 @@ class Catalog():
                 if box["deviceID"] == jsonBody["deviceID"]: # Controllo se esiste gia il sensore e nel caso la elimino
                     #
                     self.deviceList.pop(cont)
-                self.deviceList.append(jsonBody)
+            self.deviceList.append(jsonBody)
             print(self.deviceList)
             return json.dumps(self.deviceList)
 
