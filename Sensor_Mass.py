@@ -58,6 +58,7 @@ class SensorMass(threading.Thread):
         #Mi aspetto che il peso dell'organo sia fisso e non vari con il tempo
         #ex. cuore umano di un adulto maschio arriva fino a 300 g mentre quello di una donna adulta fino a 150/200g
         #scatola sarà comunque settata in qualche modo affinchè riproduca stessa misura
+        # TODO: METTERE CONTATORE PER PESO
         peso = 0.1
         message = self.__message
         message['e'][0]['t'] = float(time.time())
