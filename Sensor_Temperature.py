@@ -32,7 +32,21 @@ class SensorTemperature(threading.Thread):
             #     "Timestamp": None
             #     }
 
-        
+    def start_MyMQTT(self, broker, port):
+        self.client = MyMQTT(self.deviceID, broker, port, None)
+        self.__message={
+            "bn": self.deviceID,
+            "e": [
+                    {
+                        "n": "temperature",
+                        "u": "Cel",
+                        "t": None,
+                        "v": ""
+                    }
+                ]
+            }
+        self.client.start()
+
     def request(self):
         self.payload["Timestamp"] = time.time()
         r = requests.put(f"http://127.0.0.1:8070/Device", json=self.payload)
@@ -55,24 +69,8 @@ class SensorTemperature(threading.Thread):
         message = self.__message
         message['e'][0]['t'] = float(time.time())
         message['e'][0]['v'] = t
-        self.client.myPublish(self.topic,message) 
-              
-    def start_MyMQTT(self, broker, port):
-        self.client = MyMQTT(self.deviceID, broker, port, None)
-        self.__message={
-            "bn": self.deviceID,
-            "e": [
-                    {
-                        "n": "temperature",
-                        "u": "Cel",
-                        "t": None,
-                        "v": ""
-                    }
-                ]
-            }
-        self.client.start()
-    
-     
+        self.client.myPublish(self.topic,message)
+
     def stop_MyMQTT(self):
         self.client.stop()
         
