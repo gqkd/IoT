@@ -1,8 +1,9 @@
 import time
 import threading
-import json
 import requests
 from MyMQTT import *
+
+
 class Speaker(threading.Thread):
     def __init__(self, speakerID, boxID, broker, port):
         threading.Thread.__init__(self)
@@ -13,9 +14,14 @@ class Speaker(threading.Thread):
         self.mode = 0
         self.payload = {
             "deviceID": self.speakerID,
-            "Resource":'Boolean',
+            "Resource": 'Boolean',
             "Timestamp": None
         }
+        # Dati utili per timing
+        conf2 = json.load(open("settingsboxcatalog.json"))
+        self.timesenddata = conf2["timesenddata"]
+        self.timerequest = conf2["timerequest"]
+        self.count = 6
 
     def request(self):
         # Sottoscrizione al boxcatalog
@@ -34,22 +40,29 @@ class Speaker(threading.Thread):
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
             print('{} has started'.format(self.speakerID))
 
-    def notify(self,topic,msg):
+    def run(self):
+        self.request()
+        while True:
+            self.topicRequest()
+            if self.count % self.timerequest == 0:
+                self.request()
+                self.count=0
+            self.count += 1
+            time.sleep(self.timesenddata)
+
+    def notify(self, topic, msg):
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        d = {'Temperature':None, 'Acceleration':None,'Oxygen':None}
+        d = {'Temperature': None, 'Acceleration': None, 'Oxygen': None}
         if self.boxID == deviceID[0:3]:
             if 'Temperature' in listachiavi:
-                val = messaggio['Temperature']
-                d['Temperature'] = val
+                d['Temperature'] = messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
-                val = messaggio['Acceleration']
-                d['Acceleration']=val
+                d['Acceleration'] = messaggio['Acceleration']
             elif 'Oxygen' in listachiavi:
-                val = messaggio['Oxygen']
-                d['Oxygen']=val
-            listavalori= list(d.values())
+                d['Oxygen'] = messaggio['Oxygen']
+            listavalori = list(d.values())
             if sum(listavalori) > 0:
                 self.mode = 1
                 print('A T T E N Z I O N E: \n ALLARME ATTIVO')

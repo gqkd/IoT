@@ -2,6 +2,8 @@ from Sensor_Temperature import *
 from Sensor_Acceleration import *
 from Sensor_Mass import *
 from Sensor_OxygenLevel import *
+from Service_temperatureControl import *
+from Actuator_speaker import *
        
 if __name__ == '__main__':
     conf=json.load(open("settings.json"))
@@ -23,6 +25,12 @@ if __name__ == '__main__':
     #Livello di ossigenazione:
     oxy1 = SensorOxygen("400",'001',topic)
 
+    #Speaker
+    speak1 = Speaker('500','001',broker,port)
+
+    #Controllo temperatura
+    contTemp1 = TemperatureControl('1',topic,broker,port)
+
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
     acc1.start_MyMQTT(broker, port)
@@ -34,5 +42,7 @@ if __name__ == '__main__':
     acc1.start()
     mass1.start()
     oxy1.start()
+    speak1.start()
+    contTemp1.start()
 
 
