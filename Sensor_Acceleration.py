@@ -4,18 +4,18 @@ import threading
 import requests
 from MyMQTT import *
 
-class SensorAccelerometer(threading.Thread):
+class SensorAcceleration(threading.Thread):
     def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
         #Definizione di: DeviceID, BoxID e topic
         #Topic nella forma: base_topic/numero_box/numero_box_numero_sensore/risorsa_misurata
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/weight"  # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/acceleration"  # self.topic= "Ipfsod"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": "Weigth",
+            "Resource": "Acceleration",
             "Timestamp": None
         }
         #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
@@ -30,10 +30,12 @@ class SensorAccelerometer(threading.Thread):
             "bn": self.deviceID,
             "e": [
                 {
-                    "n": "weight",
-                    "u": "kg",
+                    "n": "acceleration",
+                    "u": "m/s^2",
                     "t": None,
-                    "v": ""
+                    "v_xaxis": "",      #accelerometri misurano accelerazione in tutte e tre le direzioni spaziali
+                    "v_yaxis":"",       #sarebbe conveniente spezzare il sensore in tre sottosensori ma viene fuori un casino
+                    "v_zaxis":""
                 }
             ]
         }
@@ -55,11 +57,12 @@ class SensorAccelerometer(threading.Thread):
             time.sleep(self.timesenddata)
 
     def sendData(self):
-        #Mi aspetto che il peso dell'organo sia fisso e non vari con il tempo
-        peso = 0.2
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = peso
+        #distribuzione uniforme per accelerazione
+        message['e'][0]['v_xaxis'] = random.uniform(0.1, 0.5)
+        message['e'][0]['v_yaxis'] = random.uniform(0.1, 0.5)
+        message['e'][0]['v_zaxis'] = random.uniform(0.1, 0.5)
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):

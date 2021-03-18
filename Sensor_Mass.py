@@ -4,18 +4,18 @@ import threading
 import requests
 from MyMQTT import *
 
-class SensorAccelerometer(threading.Thread):
+class SensorMass(threading.Thread):
     def __init__(self, deviceID, boxID, topic):
         threading.Thread.__init__(self)
         #Definizione di: DeviceID, BoxID e topic
         #Topic nella forma: base_topic/numero_box/numero_box_numero_sensore/risorsa_misurata
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/acceleration"  # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/mass"  # self.topic= "Ipfsod"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": "Acceleration",
+            "Resource": "mass",
             "Timestamp": None
         }
         #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
@@ -30,8 +30,8 @@ class SensorAccelerometer(threading.Thread):
             "bn": self.deviceID,
             "e": [
                 {
-                    "n": "acceleration",
-                    "u": "m/s",
+                    "n": "mass",
+                    "u": "kg",
                     "t": None,
                     "v": ""
                 }
@@ -55,9 +55,13 @@ class SensorAccelerometer(threading.Thread):
             time.sleep(self.timesenddata)
 
     def sendData(self):
+        #Mi aspetto che il peso dell'organo sia fisso e non vari con il tempo
+        #ex. cuore umano di un adulto maschio arriva fino a 300 g mentre quello di una donna adulta fino a 150/200g
+        #scatola sarà comunque settata in qualche modo affinchè riproduca stessa misura
+        peso = 0.1
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = random.uniform(0.1, 1)
+        message['e'][0]['v'] = peso
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):
