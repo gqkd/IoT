@@ -34,10 +34,19 @@ class Speaker(threading.Thread):
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
+        self.client1 = MyMQTT(self.speakerID, self.broker, self.port, self)
+        self.client2 = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
-        for topic in listatopicService:
-        #self.client.unsubscribe()
-            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+        self.client1.start()
+        self.client2.start()
+        self.client.mySubscribe(listatopicService[0])
+        self.client1.mySubscribe(listatopicService[1])
+        self.client2.mySubscribe(listatopicService[2])
+        # FORSE NON è MEGLIO FARE TRE SUBSCRIBER DIVERSI CHE SI SOTTOSCRIVONO SEPARATAMENTE ALLA COSA?
+        # ROBA NON è SINCRONA
+        # for topic in listatopicService:
+        # self.client.unsubscribe()
+            # self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
 
     def run(self):
         while True:
@@ -52,18 +61,19 @@ class Speaker(threading.Thread):
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
+        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
         if self.boxID == deviceID[0:3]:
             print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
             if 'Temperature' in listachiavi:
-                d['Temperature'] = messaggio['Temperature']
+                self.d['Temperature'] = messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
-                d['Acceleration'] = messaggio['Acceleration']
+                self.d['Acceleration'] = messaggio['Acceleration']
             elif 'Oxygen' in listachiavi:
-                d['Oxygen'] = messaggio['Oxygen']
-            listavalori = list(d.values())
+                self.d['Oxygen'] = messaggio['Oxygen']
+            listavalori = list(self.d.values())
             if sum(listavalori) > 0:
                 print('A T T E N Z I O N E: \n ALLARME ATTIVO')
+                self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
             else:
                 pass
 

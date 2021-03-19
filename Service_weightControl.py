@@ -1,6 +1,7 @@
 import time
 import threading
 import requests
+from math import sqrt
 from MyMQTT import *
 
 
@@ -11,7 +12,7 @@ from MyMQTT import *
 # - CHIEDERE IN LOOP TOPIC DEI SENSORI CHE PUBBLICANO TEMPERATURA
 # - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
 
-class OxygenControl(threading.Thread):
+class WeightControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
@@ -21,7 +22,7 @@ class OxygenControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/oxygenControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/weightControl"""""
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
@@ -36,7 +37,7 @@ class OxygenControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get("http://localhost:8070/GetOxygenLevel")
+        r = requests.get("http://localhost:8070/GetMass")
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -59,11 +60,11 @@ class OxygenControl(threading.Thread):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
         # Avvisare speaker e mandare dato a thingspeak
-        if payload['e'][0]['v'] < 96:
-            messaggio = {'Oxygen':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE OSSIGENO NON VA BENE
+        if payload['e'][0]['v'] == 0:
+            messaggio = {'Mass':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE ORGANO NON è INSERITO NELLA SCATOLA
         else:
-            messaggio = {'Oxygen': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE OSSIGENO VA BENE
-        self.client.myPublish(f"{self.topic}/{self.serviceID}/oxygenControl", messaggio)
+            messaggio = {'Mass': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE ORGANO è INSERITO NELLA SCATOLA
+        self.client.myPublish(f"{self.topic}/{self.serviceID}/weightControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()

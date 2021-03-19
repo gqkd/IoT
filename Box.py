@@ -3,6 +3,8 @@ from Sensor_Acceleration import *
 from Sensor_Mass import *
 from Sensor_OxygenLevel import *
 from Service_temperatureControl import *
+from Service_oxygenControl import *
+from Service_accelerationControl import *
 from Actuator_speaker import *
        
 if __name__ == '__main__':
@@ -12,18 +14,22 @@ if __name__ == '__main__':
     topic = conf["baseTopic"]
     broker = conf["broker"]
     port = conf["port"]
-    #Temperatura:
+    # Temperatura:
     temp1 = SensorTemperature("100", "001", topic)
-    #Accelerazione:
+    # Accelerazione:
     acc1 = SensorAcceleration("200","001",topic)
-    #Massa:
+    # Massa:
     mass1 = SensorMass("300","001",topic)
-    #Livello di ossigenazione:
+    # Livello di ossigenazione:
     oxy1 = SensorOxygen("400",'001',topic)
-    #Speaker
+    # Speaker
     speak1 = Speaker('500','001',broker,port)
-    #Controllo temperatura
+    # Controllo temperatura
     contTemp1 = TemperatureControl('1',topic,broker,port)
+    # Controllo accelerazione
+    contAcc1 = AccelerationControl('2',topic,broker,port)
+    # Controllo ossigeno
+    contOx1 = OxygenControl('3',topic,broker,port)
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
     acc1.start_MyMQTT(broker, port)
@@ -37,5 +43,7 @@ if __name__ == '__main__':
     oxy1.start()
     speak1.start()
     contTemp1.start()
+    contOx1.start()
+    contAcc1.start()
 
 

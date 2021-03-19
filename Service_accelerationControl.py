@@ -12,7 +12,7 @@ from MyMQTT import *
 # - CHIEDERE IN LOOP TOPIC DEI SENSORI CHE PUBBLICANO TEMPERATURA
 # - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
 
-class TemperatureControl(threading.Thread):
+class AccelerationControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
@@ -70,7 +70,7 @@ class TemperatureControl(threading.Thread):
             messaggio = {'Acceleration':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE ACCELERAZIONE NON VA BENE
         else:
             messaggio = {'Acceleration': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE ACCELERAZIONE VA BENE
-        self.client.myPublish(f"{self.topic}/{self.serviceID}/oxygenControl", messaggio)
+        self.client.myPublish(f"{self.topic}/{self.serviceID}/accelerationControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()
