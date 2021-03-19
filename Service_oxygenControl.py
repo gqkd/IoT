@@ -21,7 +21,7 @@ class TemperatureControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/oxygenControl"""""
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
@@ -36,7 +36,7 @@ class TemperatureControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get("http://localhost:8070/GetTemperature")
+        r = requests.get("http://localhost:8070/GetOxygenLevel")
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -59,11 +59,11 @@ class TemperatureControl(threading.Thread):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
         # Avvisare speaker e mandare dato a thingspeak
-        if payload['e'][0]['v'] < 36:
-            messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
+        if payload['e'][0]['v'] < 96:
+            messaggio = {'Oxygen':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE OSSIGENO NON VA BENE
         else:
-            messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE
-        self.client.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
+            messaggio = {'Oxygen': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE OSSIGENO VA BENE
+        self.client.myPublish(f"{self.topic}/{self.serviceID}/oxygenControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()

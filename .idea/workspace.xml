@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BranchesTreeState">
-    <expand>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fe93b17-2fcf-41e8-832d-312cf6d37484" name="Default Changelist" comment="servizi">
-      <change beforePath="$PROJECT_DIR$/Actuator_speaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Actuator_speaker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Box.py" beforeDir="false" afterPath="$PROJECT_DIR$/Box.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Service_accelerationControl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Service_oxygenControl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Service_temperatureControl.py" beforeDir="false" afterPath="$PROJECT_DIR$/Service_temperatureControl.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -266,17 +254,61 @@
       <option name="project" value="LOCAL" />
       <updated>1616089004934</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="servizi">
+      <created>1616089529909</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1616089529909</updated>
+    </task>
+    <task id="LOCAL-00021" summary="servizi">
+      <created>1616089677284</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1616089677284</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="1" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
@@ -298,33 +330,33 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="98" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1616054531933" />
-    <state width="1259" height="523" key="GridCell.Tab.0.bottom" timestamp="1616089465191">
+    <state width="1259" height="523" key="GridCell.Tab.0.bottom" timestamp="1616089716721">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="523" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1616089465191" />
-    <state width="1259" height="523" key="GridCell.Tab.0.center" timestamp="1616089465191">
+    <state width="1259" height="523" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1616089716721" />
+    <state width="1259" height="523" key="GridCell.Tab.0.center" timestamp="1616089716720">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="523" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1616089465191" />
-    <state width="1259" height="523" key="GridCell.Tab.0.left" timestamp="1616089465191">
+    <state width="1259" height="523" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1616089716720" />
+    <state width="1259" height="523" key="GridCell.Tab.0.left" timestamp="1616089716720">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="523" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1616089465191" />
-    <state width="1259" height="523" key="GridCell.Tab.0.right" timestamp="1616089465191">
+    <state width="1259" height="523" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1616089716720" />
+    <state width="1259" height="523" key="GridCell.Tab.0.right" timestamp="1616089716720">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="523" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1616089465191" />
+    <state width="1259" height="523" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1616089716720" />
     <state x="144" y="0" key="SettingsEditor" timestamp="1615905812287">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="144" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1615905812287" />
-    <state x="233" y="76" key="Vcs.Push.Dialog.v2" timestamp="1616089009393">
+    <state x="233" y="76" key="Vcs.Push.Dialog.v2" timestamp="1616089684900">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="233" y="76" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1616089009393" />
-    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616074962766">
+    <state x="233" y="76" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1616089684900" />
+    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616185616766">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1616074962766" />
+    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1616185616766" />
   </component>
 </project>

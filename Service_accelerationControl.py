@@ -1,6 +1,7 @@
 import time
 import threading
 import requests
+from math import sqrt
 from MyMQTT import *
 
 
@@ -21,7 +22,7 @@ class TemperatureControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/accelerationControl"""""
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
@@ -36,7 +37,7 @@ class TemperatureControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get("http://localhost:8070/GetTemperature")
+        r = requests.get("http://localhost:8070/GetAcceleration")
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -58,12 +59,18 @@ class TemperatureControl(threading.Thread):
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
+        # Estrazione dei valori di accelerazione su ogni asse
+        ax = payload['e'][0]["v_xaxis"]
+        ay = payload['e'][0]["v_yaxis"]
+        az = payload['e'][0]["v_zaxis"]
+        # Calcolo dell'accelerazione complessiva
+        a_tot = sqrt(ax**2+ay**2+az**2)
         # Avvisare speaker e mandare dato a thingspeak
-        if payload['e'][0]['v'] < 36:
-            messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
+        if a_tot< 0.5:
+            messaggio = {'Acceleration':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE ACCELERAZIONE NON VA BENE
         else:
-            messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE
-        self.client.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
+            messaggio = {'Acceleration': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE ACCELERAZIONE VA BENE
+        self.client.myPublish(f"{self.topic}/{self.serviceID}/oxygenControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()
