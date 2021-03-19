@@ -39,7 +39,6 @@ class Catalog():
             print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
-            
         self.catalog["lastUpdate"] = str(datetime.time())
         
     def GET(self,*uri):
@@ -64,10 +63,12 @@ class Catalog():
         for device in self.deviceList:
             if time.time()-device["Timestamp"] > 120:
                 self.deviceList.pop(cont_device)
+                return print(f"Device deleted: {device}")
             cont_device += 1
         for service in self.servicesList:
             if time.time()-service["Timestamp"] > 120:
                 self.servicesList.pop(cont_service)
+                return print(f"Service deleted: {service}")
             cont_service += 1
 
                
@@ -90,9 +91,9 @@ if __name__=="__main__":
     # resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
     #inserire controllo per url giusto
     # print(resp)
-    # while True:
-    #     # Catalog().TimeControl()
-    #     time.sleep(10)
+    while True:
+        Catalog().TimeControl()
+        time.sleep(10)
     # cherrypy.engine.block()
     
     

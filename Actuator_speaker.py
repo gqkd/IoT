@@ -46,7 +46,8 @@ class Speaker(threading.Thread):
         #self.client2.mySubscribe(listatopicService[2])
         for topic in listatopicService:
         # self.client.unsubscribe()
-             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+            time.sleep(2)
 
     def run(self):
         while True:
@@ -61,7 +62,7 @@ class Speaker(threading.Thread):
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
+        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0, 'Mass':0}
         if self.boxID == deviceID[0:3]:
             print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
             if 'Temperature' in listachiavi:
@@ -70,12 +71,13 @@ class Speaker(threading.Thread):
                 self.d['Acceleration'] = messaggio['Acceleration']
             elif 'Oxygen' in listachiavi:
                 self.d['Oxygen'] = messaggio['Oxygen']
-            listavalori = list(self.d.values())
-            if sum(listavalori) > 0:
-                print('A T T E N Z I O N E: \n ALLARME ATTIVO')
-                self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0}
-            else:
-                pass
+            elif 'Oxygen' in listachiavi:
+                self.d['Mass'] = messaggio['Mass']
+
+        if sum(list(self.d.values())) > 0:
+            print('A T T E N Z I O N E: \n ALLARME ATTIVO')
+        else:
+            pass
 
     def stop_MyMQTT(self):
         self.client.stop()
