@@ -54,16 +54,21 @@ class Catalog():
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetTopic":
-                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl"]}))
+                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl", "Ipfsod/+/weightControl"]}))
             #----------------
 
-        
+    # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
     def TimeControl(self):
-        cont = -1
-        for diz in self.catalog['devicesList']:
-            cont += 1
-            if time.time()-float(diz["Timestamp"]) > 2:
-                self.catalog['devicesList'].pop(cont)
+        cont_device = 0
+        cont_service = 0
+        for device in self.deviceList:
+            if time.time()-device["Timestamp"] > 120:
+                self.deviceList.pop(cont_device)
+            cont_device += 1
+        for service in self.servicesList:
+            if time.time()-service["Timestamp"] > 120:
+                self.servicesList.pop(cont_service)
+            cont_service += 1
 
                
 if __name__=="__main__":

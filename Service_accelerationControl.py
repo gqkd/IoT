@@ -22,7 +22,9 @@ class AccelerationControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/accelerationControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/accelerationControl""""",
+            "Resource": "Service",
+            "Timestamp": None
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))

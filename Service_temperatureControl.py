@@ -21,7 +21,9 @@ class TemperatureControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl""""",
+            "Resource": "Service",
+            "Timestamp": None
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))

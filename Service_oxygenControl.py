@@ -21,7 +21,9 @@ class OxygenControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/oxygenControl"""""
+            "Topic": f"""{self.topic}/{self.serviceID}/oxygenControl""""",
+            "Resource": "Service",
+            "Timestamp": None
         }
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
