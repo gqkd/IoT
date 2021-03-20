@@ -2,6 +2,7 @@ import cherrypy
 import json
 import datetime
 import time
+import os
 
 class Catalog():
     exposed=True
@@ -83,6 +84,7 @@ if __name__=="__main__":
     cherrypy.config.update({'server.socket_port': 8070})
     cherrypy.tree.mount(Catalog(),'/',conf)
     cherrypy.engine.start()
+    # os.system('ngrok http 8070')
     cherrypy.engine.block()
     #tunneling il nostro url è https://boxcatalog.loca.lt
     # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
@@ -91,7 +93,10 @@ if __name__=="__main__":
     # resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
     #inserire controllo per url giusto
     # print(resp)
-
+    
+    # r= requests.get('http://localhost:4040/api/tunnels')
+    # jsonBody=json.loads(r.text)
+    # self.publicURL=jsonBody["tunnels"][0]["public_url"]
 
     
     
