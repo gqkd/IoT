@@ -54,7 +54,7 @@ class Catalog():
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetTopic":
-                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl"]}))
+                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]}))
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH

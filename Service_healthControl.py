@@ -63,6 +63,7 @@ class AccelerationControl(threading.Thread):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
         # TODO: COSA FARE IN HEALTH CONTROOOOOOOOOOOOOOOOOL AMICIIIIIIIIIII
+        # METTERE TUTTO COME SE FOSSE PERCENTUALE, SE TUTTI I SERVIZI VANNO BENE ALLORA STATO SALUTE = 100%
 
     def stop_MyMQTT(self):
         self.client.stop()
