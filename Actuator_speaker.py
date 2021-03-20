@@ -1,7 +1,7 @@
 import time
 import threading
 import requests
-from MyMQTT3 import *
+from MyMQTT import *
 
 
 class Speaker(threading.Thread):
