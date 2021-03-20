@@ -53,7 +53,7 @@ class Catalog():
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetTopic":
-                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl", "Ipfsod/+/weightControl"]}))
+                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl"]}))
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
@@ -83,7 +83,7 @@ if __name__=="__main__":
     cherrypy.config.update({'server.socket_port': 8070})
     cherrypy.tree.mount(Catalog(),'/',conf)
     cherrypy.engine.start()
-    
+    cherrypy.engine.block()
     #tunneling il nostro url è https://boxcatalog.loca.lt
     # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
     # per l'installazione dei moduli
@@ -91,9 +91,7 @@ if __name__=="__main__":
     # resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
     #inserire controllo per url giusto
     # print(resp)
-    while True:
-        Catalog().TimeControl()
-        time.sleep(10)
-    # cherrypy.engine.block()
+
+
     
     

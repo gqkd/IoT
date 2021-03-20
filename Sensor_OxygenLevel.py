@@ -64,7 +64,7 @@ class SensorOxygen(threading.Thread):
             oxy_level = 100
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = oxy_level[0]
+        message['e'][0]['v'] = float(oxy_level[0])
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):

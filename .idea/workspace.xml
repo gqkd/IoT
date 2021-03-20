@@ -6,10 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fe93b17-2fcf-41e8-832d-312cf6d37484" name="Default Changelist" comment="servizi">
-      <change afterPath="$PROJECT_DIR$/Service_healthControl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Actuator_speaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Actuator_speaker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BoxCatalog.py" beforeDir="false" afterPath="$PROJECT_DIR$/BoxCatalog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sensor_OxygenLevel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sensor_OxygenLevel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Service_accelerationControl.py" beforeDir="false" afterPath="$PROJECT_DIR$/Service_accelerationControl.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,22 +352,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="98" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1616054531933" />
-    <state width="1259" height="145" key="GridCell.Tab.0.bottom" timestamp="1616190214248">
+    <state width="1259" height="523" key="GridCell.Tab.0.bottom" timestamp="1616250255765">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="145" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1616190214248" />
-    <state width="1259" height="145" key="GridCell.Tab.0.center" timestamp="1616190214248">
+    <state width="1259" height="523" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1616250255765" />
+    <state width="1259" height="523" key="GridCell.Tab.0.center" timestamp="1616250255765">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="145" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1616190214248" />
-    <state width="1259" height="145" key="GridCell.Tab.0.left" timestamp="1616190214248">
+    <state width="1259" height="523" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1616250255765" />
+    <state width="1259" height="523" key="GridCell.Tab.0.left" timestamp="1616250255765">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="145" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1616190214248" />
-    <state width="1259" height="145" key="GridCell.Tab.0.right" timestamp="1616190214248">
+    <state width="1259" height="523" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1616250255765" />
+    <state width="1259" height="523" key="GridCell.Tab.0.right" timestamp="1616250255765">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="145" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1616190214248" />
+    <state width="1259" height="523" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1616250255765" />
     <state x="144" y="0" key="SettingsEditor" timestamp="1615905812287">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -375,9 +376,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="233" y="76" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1616189374753" />
-    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616185616766">
+    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1616250444033">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1616185616766" />
+    <state x="462" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1616250444033" />
   </component>
 </project>

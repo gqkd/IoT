@@ -47,7 +47,6 @@ class Speaker(threading.Thread):
         for topic in listatopicService:
         # self.client.unsubscribe()
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
-            time.sleep(2)
 
     def run(self):
         while True:
@@ -62,6 +61,7 @@ class Speaker(threading.Thread):
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
+        # TODO: SE C'è SERVIZIO DEL PESO, ALLORA ATTIVA TUTTI GLI ALTRI SERVIZI
         self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0, 'Mass':0}
         if self.boxID == deviceID[0:3]:
             print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
@@ -71,8 +71,6 @@ class Speaker(threading.Thread):
                 self.d['Acceleration'] = messaggio['Acceleration']
             elif 'Oxygen' in listachiavi:
                 self.d['Oxygen'] = messaggio['Oxygen']
-            elif 'Oxygen' in listachiavi:
-                self.d['Mass'] = messaggio['Mass']
 
         if sum(list(self.d.values())) > 0:
             print('A T T E N Z I O N E: \n ALLARME ATTIVO')
