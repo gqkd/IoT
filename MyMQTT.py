@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 import time
 
-class MyMQTT2:
+class MyMQTT:
     def __init__(self, clientID, broker, port, notifier):
         self.broker = broker
         self.port = port
