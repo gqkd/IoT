@@ -25,7 +25,7 @@ class MyMQTT2:
             quit()
         self._client.loop_start() #starta il thread per il loop
         
-    def mypublish(self, topic, msg):
+    def myPublish(self, topic, msg):
         pubs=self._client.publish(topic, json.dumps(msg), 2)
         if pubs[0]==0:
             print("%s published:\n %s\n to topic: %s" % (self.client_id,json.dumps(msg), topic))
@@ -36,7 +36,7 @@ class MyMQTT2:
         self.notifier.notify (msg.topic, msg.payload)
         print ("\nmessage: %s \n" % (str(msg.payload))) #c'è una cazzo di b' davanti che non capisco come cazzo si toglie porco dio
 
-    def mysubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
+    def mySubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
         subs=self._client.subscribe(topic, 2)
         if subs[0]==0:
             print("\n%s subscibed to topic: %s\n" % (self.client_id, topic))
