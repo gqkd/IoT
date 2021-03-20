@@ -1,7 +1,7 @@
 import time
 import threading
 import requests
-from MyMQTT3 import *
+from MyMQTT import *
 
 
 # NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOG E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
