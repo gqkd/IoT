@@ -2,7 +2,7 @@ import time
 import random
 import threading
 import requests
-from MyMQTT import *
+from MyMQTT3 import *
 
 class SensorTemperature(threading.Thread):
     def __init__(self, deviceID, boxID, topic):

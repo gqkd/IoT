@@ -2,7 +2,7 @@ import json
 import time
 import requests
 import sys
-from MyMQTT import *
+from MyMQTT3 import *
 
 class HRControl():
     def __init__(self, serviceID):

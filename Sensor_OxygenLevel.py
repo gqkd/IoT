@@ -2,7 +2,7 @@ import time
 import numpy as np
 import threading
 import requests
-from MyMQTT import *
+from MyMQTT3 import *
 
 class SensorOxygen(threading.Thread):
     def __init__(self, deviceID, boxID, topic):

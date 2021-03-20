@@ -4,7 +4,7 @@
 # 3. manda una request HTTP a thingspeak per cercare se c'è il canale della box
 # 4. se non c'è crea il canale per la box in questione
 # 5. spedisce i dati in HTTP a thingspeak
-from MyMQTT2 import *
+from MyMQTT import *
 import time
 import requests
 
