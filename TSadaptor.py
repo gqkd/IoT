@@ -10,14 +10,13 @@ import requests
 
 class TSadaptor:
     def __init__(self): #unica cosa che serve per certo è l'indirizzo del box catalog
-        self.publicURL="https://boxcatalog.loca.lt"
+        r = requests.get("https://api.thingspeak.com/channels/1333953/fields/1.json?api_key=12YLI1DSAWUJS27X&results=1")
+        jsonBody=json.loads(r.text)
+        self.publicURL=jsonBody['feeds'][0]['field1']
+        # print(self.publicURL)
     def topicsearch(self):
         r=requests.get(publicURL+"/GetTSadaptor")
         
 
 if __name__ == "__main__":
-    tsa=TSadaptor()
-    # 1.chiedi al box i topic
-    while True:
-        tsa.topicsearch()
-        time.sleep(10)
+    TSadaptor()

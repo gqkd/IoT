@@ -3,6 +3,8 @@ import json
 import datetime
 import time
 import os
+import requests
+import threading
 
 class Catalog():
     exposed=True
@@ -55,6 +57,8 @@ class Catalog():
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetTopic":
                 return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]}))
+            elif uri[0] == "GetTSadaptor":
+                pass
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
@@ -72,31 +76,48 @@ class Catalog():
                 return print(f"Service deleted: {service}")
             cont_service += 1
 
-               
-if __name__=="__main__":
-    #Standard configuration to serve the url "localhost:8080"
-    conf={
+class cherry:
+    def __init__(self):
+        conf={
         '/':{
                 'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
                 'tool.session.on':True
         }
-    }
-    cherrypy.config.update({'server.socket_port': 8070})
-    cherrypy.tree.mount(Catalog(),'/',conf)
-    cherrypy.engine.start()
-    # os.system('ngrok http 8070')
-    cherrypy.engine.block()
-    #tunneling il nostro url è https://boxcatalog.loca.lt
-    # la prima volta, prima di lanciare lo script digitare da terminale "npm install -g localtunnel"
-    # per l'installazione dei moduli
-    # nota se usate delle VPN disattivatele perchè non gli piacciono
-    # resp=os.system('lt --port 8070 --subdomain boxcatalog') #killare la connessione precedente
-    #inserire controllo per url giusto
-    # print(resp)
+        }
+        cherrypy.config.update({'server.socket_port': 8070})
+        cherrypy.tree.mount(Catalog(),'/',conf)
+        cherrypy.engine.start()
+
+class ngrok:
+    def __init__(self):
+        time.sleep(5)
+        os.system('ngrok http 8070')
+
+class tunneling:
+    def __init__(self):
+        time.sleep(10)
+        #leggo il publicURL dall'api di ngrok
+        r = requests.get('http://localhost:4040/api/tunnels')
+        jsonBody=json.loads(r.text)
+        publicURL=jsonBody["tunnels"][0]["public_url"]
+        #invio il publicURL sul canale Thingspeak creato apposta
+        r1 = requests.get("https://api.thingspeak.com/update?api_key=KKQGIYEG410H7T0L&field1="+publicURL)
+
+
+if __name__=="__main__":
+    # è necessario startare 3 thread per il tunnelling
+    # t1 = threading.Thread(target=cherry)
+    # t2 = threading.Thread(target=ngrok)
+    # t3 = threading.Thread(target=tunneling)
+
+    # t1.start()
+    # t2.start()
+    # t3.start()
+
+    #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
+    cherry()
     
-    # r= requests.get('http://localhost:4040/api/tunnels')
-    # jsonBody=json.loads(r.text)
-    # self.publicURL=jsonBody["tunnels"][0]["public_url"]
+
 
     
     
