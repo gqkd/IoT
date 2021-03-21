@@ -12,7 +12,7 @@ from MyMQTT import *
 # - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
 
 class TemperatureControl(threading.Thread):
-    def __init__(self, serviceID, topic, broker, port):
+    def __init__(self, serviceID, topic, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
         self.topic = topic  # basetopic
@@ -30,15 +30,16 @@ class TemperatureControl(threading.Thread):
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
         self.count = 6
+        self.url = publicURL
 
     def request(self):
         # Sottoscrizione al boxcatalog
         self.payload["Timestamp"] = time.time()
-        requests.put(f"http://localhost:8070/Service", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get("http://localhost:8070/GetTemperature")
+        r = requests.get(self.url+"/GetTemperature")
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
