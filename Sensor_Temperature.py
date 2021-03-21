@@ -41,7 +41,7 @@ class SensorTemperature(threading.Thread):
     def request(self):
         self.payload["Timestamp"] = time.time()
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.text}")
+        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
     
     def run(self):
         while True:

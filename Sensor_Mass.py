@@ -44,7 +44,7 @@ class SensorMass(threading.Thread):
         self.payload["Timestamp"] = time.time()
         #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.text}")
+        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
 
     def run(self):
         while True:
