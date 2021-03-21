@@ -106,16 +106,16 @@ class tunneling:
 
 if __name__=="__main__":
     # è necessario startare 3 thread per il tunnelling
-    # t1 = threading.Thread(target=cherry)
-    # t2 = threading.Thread(target=ngrok)
-    # t3 = threading.Thread(target=tunneling)
+    t1 = threading.Thread(target=cherry)
+    t2 = threading.Thread(target=ngrok)
+    t3 = threading.Thread(target=tunneling)
 
-    # t1.start()
-    # t2.start()
-    # t3.start()
+    t1.start()
+    t2.start()
+    t3.start()
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    cherry()
+    # cherry()
     
 
 

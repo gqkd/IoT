@@ -22,7 +22,7 @@ class MyMQTT:
             self._client.connect(self.broker, self.port) #connetto al broker
         except: #se non si connette al broker esce dall'esecuzione del programma
             print("\nNot connected to the broker %s\n", self.broker)
-            quit()
+            # quit()
         self._client.loop_start() #starta il thread per il loop
         
     def myPublish(self, topic, msg):
