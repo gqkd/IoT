@@ -44,7 +44,7 @@ class SensorOxygen(threading.Thread):
         self.payload["Timestamp"] = time.time()
         #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(r)
+        print(f"{self.deviceID} registrato al box con risultato {r.text}")
 
     def run(self):
         while True:
