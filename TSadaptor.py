@@ -9,14 +9,31 @@ import time
 import requests
 
 class TSadaptor:
-    def __init__(self): #unica cosa che serve per certo è l'indirizzo del box catalog
+    def __init__(self,broker,port): #unica cosa che serve per certo è l'indirizzo del box catalog
         r = requests.get("https://api.thingspeak.com/channels/1333953/fields/1.json?api_key=12YLI1DSAWUJS27X&results=1")
         jsonBody=json.loads(r.text)
-        self.publicURL=jsonBody['feeds'][0]['field1']
-        # print(self.publicURL)
+        self.url=jsonBody['feeds'][0]['field1']
+        self.serviceID = "TSadaptor"
+        self.broker = broker
+        self.port = port
+
     def topicsearch(self):
-        r=requests.get(publicURL+"/GetTSadaptor")
-        
+        r=requests.get(self.url+"/Dumpitallmodafaccar")
+        jsonBody = json.loads(r.content)
+        listatopicServices = jsonBody["services"]
+        listatopicDevices = jsonBody["devices"]
+        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.start()
+        for t1 in range(len(listatopicServices)):
+            self.client.mySubscribe(listatopicServices[t1]['Topic']) 
+        for t2 in range(len(listatopicDevices)):
+            if listatopicDevices[t2]['Resource']!='Speaker':
+                self.client.mySubscribe(listatopicDevices[t2]['Topic'])
 
 if __name__ == "__main__":
-    TSadaptor()
+    conf=json.load(open("settings.json"))
+    broker = conf["broker"]
+    port = conf["port"]
+
+    ts=TSadaptor(broker,port)
+    ts.topicsearch()

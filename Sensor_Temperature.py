@@ -5,7 +5,7 @@ import requests
 from MyMQTT import *
 
 class SensorTemperature(threading.Thread):
-    def __init__(self, deviceID, boxID, topic):
+    def __init__(self, deviceID, boxID, topic, publicURL):
         threading.Thread.__init__(self)
         self.deviceID = f"{boxID}{deviceID}" # ID deve essere numerico 
         self.boxID = boxID
@@ -21,6 +21,7 @@ class SensorTemperature(threading.Thread):
         self.timesenddata = conf2["timesenddata"]
         self.timerequest=conf2["timerequest"]
         self.count = 6
+        self.url=publicURL
 
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
@@ -39,8 +40,8 @@ class SensorTemperature(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
-        r = requests.put(f"http://127.0.0.1:8070/Device", json=self.payload)
-        print(r)
+        r = requests.put(self.url+"/Device", json=self.payload)
+        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
     
     def run(self):
         while True:

@@ -5,7 +5,7 @@ from MyMQTT import *
 
 
 class Speaker(threading.Thread):
-    def __init__(self, speakerID, boxID, broker, port):
+    def __init__(self, speakerID, boxID, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.speakerID = f"{boxID}{speakerID}"  # ID deve essere numerico
         self.boxID = boxID
@@ -21,15 +21,16 @@ class Speaker(threading.Thread):
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
         self.count = 6
+        self.url = publicURL
 
     def request(self):
         # Sottoscrizione al boxcatalog
         self.payload["Timestamp"] = time.time()
-        requests.put(f"http://localhost:8070/Device", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Device", json=self.payload)  # Sottoscrizione al Catalog
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
-        r = requests.get("http://localhost:8070/GetTopic")
+        r = requests.get(self.url+"/GetTopic")
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
