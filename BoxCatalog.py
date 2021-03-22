@@ -78,6 +78,7 @@ class Catalog():
 
 class cherry:
     def __init__(self):
+        
         conf={
         '/':{
                 'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
@@ -87,6 +88,7 @@ class cherry:
         cherrypy.config.update({'server.socket_port': 8070})
         cherrypy.tree.mount(Catalog(),'/',conf)
         cherrypy.engine.start()
+        
 
 class ngrok:
     def __init__(self):
@@ -100,9 +102,10 @@ class tunneling:
         r = requests.get('http://localhost:4040/api/tunnels')
         jsonBody=json.loads(r.text)
         publicURL=jsonBody["tunnels"][0]["public_url"]
+        print(publicURL)
         #invio il publicURL sul canale Thingspeak creato apposta
         r1 = requests.get("https://api.thingspeak.com/update?api_key=KKQGIYEG410H7T0L&field1="+publicURL)
-
+        print(r1.text)
 
 if __name__=="__main__":
     # è necessario startare 3 thread per il tunnelling
@@ -116,6 +119,7 @@ if __name__=="__main__":
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
     # cherry()
+
     
 
 

@@ -39,6 +39,7 @@ class Speaker(threading.Thread):
         # ROBA NON è SINCRONA
         # self.client1 = MyMQTT(self.speakerID, self.broker, self.port, self)
         # self.client2 = MyMQTT(self.speakerID, self.broker, self.port, self)
+        self.client.stop()
         self.client.start()
         # self.client1.start()
         # self.client2.start()
@@ -48,7 +49,8 @@ class Speaker(threading.Thread):
         for topic in listatopicService:
         # self.client.unsubscribe()
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
-
+       
+        
     def run(self):
         while True:
             self.topicRequest()
@@ -59,6 +61,7 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
+        print("entratoooooooooooooooooooooooooooooooooooooooooooooooooooo")
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']

@@ -39,12 +39,14 @@ class AccelerationControl(threading.Thread):
         requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
 
     def topicRequest(self):
+        
         # Richiesta GET per topic
         r = requests.get(self.url+"/GetAcceleration")
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.stop()
         self.client.start()
         #self.client.unsubscribe()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
@@ -58,7 +60,8 @@ class AccelerationControl(threading.Thread):
                 self.count=0
             self.count += 1
             time.sleep(self.timerequestTopic)
-
+            
+            
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")

@@ -44,6 +44,7 @@ class OxygenControl(threading.Thread):
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.stop()
         self.client.start()
         #self.client.unsubscribe()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG

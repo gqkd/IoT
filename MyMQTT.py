@@ -13,11 +13,15 @@ class MyMQTT:
         self._client = mqtt.Client(clientID, True) #creo istanza client
         self._client.on_connect = self.myon_connect #registro callback on_connect
         self._client.on_message = self.myon_message  #registro callback on_message
+        # self._client.on_subscribe = self.myon_subscribe
         self.start() #richiamo lo start del thread
 
     def myon_connect(self, _client, userdata, flags, rc):
         print ("%s connected to %s with result code: %d\n" % (self.client_id, self.broker, rc))
-
+    
+    # def myon_subscribe(self,client, userdata, mid, granted_qos):
+    #     self._client.loop_stop()
+    
     def start(self):
         try:
             self._client.connect(self.broker, self.port) #connetto al broker
@@ -27,6 +31,7 @@ class MyMQTT:
         self._client.loop_start() #starta il thread per il loop
         
     def myPublish(self, topic, msg):
+        # self._client.loop_start()
         pubs=self._client.publish(topic, json.dumps(msg), 2)
         if pubs[0]==0:
             print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
@@ -36,8 +41,10 @@ class MyMQTT:
     def myon_message(self, _client, userdata, msg):
         self.notifier.notify (msg.topic, msg.payload)
         print (f"\nmessage: {msg.payload} \n") 
+        # self._client.loop_stop()
 
     def mySubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
+        # self._client.loop_start()
         subs=self._client.subscribe(topic, 2)
         self._isSubscriber = True
         self._topic = topic

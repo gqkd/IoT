@@ -38,17 +38,17 @@ class TSadaptor:
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"Messagggggggio: {payload}")
-        id_box = payload["bn"][:3:]
-        r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
-        jsonBody = json.loads(r.content)
+        # id_box = payload["bn"][:3:]
+        # r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
+        # jsonBody = json.loads(r.content)
         # print(json.dumps(jsonBody, indent=2))
         # print(jsonBody[0]['name'])
-        for channel in range(len(jsonBody)):
-            nomecanale = jsonBody[channel]['name']
-            if nomecanale == str(id_box):
-                pass # se c'è butta il messaggio nel box giusto
-            else:
-                pass # se non c'è bisogna richiamare il metodo per creare il canale
+        # for channel in range(len(jsonBody)):
+        #     nomecanale = jsonBody[channel]['name']
+        #     if nomecanale == str(id_box):
+        #         pass # se c'è butta il messaggio nel box giusto
+        #     else:
+        #         pass # se non c'è bisogna richiamare il metodo per creare il canale
         
 
     def run(self):
