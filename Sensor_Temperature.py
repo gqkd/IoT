@@ -26,13 +26,13 @@ class SensorTemperature(threading.Thread):
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message={
-            "bn": self.deviceID,
-            "e": [
+            'bn': self.deviceID,
+            'e': [
                     {
-                        "n": "temperature",
-                        "u": "Cel",
-                        "t": None,
-                        "v": None
+                        'n': 'temperature',
+                        'u': 'Cel',
+                        't': None,
+                        'v': None
                     }
                 ]
             }

@@ -35,7 +35,7 @@ class MyMQTT:
 
     def myon_message(self, _client, userdata, msg):
         self.notifier.notify (msg.topic, msg.payload)
-        print (f"\nmessage: {str(msg.payload.decode('utf-8'))} \n") 
+        print (f"\nmessage: {msg.payload} \n") 
 
     def mySubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
         subs=self._client.subscribe(topic, 2)

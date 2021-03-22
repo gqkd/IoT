@@ -28,15 +28,15 @@ class SensorAcceleration(threading.Thread):
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message = {
-            "bn": self.deviceID,
-            "e": [
+            'bn': self.deviceID,
+            'e': [
                 {
-                    "n": "acceleration",
-                    "u": "m/s^2",
-                    "t": None,
-                    "v_xaxis": None,      #accelerometri misurano accelerazione in tutte e tre le direzioni spaziali
-                    "v_yaxis":None,       #sarebbe conveniente spezzare il sensore in tre sottosensori ma viene fuori un casino
-                    "v_zaxis":None
+                    'n': 'acceleration',
+                    'u': 'm/s^2',
+                    't': None,
+                    'v_xaxis': None,      #accelerometri misurano accelerazione in tutte e tre le direzioni spaziali
+                    'v_yaxis':None,       #sarebbe conveniente spezzare il sensore in tre sottosensori ma viene fuori un casino
+                    'v_zaxis':None
                 }
             ]
         }

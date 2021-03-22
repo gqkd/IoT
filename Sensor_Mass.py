@@ -28,13 +28,13 @@ class SensorMass(threading.Thread):
     def start_MyMQTT(self, broker, port):
         self.client = MyMQTT(self.deviceID, broker, port, None)
         self.__message = {
-            "bn": self.deviceID,
-            "e": [
+            'bn': self.deviceID,
+            'e': [
                 {
-                    "n": "mass",
-                    "u": "kg",
-                    "t": None,
-                    "v": None
+                    'n': 'mass',
+                    'u': 'kg',
+                    't': None,
+                    'v': None
                 }
             ]
         }
