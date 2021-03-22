@@ -16,7 +16,7 @@ class Example(object):
             if uri[0] == "SelectBoxes":
                 return f"User name: {self.name}, password: {self.psw}"
         else:
-            return open("Login.html")
+            return open("index.html")
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
@@ -39,7 +39,7 @@ class Example(object):
         
         
         print(f"User name: {self.name}, Password: {self.psw}")
-        webbrowser.open('http://127.0.0.1:8093/SelectBoxes')  # Go to example.com
+        webbrowser.open('http://127.0.0.1:8094/SelectBoxes')  # Go to example.com
         return print(body)#json.dumps(jsonBody)
 
 
@@ -51,16 +51,16 @@ if __name__ == '__main__':
                 'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
                 'tool.session.on':True
         },
-		#  '/css':{
-		#  'tools.staticdir.on': True,
-		#  'tools.staticdir.dir':'./css'
-		#  },
+		 '/static':{
+		 'tools.staticdir.on': True,
+		 'tools.staticdir.dir':'./public'
+		 },
 		#  '/js':{
 		#  'tools.staticdir.on': True,
 		#  'tools.staticdir.dir':'./js'
 		#  },
 	}
-    cherrypy.config.update({'server.socket_port':8093}) #per cambiare la porta se già impiegata per altro
+    cherrypy.config.update({'server.socket_port':8094}) #per cambiare la porta se già impiegata per altro
     cherrypy.tree.mount(Example(),'/',conf)
     cherrypy.engine.start()
     cherrypy.engine.block()

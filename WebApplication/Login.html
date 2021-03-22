@@ -127,9 +127,39 @@ span.psw {
 </head>
 <body>
 
-<h2>Modal Login Form</h2>
+<style>
+  h1 {text-align: center;}
+  h3 {text-align: center;}
+</style>
+<h1>IoT platform for smart organs delivery</h1>
+<h4>ne of the most critical aspects of organ transport for transplantation is the lack 
+  of information on the conditions of transport. In particular, the proposed system 
+  envisages monitoring the condition of the organ in order to improve the 
+  management and increase the reliability of delivery. The system offers various 
+  services dedicated to measuring the temperature of the environment in which the 
+  organ is contained, measuring the vibrational state, tracking and delivery time. 
+  Access to data relating to the state of the organ’s transportation is carried out by 
+  the actors at different levels, signing the box in which the organ to be 
+  transplanted will be contained. After the subscription, it will be possible to view 
+  the above mentioned data sent from the box. </h4>
 
-<button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+<style>
+  .center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+</style>
+
+<div class="center">
+  <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+</div>
+
+
+
 
 <div id="id01" class="modal">
   
@@ -152,10 +182,10 @@ span.psw {
       </label>
     </div>
 
-    <div class="container" style="background-color:#f1f1f1">
+    <!-- <div class="container" style="background-color:#f1f1f1">
       <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
       <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
+    </div> -->
   </form>
 </div>
 
