@@ -51,7 +51,6 @@ if __name__ == '__main__':
     contOx1.start()
     contAcc1.start()
 
-    time.sleep(150)
-    quit()
+   
 
 

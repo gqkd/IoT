@@ -1,5 +1,6 @@
 {
     "broker": "broker.hivemq.com",
     "port": 1883,
-    "baseTopic": "Ipfsod"
+    "baseTopic": "Ipfsod",
+    "apikey_giulio":"Y1TWL3R4UWBVL534"
 }

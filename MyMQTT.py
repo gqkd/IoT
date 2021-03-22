@@ -8,6 +8,7 @@ class MyMQTT:
         self.port = port
         self.notifier = notifier
         self.client_id = clientID
+        self._topic = ""
         self._isSubscriber = False
         self._client = mqtt.Client(clientID, True) #creo istanza client
         self._client.on_connect = self.myon_connect #registro callback on_connect
@@ -34,10 +35,12 @@ class MyMQTT:
 
     def myon_message(self, _client, userdata, msg):
         self.notifier.notify (msg.topic, msg.payload)
-        print ("\nmessage: %s \n" % (str(msg.payload))) #c'è una cazzo di b' davanti che non capisco come cazzo si toglie porco dio
+        print (f"\nmessage: {str(msg.payload.decode('utf-8'))} \n") 
 
     def mySubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
         subs=self._client.subscribe(topic, 2)
+        self._isSubscriber = True
+        self._topic = topic
         if subs[0]==0:
             print("%s subscibed to topic: %s\n" % (self.client_id, topic))
         else:
