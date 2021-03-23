@@ -10,7 +10,9 @@ import requests
 import json
 
 class TSadaptor:
-    def __init__(self,broker,port,apikey): #unica cosa che serve per certo è l'indirizzo del box catalog
+    def __init__(self,broker,port,apikey,write_api,channel_ID): 
+        #unica cosa che serve per certo è l'indirizzo del box catalog
+        #TODO qua la richiesta va rifatta bene per prendere l'url così non va bene
         r = requests.get("https://api.thingspeak.com/channels/1333953/fields/1.json?api_key=12YLI1DSAWUJS27X&results=1")
         jsonBody=json.loads(r.text)
         self.url=jsonBody['feeds'][0]['field1']
@@ -18,6 +20,8 @@ class TSadaptor:
         self.broker = broker
         self.port = port
         self.api = apikey
+        self.write_api = write_api
+        self.channel_ID = channel_ID
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
 
@@ -36,43 +40,79 @@ class TSadaptor:
         
 
     def notify(self, topic, msg):
+        msg_sensore=0
+        msg_servizio=0
         payload = json.loads(msg)
+        payloadkeys = list(payload.keys())
         print(f"Messagggggggio: {payload}")
-        # id_box = payload["bn"][:3:]
-        # r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
-        # jsonBody = json.loads(r.content)
+        if payloadkeys[0] == 'bn': #messaggio dal sensore
+            id_box = payload["bn"][:3:]
+            num_sensore = payload['bn'][3::]
+            val = payload['e'][0]['v']
+            print(val,type(val)) #arrivato qui, bisogna aggiustare per l'accelerazione che è un casino, tmp la prende bene...unica
+            msg_sensore=1
+        else: #messaggio dal servizio
+            id_box = payload["DeviceID"][:3:]
+            msg_servizio=1
+        #richiesta per avere la lista dei canali presenti
+        r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
+        jsonBody = json.loads(r.content)
         # print(json.dumps(jsonBody, indent=2))
         # print(jsonBody[0]['name'])
-        # for channel in range(len(jsonBody)):
-        #     nomecanale = jsonBody[channel]['name']
-        #     if nomecanale == str(id_box):
-        #         pass # se c'è butta il messaggio nel box giusto
-        #     else:
-        #         pass # se non c'è bisogna richiamare il metodo per creare il canale
+        canalepresente=0
+        for channel in range(len(jsonBody)):
+            nomecanale = jsonBody[channel]['name']
+            if nomecanale == str(id_box):
+                canalepresente=1
+                break
+            else:
+                canalepresente=0
+        if not canalepresente:
+            self.createnewchannel(str(id_box))
+        #buttare i dati nel posto giusto
+        # if msg_sensore:
+        #     if num_sensore == '100': #temp
+        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field6="+str(val))
+        #     elif num_sensore == '200': #acc
+        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field2="+str(val))
+        #     elif num_sensore == '400': #oxy
+        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field4="+str(val))
+
         
 
     def run(self):
         while True:
             self.topicsearch()
-            time.sleep(30)
+            time.sleep(10)
 
     def createnewchannel(self, nome_canale):
         payload={
             'api_key':self.api,
-            'field1':"Health",
+            'field1':"OrganHealth",
             'field2':"Acceleration",
-            'field3':"OxygenLevel",
-            'field4':"Temperature",
-            'field5':"Acc_control",
-            'field6':"Oxy_control",
+            'field3':"Acc_control",
+            'field4':"OxygenLevel",
+            'field5':"Oxy_control",
+            'field6':"Temperature",
             'field7':"Temp_control",
             'name':nome_canale,
             'public_flag':True,
         }
         r = requests.post("https://api.thingspeak.com/channels.json",json=payload)
         jsonBody = json.loads(r.content)
-        self.client_ID = jsonBody["id"]
-        print(self.client_ID)
+        self.channel_ID = jsonBody["id"]
+        self.write_api = jsonBody['api_keys'][0]['api_key']
+        # print(json.dumps(jsonBody,indent=2))
+        # print(self.write_api)
+        with open('settings.json') as fp:
+            actual=json.load(fp)
+            actual['write_api']=self.write_api
+            actual['channel_ID']=self.channel_ID
+        with open('settings.json','w') as pd:
+            json.dump(actual, pd,indent=2)
+
+        
+
 
     def deletechannel(self, channel_ID):
         payload={'api_key':self.api}
@@ -85,7 +125,8 @@ if __name__ == "__main__":
     broker = conf["broker"]
     port = conf["port"]
     apikey=conf["apikey_giulio"]
-    ts=TSadaptor(broker,port,apikey)
+    write_api=conf['write_api']
+    channel_ID=conf['channel_ID']
+    ts=TSadaptor(broker,port,apikey,write_api,channel_ID)
     ts.run()
-    # ts.createnewchannel("prova")
-    # ts.deletechannel("1335340")
+
