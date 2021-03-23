@@ -1,27 +1,334 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="./css/style.css"></head><body><header class="header-banner" id="iidf"><div class="container-width"><div class="clearfix"></div><div class="lead-title" id="ihh65"><h1 id="i1oaxs">IoT platform for smart organs delivery</h1></div><div class="sub-lead-title" id="iwy9y">One of the most critical aspects of organ transport for transplantation is the lack 
-of information on the conditions of transport. In particular, the proposed system 
-envisages monitoring the condition of the organ in order to improve the 
-management and increase the reliability of delivery. The system offers various 
-services dedicated to measuring the temperature of the environment in which the 
-organ is contained, measuring the vibrational state, tracking and delivery time. 
-Access to data relating to the state of the organ’s transportation is carried out by 
-the actors at different levels, signing the box in which the organ to be 
-transplanted will be contained. After the subscription, it will be possible to view 
-the above mentioned data sent from the box. 
-Functionalities provided by the system to the stakeholders: 
-1) The surgical team of the receiving hospital has at its disposal a telegram bot to 
-receive notifications when the box is about to arrive at the hospital to start 
-preparing survey procedures. Moreover, it has access to box’s information via the 
-web app.
-2) The healthcare workers of the receiving hospital will be able to monitor the 
-temperature trend, the vibrational state, the position in real time and the time 
-elapsed since the organ was placed in the box via web app. While the Healthcare 
-national system is able to retrieve data from all the boxes used at a specific time. 
-3) The transport team will be alerted by telegram message and by an acoustic 
-signal emitted from the box if the temperature and vibrations are outside the 
-safety range. Moreover, it has access to box’s information via the web app. 
-Summarizing, the main feature the system offers are: 
-- Telegram bot for notifications
-- Web app for end-users interface
-- Unified interfaces (through REST and MQTT) available to enable 
-Demand/Response </div></div></header><section class="bdg-sect" id="iwfrr8"><div class="container-width"><h1 class="bdg-title">The team</h1><div class="badges"><div class="badge"><div class="badge-header"></div><img src="img/team1.jpg" class="badge-avatar"/><div class="badge-body"><div class="badge-name">Adam Smith</div><div class="badge-role">CEO</div><div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div></div><div class="badge-foot"><span class="badge-link">f</span><span class="badge-link">t</span><span class="badge-link">ln</span></div></div><div class="badge"><div class="badge-header"></div><img src="img/team2.jpg" class="badge-avatar"/><div class="badge-body"><div class="badge-name">John Black</div><div class="badge-role">Software Engineer</div><div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div></div><div class="badge-foot"><span class="badge-link">f</span><span class="badge-link">t</span><span class="badge-link">ln</span></div></div><div class="badge"><div class="badge-header"></div><img src="img/team3.jpg" class="badge-avatar"/><div class="badge-body"><div class="badge-name">Jessica White</div><div class="badge-role">Web Designer</div><div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div></div><div class="badge-foot"><span class="badge-link">f</span><span class="badge-link">t</span><span class="badge-link">ln</span></div></div></div></div></section><footer class="footer-under"><div class="container-width"><div class="footer-container"><div class="foot-lists"><div class="foot-list"><div class="foot-list-title">About us</div><div class="foot-list-item">Contact</div><div class="foot-list-item">Events</div><div class="foot-list-item">Company</div><div class="foot-list-item">Jobs</div><div class="foot-list-item">Blog</div></div><div class="foot-list"><div class="foot-list-title">Services</div><div class="foot-list-item">Education</div><div class="foot-list-item">Partner</div><div class="foot-list-item">Community</div><div class="foot-list-item">Forum</div><div class="foot-list-item">Download</div><div class="foot-list-item">Upgrade</div></div><div class="clearfix"></div></div><div class="form-sub"><div class="foot-form-cont"><div class="foot-form-title">Subscribe</div><div class="foot-form-desc">Subscribe to our newsletter to receive exclusive offers and the latest news</div><input name="name" placeholder="Name" class="sub-input"/><input name="email" placeholder="Email" class="sub-input"/><button type="button" class="sub-btn">Submit</button></div></div></div></div></footer></body><html>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+        <header class="header-banner" id="iidf">
+            <div class="container-width">
+                <div class="clearfix">
+
+                </div>
+                <div class="lead-title" id="ihh65">
+                    <h1 id="i1oaxs">IoT platform for smart organs delivery</h1>
+                </div>
+                <div class="sub-lead-title" id="iwy9y">
+                    One of the most critical aspects of organ transport for transplantation is the lack 
+                    of information on the conditions of transport. In particular, the proposed system 
+                    envisages monitoring the condition of the organ in order to improve the 
+                    management and increase the reliability of delivery. The system offers various 
+                    services dedicated to measuring the temperature of the environment in which the 
+                    organ is contained, measuring the vibrational state, tracking and delivery time. 
+                    Access to data relating to the state of the organ’s transportation is carried out by 
+                    the actors at different levels, signing the box in which the organ to be 
+                    transplanted will be contained. After the subscription, it will be possible to view 
+                    the above mentioned data sent from the box. 
+                    Functionalities provided by the system to the stakeholders: 
+                    1) The surgical team of the receiving hospital has at its disposal a telegram bot to 
+                    receive notifications when the box is about to arrive at the hospital to start 
+                    preparing survey procedures. Moreover, it has access to box’s information via the 
+                    web app.
+                    2) The healthcare workers of the receiving hospital will be able to monitor the 
+                    temperature trend, the vibrational state, the position in real time and the time 
+                    elapsed since the organ was placed in the box via web app. While the Healthcare 
+                    national system is able to retrieve data from all the boxes used at a specific time. 
+                    3) The transport team will be alerted by telegram message and by an acoustic 
+                    signal emitted from the box if the temperature and vibrations are outside the 
+                    safety range. Moreover, it has access to box’s information via the web app. 
+                    Summarizing, the main feature the system offers are: 
+                    - Telegram bot for notifications
+                    - Web app for end-users interface
+                    - Unified interfaces (through REST and MQTT) available to enable 
+                    Demand/Response 
+                </div>
+            </div>
+
+            <!-- Aggiungo parte per il mottone e il po-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
+
+
+
+
+            
+
+            <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+            body {font-family: Arial, Helvetica, sans-serif;}
+
+            /* Full-width input fields */
+            input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            }
+
+            /* Set a style for all buttons */
+            button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            }
+
+            button:hover {
+            opacity: 0.8;
+            }
+
+            /* Extra styles for the cancel button */
+            .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+            }
+
+            /* Center the image and position the close button */
+            .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+            }
+
+            img.avatar {
+            width: 40%;
+            border-radius: 50%;
+            }
+
+            .container {
+            padding: 16px;
+            }
+
+            span.psw {
+            float: right;
+            padding-top: 16px;
+            }
+
+            /* The Modal (background) */
+            .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+            }
+
+            /* Modal Content/Box */
+            .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            }
+
+            /* The Close Button (x) */
+            .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+            color: red;
+            cursor: pointer;
+            }
+
+            /* Add Zoom Animation */
+            .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+            }
+
+            @-webkit-keyframes animatezoom {
+            from {-webkit-transform: scale(0)} 
+            to {-webkit-transform: scale(1)}
+            }
+            
+            @keyframes animatezoom {
+            from {transform: scale(0)} 
+            to {transform: scale(1)}
+            }
+
+            /* Change styles for span and cancel button on extra small screens */
+            @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            .cancelbtn {
+                width: 100%;
+            }
+            }
+            </style>
+            </head>
+            <body>
+
+            <h2>Modal Login Form</h2>
+
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+
+            <div id="id01" class="modal">
+            
+            <form class="modal-content animate" action="/action_page.php" method="post">
+                <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <img src="img_avatar2.png" alt="Avatar" class="avatar">
+                </div>
+
+                <div class="container">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                    
+                <button type="submit">Login</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+                </div>
+
+                <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                <span class="psw">Forgot <a href="#">password?</a></span>
+                </div>
+            </form>
+            </div>
+
+            <script>
+            // Get the modal
+            var modal = document.getElementById('id01');
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            </script>
+
+            </body>
+
+            <!-- FINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE --> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </header>
+        <section class="bdg-sect" id="iwfrr8">
+            <div class="container-width">
+                
+                <h1 class="bdg-title">The team</h1>
+                <div class="badges">
+                    <div class="badge">
+                        <div class="badge-header">
+
+                        </div>
+                        <img src="img/team1.jpg" class="badge-avatar"/>
+                        <div class="badge-body">
+                            <div class="badge-name">Adam Smith</div>
+                            <div class="badge-role">CEO</div>
+                            <div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div>
+                        </div>
+                        <div class="badge-foot">
+                            <span class="badge-link">f</span>
+                            <span class="badge-link">t</span>
+                            <span class="badge-link">ln</span>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-header">
+
+                        </div>
+                        <img src="img/team2.jpg" class="badge-avatar"/>
+                        <div class="badge-body">
+                            <div class="badge-name">John Black</div>
+                            <div class="badge-role">Software Engineer</div>
+                            <div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div>
+                        </div>
+                        <div class="badge-foot">
+                            <span class="badge-link">f</span>
+                            <span class="badge-link">t</span>
+                            <span class="badge-link">ln</span>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-header">
+
+                        </div>
+                        <img src="img/team3.jpg" class="badge-avatar"/>
+                        <div class="badge-body">
+                            <div class="badge-name">Jessica White</div>
+                            <div class="badge-role">Web Designer</div>
+                            <div class="badge-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ipsum dolor sit</div>
+                        </div>
+                        <div class="badge-foot">
+                            <span class="badge-link">f</span>
+                            <span class="badge-link">t</span>
+                            <span class="badge-link">ln</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer-under">
+            <div class="container-width">
+                <div class="footer-container">
+                    <div class="foot-lists">
+                        <div class="foot-list">
+                            <div class="foot-list-title">About us</div>
+                            <div class="foot-list-item">Contact</div>
+                            <div class="foot-list-item">Events</div>
+                            <div class="foot-list-item">Company</div>
+                            <div class="foot-list-item">Jobs</div>
+                            <div class="foot-list-item">Blog</div>
+                        </div>
+                        <div class="foot-list">
+                            <div class="foot-list-title">Services</div>
+                            <div class="foot-list-item">Education</div>
+                            <div class="foot-list-item">Partner</div>
+                            <div class="foot-list-item">Community</div>
+                            <div class="foot-list-item">Forum</div>
+                            <div class="foot-list-item">Download</div>
+                            <div class="foot-list-item">Upgrade</div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-sub">
+                        <div class="foot-form-cont">
+                            <div class="foot-form-title">Subscribe</div>
+                            <div class="foot-form-desc">Subscribe to our newsletter to receive exclusive offers and the latest news</div>
+                            <input name="name" placeholder="Name" class="sub-input"/>
+                            <input name="email" placeholder="Email" class="sub-input"/>
+                            <button type="button" class="sub-btn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+<html>

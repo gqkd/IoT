@@ -16,7 +16,7 @@ class Example(object):
             if uri[0] == "SelectBoxes":
                 return f"User name: {self.name}, password: {self.psw}"
         else:
-            return open("index.html")
+            return open("index1.html")
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
