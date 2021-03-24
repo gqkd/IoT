@@ -1,18 +1,9 @@
-import time
 import threading
 import requests
-from math import sqrt
 from MyMQTT import *
+#prova
 
-
-# NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOG E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
-# DELLA TEMPERATURA. UNA VOLTA OTTENUTO, DEVE FARE TUTTA LA SUA MANFRINA DEL CONTROLLO
-# QUINDI, WORKFLOW:
-# - SOTTOSCRIVERSI IN LOOP A BOX CATALOG
-# - CHIEDERE IN LOOP TOPIC DEI SENSORI CHE PUBBLICANO TEMPERATURA
-# - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
-
-class AccelerationControl(threading.Thread):
+class HealthControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
@@ -24,10 +15,11 @@ class AccelerationControl(threading.Thread):
         self.client.start()
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/healthControl""""",
+            "Topic": f"{self.topic}/{self.serviceID}/healthControl",
             "Resource": "Service",
             "Timestamp": None
         }
+        self.dizionario_misure = {}
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -52,22 +44,43 @@ class AccelerationControl(threading.Thread):
         for topic in listatopicService:
             # self.client.unsubscribe()
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
-            time.sleep(2)
 
     def run(self):
         while True:
             self.topicRequest()
             if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
+                if self.dizionario_misure != {}:
+                    print('CIAONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+                    self.calcolo_healthstatus()
+                    self.client.myPublish(f"{self.topic}/{self.serviceID}/healthControl", self.dizionario_misure)
                 self.count=0
             self.count += 1
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        payload = json.loads(msg)
-        print(f"Messaggio ricevuto da servizio: {payload}")
-        # TODO: COSA FARE IN HEALTH CONTROOOOOOOOOOOOOOOOOL AMICIIIIIIIIIII
-        # METTERE TUTTO COME SE FOSSE PERCENTUALE, SE TUTTI I SERVIZI VANNO BENE ALLORA STATO SALUTE = 100%
+        messaggio= json.loads(msg)
+        # print(f"Messaggio ricevuto da servizio: {payload}")
+        listachiavi = list(messaggio.keys())
+        self.deviceID = messaggio['DeviceID']
+        if self.deviceID in list(self.dizionario_misure.keys()):
+            self.dizionario_misure[f'{self.deviceID}'][0] = {}
+            if 'Temperature' in listachiavi:
+                self.dizionario_misure[f'{self.deviceID}'][0]['Temperature']=messaggio['Temperature']
+            elif 'Acceleration' in listachiavi:
+                self.dizionario_misure[f'{self.deviceID}'][0]['Acceleration'] = messaggio['Acceleration']
+            elif 'Oxygen' in listachiavi:
+                self.dizionario_misure[f'{self.deviceID}'][0]['Oxygen'] = messaggio['Oxygen']
+        else:
+            self.dizionario_misure[f'{self.deviceID}']=[]
+
+
+    def calcolo_healthstatus(self):
+        lista_device = list(self.dizionario_misure.keys())
+        for device in lista_device:
+            lista_valori = list(self.dizionario_misure[f'{self.deviceID}'][0].values())
+            self.dizionario_misure[f'{self.deviceID}'][0]['Health Status'] = sum(lista_valori)*100/(len(lista_valori))
+            print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
 
     def stop_MyMQTT(self):
         self.client.stop()
