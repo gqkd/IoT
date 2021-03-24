@@ -26,6 +26,8 @@ class WeightControl(threading.Thread):
             "Resource": "Service",
             "Timestamp": None
         }
+        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.start()
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -44,17 +46,16 @@ class WeightControl(threading.Thread):
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        self.client.stop()
-        self.client.start()
-        #self.client.unsubscribe()
+        # self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        # self.client.stop()
+        # self.client.start()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
 
 
     def run(self):
         while True:
             self.topicRequest()
-            if self.count % (self.timerequest/self.timerequestTopic) == 0:
+            if self.count % (self.timerequestTopic/self.timerequest) == 0:
                 self.request()
                 self.count=0
             self.count += 1

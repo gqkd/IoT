@@ -26,6 +26,8 @@ class AccelerationControl(threading.Thread):
             "Resource": "Service",
             "Timestamp": None
         }
+        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.start()
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -44,9 +46,9 @@ class AccelerationControl(threading.Thread):
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        self.client.stop()
-        self.client.start()
+        # self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        # self.client.stop()
+        # self.client.start()
         for topic in listatopicService:
             # self.client.unsubscribe()
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
@@ -55,7 +57,7 @@ class AccelerationControl(threading.Thread):
     def run(self):
         while True:
             self.topicRequest()
-            if self.count % (self.timerequest/self.timerequestTopic) == 0:
+            if self.count % (self.timerequestTopic/self.timerequest) == 0:
                 self.request()
                 self.count=0
             self.count += 1

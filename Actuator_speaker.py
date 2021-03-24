@@ -16,6 +16,8 @@ class Speaker(threading.Thread):
             "Resource": 'Speaker',
             "Timestamp": None
         }
+        self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
+        self.client.start()
         # Dati utili per timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -34,20 +36,10 @@ class Speaker(threading.Thread):
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
-        # FORSE NON è MEGLIO FARE TRE SUBSCRIBER DIVERSI CHE SI SOTTOSCRIVONO SEPARATAMENTE ALLA COSA?
-        # ROBA NON è SINCRONA
-        # self.client1 = MyMQTT(self.speakerID, self.broker, self.port, self)
-        # self.client2 = MyMQTT(self.speakerID, self.broker, self.port, self)
-        self.client.stop()
-        self.client.start()
-        # self.client1.start()
-        # self.client2.start()
-        # self.client.mySubscribe(listatopicService[0])
-        # self.client1.mySubscribe(listatopicService[1])
-        #self.client2.mySubscribe(listatopicService[2])
+        #self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
+        #self.client.stop()
+        #self.client.start()
         for topic in listatopicService:
-        # self.client.unsubscribe()
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
        
         
