@@ -79,7 +79,7 @@ class HealthControl(threading.Thread):
         lista_device = list(self.dizionario_misure.keys())
         for device in lista_device:
             lista_valori = list(self.dizionario_misure[f'{self.deviceID}'][0].values())
-            self.dizionario_misure[f'{self.deviceID}'][0]['Health Status'] = sum(lista_valori)*100/(len(lista_valori)+1)
+            self.dizionario_misure[f'{self.deviceID}'][0]['Health Status'] = sum(lista_valori)*100/(len(lista_valori))
             print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
 
     def stop_MyMQTT(self):
