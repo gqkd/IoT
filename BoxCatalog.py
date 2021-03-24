@@ -29,7 +29,7 @@ class Catalog():
                 if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            print(f"""Lista device attivi: \n {self.deviceList}""")
+            # print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
         elif uri[0] == "Service":
@@ -39,7 +39,7 @@ class Catalog():
                 if str(service["serviceID"]) == str(jsonBody["serviceID"]):
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
-            print(f"""Lista servizi attivi: \n {self.servicesList}""")
+            # print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
         self.catalog["lastUpdate"] = str(datetime.time())

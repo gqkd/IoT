@@ -2,11 +2,12 @@ from Sensor_Temperature import *
 from Sensor_Acceleration import *
 from Sensor_Mass import *
 from Sensor_OxygenLevel import *
+from Actuator_speaker import *
 from Service_temperatureControl import *
 from Service_oxygenControl import *
 from Service_accelerationControl import *
 from Service_weightControl import *
-from Actuator_speaker import *
+from Service_healthControl import *
 import requests
 
 if __name__ == '__main__':
@@ -36,8 +37,11 @@ if __name__ == '__main__':
     contAcc1 = AccelerationControl('2',topic,broker,port, publicURL)
     # Controllo ossigeno
     contOx1 = OxygenControl('3',topic,broker,port, publicURL)
-
+    # Controllo massa
     contMas1 = WeightControl('4',topic,broker,port, publicURL)
+    #Controllo stato di salute
+    contHealth1 = HealthControl('5',topic,broker,port, publicURL)
+
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
     acc1.start_MyMQTT(broker, port)
@@ -54,6 +58,8 @@ if __name__ == '__main__':
     contOx1.start()
     contAcc1.start()
     contMas1.start()
+    contHealth1.start()
+
 
    
 
