@@ -59,8 +59,8 @@ class SensorGPS(threading.Thread):
     def sendData(self):
         message = self.__message
         message['e'][0]['t'] = float(time.time())   
-        message['e'][0]['v_lon'] = self.Coordinates[self.cont]["lon"]
-        message['e'][0]['v_lat'] = self.Coordinates[self.cont]["lat"]
+        message['e'][0]['v_lon'] = self.coordinate[self.cont]["lon"]
+        message['e'][0]['v_lat'] = self.coordinate[self.cont]["lat"]
         self.cont =+3
         self.client.myPublish(self.topic,message)
 
