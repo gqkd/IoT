@@ -20,14 +20,14 @@ class AccelerationControl(threading.Thread):
         self.topicresource = '' # topic che verrà chiesto a box catalog
         self.broker = broker
         self.port = port
+        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        self.client.start()
         self.payload = {
             "serviceID": self.serviceID,
             "Topic": f"""{self.topic}/{self.serviceID}/healthControl""""",
             "Resource": "Service",
             "Timestamp": None
         }
-        self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        self.client.start()
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -57,7 +57,7 @@ class AccelerationControl(threading.Thread):
     def run(self):
         while True:
             self.topicRequest()
-            if self.count % (self.timerequestTopic/self.timerequest) == 0:
+            if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
                 self.count=0
             self.count += 1

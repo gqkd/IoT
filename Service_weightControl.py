@@ -55,7 +55,7 @@ class WeightControl(threading.Thread):
     def run(self):
         while True:
             self.topicRequest()
-            if self.count % (self.timerequestTopic/self.timerequest) == 0:
+            if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
                 self.count=0
             self.count += 1

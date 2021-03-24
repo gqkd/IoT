@@ -53,14 +53,16 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        print("entratoooooooooooooooooooooooooooooooooooooooooooooooooooo")
+        # print("entratoooooooooooooooooooooooooooooooooooooooooooooooooooo")
         messaggio = json.loads(msg)
         listachiavi = list(messaggio.keys())
         deviceID = messaggio['DeviceID']
-        # TODO: SE C'è SERVIZIO DEL PESO, ALLORA ATTIVA TUTTI GLI ALTRI SERVIZI
-        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0, 'Mass':0}
-        if self.boxID == deviceID[0:3]:
-            print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
+        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0, 'Mass': 0}
+        if 'Mass' in listachiavi and messaggio['Mass'] == 0:
+            f = 1
+            self.d['Mass'] =0
+        if f == 1 and self.boxID == deviceID[0:3]:
+            # print(f"""Messaggio ricevuto da attuatore: {messaggio}""")
             if 'Temperature' in listachiavi:
                 self.d['Temperature'] = messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
