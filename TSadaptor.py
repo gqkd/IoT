@@ -45,15 +45,15 @@ class TSadaptor:
         payload = json.loads(msg)
         payloadkeys = list(payload.keys())
         print(f"Messagggggggio: {payload}")
-        if payloadkeys[0] == 'bn': #messaggio dal sensore
-            id_box = payload["bn"][:3:]
-            num_sensore = payload['bn'][3::]
-            val = payload['e'][0]['v']
-            print(val,type(val)) #arrivato qui, bisogna aggiustare per l'accelerazione che è un casino, tmp la prende bene...unica
-            msg_sensore=1
-        else: #messaggio dal servizio
-            id_box = payload["DeviceID"][:3:]
-            msg_servizio=1
+        # if payloadkeys[0] == 'bn': #messaggio dal sensore
+        id_box = payload["bn"][:3:]
+        num_sensore = payload['bn'][3::]
+        val = payload['e'][0]['v']
+        print(val,type(val)) #arrivato qui, bisogna aggiustare per l'accelerazione che è un casino, tmp la prende bene...unica
+        # msg_sensore=1
+        # else: #messaggio dal servizio
+        #     id_box = payload["DeviceID"][:3:]
+        #     msg_servizio=1
         #richiesta per avere la lista dei canali presenti
         r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
         jsonBody = json.loads(r.content)
@@ -71,12 +71,12 @@ class TSadaptor:
             self.createnewchannel(str(id_box))
         #buttare i dati nel posto giusto
         # if msg_sensore:
-        #     if num_sensore == '100': #temp
-        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field2="+str(val))
-        #     elif num_sensore == '200': #acc
-        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field1="+str(val))
-        #     elif num_sensore == '400': #oxy
-        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field3="+str(val))
+        # if num_sensore == '100': #temp
+        #     r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field2="+str(val))
+        # elif num_sensore == '200': #acc
+        #     r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field1="+str(val))
+        # elif num_sensore == '400': #oxy
+        #     r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field3="+str(val))
 
         
 
