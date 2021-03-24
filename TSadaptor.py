@@ -8,6 +8,8 @@ from MyMQTT import *
 import time
 import requests
 import json
+from math import sqrt
+import threading
 
 class TSadaptor:
     def __init__(self,broker,port,apikey,write_api,channel_ID): 
@@ -24,6 +26,8 @@ class TSadaptor:
         self.channel_ID = channel_ID
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
+        # self.t = threading.Thread(target=self.notify)
+        self.cont=0
 
     def topicsearch(self):
         r=requests.get(self.url+"/Dumpitallmodafaccar")
@@ -40,35 +44,61 @@ class TSadaptor:
         
 
     def notify(self, topic, msg):
-        msg_sensore=0
-        msg_servizio=0
         payload = json.loads(msg)
-        payloadkeys = list(payload.keys())
-        print(f"Messagggggggio: {payload}")
-        # if payloadkeys[0] == 'bn': #messaggio dal sensore
+        print(f"Messagggggggggggio: {payload}")
         id_box = payload["bn"][:3:]
         num_sensore = payload['bn'][3::]
-        val = payload['e'][0]['v']
-        print(val,type(val)) #arrivato qui, bisogna aggiustare per l'accelerazione che è un casino, tmp la prende bene...unica
-        # msg_sensore=1
-        # else: #messaggio dal servizio
-        #     id_box = payload["DeviceID"][:3:]
-        #     msg_servizio=1
+
         #richiesta per avere la lista dei canali presenti
         r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api)
         jsonBody = json.loads(r.content)
         # print(json.dumps(jsonBody, indent=2))
         # print(jsonBody[0]['name'])
-        canalepresente=0
+        canalebox=0
         for channel in range(len(jsonBody)):
             nomecanale = jsonBody[channel]['name']
-            if nomecanale == str(id_box):
-                canalepresente=1
-                break
-            else:
-                canalepresente=0
-        if not canalepresente:
+            if nomecanale == str(id_box): #il canale c'è
+                canalebox=1
+        if not canalebox:
             self.createnewchannel(str(id_box))
+
+        if num_sensore == '100': #temp
+            val = payload['e'][0]['v']
+          
+            r = requests.get(f"https://api.thingspeak.com/update?api_key={self.write_api}&field1={str(val)}")
+
+            
+            print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
+        elif num_sensore == '200': #acc
+            x = payload['e'][0]["v_xaxis"]
+            y = payload['e'][0]["v_yaxis"]
+            z = payload['e'][0]["v_zaxis"]
+            val = sqrt(x**2+y**2+z**2)
+
+            r = requests.get(f"https://api.thingspeak.com/update?api_key={self.write_api}&field2={str(val)}")
+
+            
+            print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
+        elif num_sensore == '300': #mass
+            pass
+        elif num_sensore == '400': #oxy
+            val = payload['e'][0]['v']
+
+            r = requests.get(f"https://api.thingspeak.com/update?api_key={self.write_api}&field3={str(val)}")
+
+            
+            print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
+        elif num_sensore == '500': #speaker
+            pass
+        elif num_sensore == '600': #GPS
+            val={'v_lat':payload['e'][0]['v_lat'],'v_lon':payload['e'][0]['v_lon']}
+            
+            r = requests.get(f"https://api.thingspeak.com/update?api_key={self.write_api}&field4={str(val)}")
+            print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
+        else:
+            print("!!!!!!!!!!!!!!!!!!!!!! sensore non riconosciuto !!!!!!!!!!!!!!!!!!")
+        self.cont += 1
+        print(f"-------------------------------{self.cont}--------------------------")
         #buttare i dati nel posto giusto
         # if msg_sensore:
         # if num_sensore == '100': #temp
@@ -81,21 +111,19 @@ class TSadaptor:
         
 
     def run(self):
+        
         while True:
             self.topicsearch()
-            time.sleep(10)
+            time.sleep(30)
+            
 
     def createnewchannel(self, nome_canale):
         payload={
             'api_key':self.api,
-            # 'field1':"OrganHealth",
-            'field1':"Acceleration",
-            # 'field3':"Acc_control",
-            'field2':"OxygenLevel",
-            # 'field5':"Oxy_control",
-            'field3':"Temperature",
-            # 'field7':"Temp_control",
-            #posizione da aggiungere
+            'field1':"Temperature",
+            'field2':"Acceleration",
+            'field3':"Oxygenation",
+            'field4':"Lat & Long",
             'name':nome_canale,
             'public_flag':True,
         }
@@ -111,7 +139,7 @@ class TSadaptor:
             actual['channel_ID']=self.channel_ID
         with open('settings.json','w') as pd:
             json.dump(actual, pd,indent=2)
-
+        print(f"nuovo canale creato id:{self.channel_ID}")
         
 
 
