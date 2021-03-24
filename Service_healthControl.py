@@ -59,28 +59,36 @@ class HealthControl(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
+        print("-------------------------------------------------------------------------------------------------")
         messaggio= json.loads(msg)
         # print(f"Messaggio ricevuto da servizio: {payload}")
         listachiavi = list(messaggio.keys())
-        self.deviceID = messaggio['DeviceID']
+        self.deviceID = messaggio['DeviceID'][:3:]
         if self.deviceID in list(self.dizionario_misure.keys()):
-            self.dizionario_misure[f'{self.deviceID}'][0] = {}
+            # self.dizionario_misure[f'{self.deviceID}'] = {}
             if 'Temperature' in listachiavi:
-                self.dizionario_misure[f'{self.deviceID}'][0]['Temperature']=messaggio['Temperature']
+                self.dizionario_misure[f'{self.deviceID}']['Temperature']=messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
-                self.dizionario_misure[f'{self.deviceID}'][0]['Acceleration'] = messaggio['Acceleration']
+                self.dizionario_misure[f'{self.deviceID}']['Acceleration'] = messaggio['Acceleration']
             elif 'Oxygen' in listachiavi:
-                self.dizionario_misure[f'{self.deviceID}'][0]['Oxygen'] = messaggio['Oxygen']
+                self.dizionario_misure[f'{self.deviceID}']['Oxygen'] = messaggio['Oxygen']
         else:
-            self.dizionario_misure[f'{self.deviceID}']=[]
+            self.dizionario_misure[f'{self.deviceID}']={}
 
 
     def calcolo_healthstatus(self):
         lista_device = list(self.dizionario_misure.keys())
         for device in lista_device:
-            lista_valori = list(self.dizionario_misure[f'{self.deviceID}'][0].values())
-            self.dizionario_misure[f'{self.deviceID}'][0]['Health Status'] = sum(lista_valori)*100/(len(lista_valori))
+            lista_valori = list(self.dizionario_misure[f'{self.deviceID}'].values())
+            cont=-1
+            for i in lista_valori:
+                cont+=1
+                if i>1:
+                    lista_valori.pop(cont)
+
+            self.dizionario_misure[f'{self.deviceID}']['Health Status'] = (sum(lista_valori*100))/3
             print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
+            print(lista_valori)
 
     def stop_MyMQTT(self):
         self.client.stop()

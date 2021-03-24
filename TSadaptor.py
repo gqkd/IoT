@@ -95,6 +95,7 @@ class TSadaptor:
             'field5':"Oxy_control",
             'field6':"Temperature",
             'field7':"Temp_control",
+            #posizione da aggiungere
             'name':nome_canale,
             'public_flag':True,
         }
