@@ -2,6 +2,7 @@ from Sensor_Temperature import *
 from Sensor_Acceleration import *
 from Sensor_Mass import *
 from Sensor_OxygenLevel import *
+from Sensor_GPS import *
 from Service_temperatureControl import *
 from Service_oxygenControl import *
 from Service_accelerationControl import *
@@ -30,6 +31,8 @@ if __name__ == '__main__':
     oxy1 = SensorOxygen("400",'001',topic, publicURL)
     # Speaker
     speak1 = Speaker('500','001',broker,port, publicURL)
+    # GPS
+    GPS1 = SensorGPS('600','001',port, publicURL)
     # Controllo temperatura
     contTemp1 = TemperatureControl('1',topic,broker,port, publicURL)
     # Controllo accelerazione
@@ -43,12 +46,14 @@ if __name__ == '__main__':
     acc1.start_MyMQTT(broker, port)
     mass1.start_MyMQTT(broker, port)
     oxy1.start_MyMQTT(broker, port)
+    GPS1.start_MyMQTT(broker, port)
 
     #Sottoscrizione dei sesori al catalog e invio dei dati campionati:
     temp1.start()
     acc1.start()
     mass1.start()
     oxy1.start()
+    GPS1.start()
     speak1.start()
     contTemp1.start()
     contOx1.start()
