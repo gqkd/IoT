@@ -56,7 +56,7 @@ class Catalog():
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetTopic":
-                return json.dumps(({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]}))
+                return json.dumps({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]})
             elif uri[0] == "Dumpitallmodafaccar":
                 return json.dumps({'services':self.servicesList,'devices':self.deviceList})
             #----------------
