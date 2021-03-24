@@ -28,12 +28,12 @@ class TSadaptor:
     def topicsearch(self):
         r=requests.get(self.url+"/Dumpitallmodafaccar")
         jsonBody = json.loads(r.content)
-        listatopicServices = jsonBody["services"]
+        # listatopicServices = jsonBody["services"]
         listatopicDevices = jsonBody["devices"]
         # print(listatopicServices)
 
-        for t1 in range(len(listatopicServices)):
-            self.client.mySubscribe(listatopicServices[t1]['Topic']) 
+        # for t1 in range(len(listatopicServices)):
+        #     self.client.mySubscribe(listatopicServices[t1]['Topic']) 
         for t2 in range(len(listatopicDevices)):
             if listatopicDevices[t2]['Resource']!='Speaker':
                 self.client.mySubscribe(listatopicDevices[t2]['Topic'])
@@ -72,11 +72,11 @@ class TSadaptor:
         #buttare i dati nel posto giusto
         # if msg_sensore:
         #     if num_sensore == '100': #temp
-        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field6="+str(val))
-        #     elif num_sensore == '200': #acc
         #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field2="+str(val))
+        #     elif num_sensore == '200': #acc
+        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field1="+str(val))
         #     elif num_sensore == '400': #oxy
-        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field4="+str(val))
+        #         r = requests.get("https://api.thingspeak.com/update?api_key="+write_api+"&field3="+str(val))
 
         
 
@@ -88,13 +88,13 @@ class TSadaptor:
     def createnewchannel(self, nome_canale):
         payload={
             'api_key':self.api,
-            'field1':"OrganHealth",
-            'field2':"Acceleration",
-            'field3':"Acc_control",
-            'field4':"OxygenLevel",
-            'field5':"Oxy_control",
-            'field6':"Temperature",
-            'field7':"Temp_control",
+            # 'field1':"OrganHealth",
+            'field1':"Acceleration",
+            # 'field3':"Acc_control",
+            'field2':"OxygenLevel",
+            # 'field5':"Oxy_control",
+            'field3':"Temperature",
+            # 'field7':"Temp_control",
             #posizione da aggiungere
             'name':nome_canale,
             'public_flag':True,
