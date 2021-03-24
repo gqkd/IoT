@@ -2,11 +2,8 @@ from Sensor_Temperature import *
 from Sensor_Acceleration import *
 from Sensor_Mass import *
 from Sensor_OxygenLevel import *
-<<<<<<< HEAD
 from Sensor_GPS import *
-=======
 from Actuator_speaker import *
->>>>>>> eb1f7537a2f84186f1802bdaf6cf725af798fc5d
 from Service_temperatureControl import *
 from Service_oxygenControl import *
 from Service_accelerationControl import *
