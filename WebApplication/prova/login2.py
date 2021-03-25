@@ -3,6 +3,7 @@ import os
 import json
 import requests
 import webbrowser
+import urllib.request
 
 
 class Example(object):
@@ -10,6 +11,9 @@ class Example(object):
     def __init__(self):
         self.usersData = json.load(open("User_data.json"))
         self.userList = self.usersData['userList']
+        r= requests.get('http://localhost:4040/api/tunnels/<WebApp>')
+        self.URL=r.json()["public_url"]
+
     
     def GET(self,*uri,**params):
         if uri:
@@ -28,19 +32,16 @@ class Example(object):
             if user["UserName"] == self.name:
                 if user["Psw"] == self.psw:
                     if user["Level"] == "1":
-                        webbrowser.open('http://127.0.0.1:1880/ui/#!/1?socketid=UEeRYcvctN0-raE8AAAA')
+                        print("ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        return urllib.request.urlopen('http://4b77ad6cf4c3.ngrok.io/ui/#!/0')
                     elif user["Level"] == "2":
-                        pass
+                        return urllib.request.urlopen('http://c17e5be40643.ngrok.io/ui')
                     elif user["Level"] == "3":
-                        pass
+                        return urllib.request.urlopen('http://c17e5be40643.ngrok.io/ui')
                 else:
-                    return "User name or password uncorrect"
+                    return urllib.request.urlopen(self.URL)
 
-        
-        
         print(f"User name: {self.name}, Password: {self.psw}")
-        webbrowser.open('http://127.0.0.1:8094/SelectBoxes')  # Go to example.com
-        return print(body)#json.dumps(jsonBody)
 
 
 
