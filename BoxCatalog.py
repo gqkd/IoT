@@ -58,7 +58,8 @@ class Catalog():
             elif uri[0] == "GetTopic":
                 return json.dumps({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]})
             elif uri[0] == "Dumpitallmodafaccar":
-                return json.dumps({'services':self.servicesList,'devices':self.deviceList})
+                # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
+                return json.dumps({'devices':self.deviceList})
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH

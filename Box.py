@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # Speaker
     speak1 = Speaker('500','001',broker,port, publicURL)
     # GPS
-    GPS1 = SensorGPS('600','001',port, publicURL)
+    GPS1 = SensorGPS('600','001',topic, publicURL)
     # Controllo temperatura
     contTemp1 = TemperatureControl('1',topic,broker,port, publicURL)
     # Controllo accelerazione
