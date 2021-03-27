@@ -23,26 +23,74 @@ class TelegramBot:
         self.topic = topic
         self.client.mySubscribe(topic)
         self.__message={"alert":"","action":""}
-        MessageLoop(self.bot, {'chat': self.on_chat_message}).run_as_thread()
+        MessageLoop(self.bot, {'chat': self.on_chat_message,'callback_query': self.on_callback_query}).run_as_thread()
+        
+    def topicRequest(self):
+        # Richiesta GET per topic dei servizi
+        r = requests.get(self.url+"/GetTopic")
+        jsonBody = json.loads(r.content)
+        listatopicService = jsonBody["topics"]
+        for topic in listatopicService:
+            # self.client.unsubscribe()
+            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+            
+    # def request(self):
+    #     # Sottoscrizione al boxcatalog
+    #     self.payload["Timestamp"] = time.time()
+    #     requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
 
+
+    
+    
+    
+    
     def on_chat_message(self, msg):
         content_type, chat_type, chat_ID = telepot.glance(msg)
-        self.chatIDs.append(chat_ID)
         message = msg['text']
-        if message=="/start":
-            self.bot.sendMessage(chat_ID, text="Welcome")
+        if message == "/start":            
+            buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
+                        InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+            self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
+        elif message : #TODO filtrare per capire quando inserisco la box ID 
+            boxID = message
+            cont = -1
+            if self.chatIDs != []:
+                for id in self.chatIDs:
+                    cont += 1
+                    if id["chatID"] == chat_ID:
+                        self.chatIDs[cont]["boxID"] = boxID
+            self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":})
+        
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
         
-    def notify(self,topic,message):
-        print(message)
-        msg=json.loads(message)
         
-        alert=msg["alert"]
-        action=msg["action"]
-        tosend=f"ATTENTION!!!\n{alert}, you should {action}"
-        for chat_ID in self.chatIDs:
-            self.bot.sendMessage(chat_ID, text=tosend)
+
+    
+            
+    def on_callback_query(self,msg):     #Quando premo un bottone    
+        #TODO Salvare nel chatIDs se è surgical o transpor
+        query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')        
+        payload = self.__message.copy()        
+        payload['e'][0]['v'] = query_data        
+        payload['e'][0]['t'] = time.time()        
+        self.client.myPublish(self.topic, payload)        
+        self.bot.sendMessage(chat_ID, text=f"Led switched {query_data}")
+        
+    def notify(self,topic,msg):
+        
+        messaggio= json.loads(msg)
+        # messaggio {'Acceleration':1, "DeviceID": 001200}
+        
+        if messaggio.values[0] == 1:
+            boxID = messaggio['DeviceID'][:3:]
+            for id in self.chatIDs:
+                if id["boxID"] == boxID:
+                    tosend=f"ATTENTION!!!\n{messaggio.keys[0]} out of range."
+                    chat_ID = id["chatID"]
+                    self.bot.sendMessage(chat_ID, text=tosend)
+        #TODO aggiungere comando per silenziare l'attuatore 
 
 if __name__ == "__main__":
     conf = json.load(open("../settings.json"))
