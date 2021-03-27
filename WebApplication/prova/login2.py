@@ -11,16 +11,30 @@ class Example(object):
     def __init__(self):
         self.usersData = json.load(open("User_data.json"))
         self.userList = self.usersData['userList']
-        r= requests.get('http://localhost:4040/api/tunnels/<WebApp>')
-        self.URL=r.json()["public_url"]
+        r = requests.get('http://localhost:4040/api/tunnels/WebApp')
+        
+        self.public_ur = r.json()["public_url"] #"http://localhost:8094" #r.json()["public_url"]
+        print(self.public_ur)
+        
 
     
     def GET(self,*uri,**params):
         if uri:
             if uri[0] == "SelectBoxes":
                 return f"User name: {self.name}, password: {self.psw}"
+            elif uri[0] == "Desktop":
+                return open("indexDesktop.html")
+            elif uri[0] == "Mobile":
+                return open("indexMobile.html")
+            elif uri[0] == "NodeRed1":
+                self.NodeRed1 = params["link"]
+            elif uri[0] == "NodeRed2":
+                self.NodeRed2 = params["link"]
+            elif uri[0] == "NodeRed3":
+                self.NodeRed3 = params["link"]
+                
         else:
-            return open("index1.html")
+            return open("indexDesktop.html")
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
@@ -33,13 +47,13 @@ class Example(object):
                 if user["Psw"] == self.psw:
                     if user["Level"] == "1":
                         print("ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        return urllib.request.urlopen('http://4b77ad6cf4c3.ngrok.io/ui/#!/0')
+                        return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
                     elif user["Level"] == "2":
-                        return urllib.request.urlopen('http://c17e5be40643.ngrok.io/ui')
+                        return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
                     elif user["Level"] == "3":
-                        return urllib.request.urlopen('http://c17e5be40643.ngrok.io/ui')
+                        return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                 else:
-                    return urllib.request.urlopen(self.URL)
+                    pass #return urllib.request.urlopen(self.URL)
 
         print(f"User name: {self.name}, Password: {self.psw}")
 
@@ -61,7 +75,7 @@ if __name__ == '__main__':
 		#  'tools.staticdir.dir':'./js'
 		#  },
 	}
-    cherrypy.config.update({'server.socket_port':8094}) #per cambiare la porta se già impiegata per altro
+    cherrypy.config.update({'server.socket_port':8094}) 
     cherrypy.tree.mount(Example(),'/',conf)
     cherrypy.engine.start()
     cherrypy.engine.block()
