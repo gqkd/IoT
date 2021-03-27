@@ -59,9 +59,8 @@ class SensorOxygen(threading.Thread):
         #ossigenazione >=96% : tutto ok
         # 93% =< ossigenazione < 95% : possibili problemi
         # ossigenazione <92 % : ossigenazione insufficiente
-        loc, scale = 96, 1
-        oxy_level = np.random.logistic(loc, scale, 1)
-        if oxy_level[0] > 100:
+        oxy_level = np.random.logistic(100, 0.6, 1) #range 95-100 (picco 100)
+        if oxy_level > 100:
             oxy_level = 100
         message = self.__message
         message['e'][0]['t'] = float(time.time())

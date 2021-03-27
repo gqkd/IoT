@@ -64,7 +64,7 @@ class TemperatureControl(threading.Thread):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
         # Avvisare speaker e mandare dato a thingspeak
-        if payload['e'][0]['v'] < 36:
+        if payload['e'][0]['v'] < 36 or payload['e'][0]['v'] > 38:
             messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
         else:
             messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE

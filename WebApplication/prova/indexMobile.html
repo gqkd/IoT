@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./css/styleMobile.css"></head><body><header class="header-banner" id="iv5r"><div class="lead-title" id="iaxw6"><h1>IoT platform for smart organs delivery</h1></div><div class="sub-lead-title" id="i6p05">One of the most critical aspects of organ transport for transplantation is the lack of information on the conditions of transport. In particular, the proposed system envisages monitoring the condition of the organ in order to improve the management and increase the reliability of delivery. The system offers various services dedicated to measuring the temperature of the environment in which the organ is contained, measuring the vibrational state, tracking and delivery time. Access to data relating to the state of the organâ€™s transportation is carried out by the actors at different levels, signing the box in which the organ to be transplanted will be contained. After the subscription, it will be possible to view the above mentioned data sent from the box. Functionalities provided by the system to the stakeholders: 1) The surgical team of the receiving hospital has at its disposal a telegram bot to receive notifications when the box is about to arrive at the hospital to start preparing survey procedures</div>
+
+
+
+
+
+
+
+            <!-- Aggiungo parte per il mottone e il po-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
+
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                body {font-family: Arial, Helvetica, sans-serif;}
+    
+                /* Full-width input fields */
+                input[type=text], input[type=password] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                }
+    
+                /* Set a style for all buttons */
+                button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;  /* Dimensione bottone login */
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                }
+
+                /* Aggiunto per il tasto login nella pagina principale */
+                .buttonLog {
+                background-color: #990000;
+                color: white;
+                padding: 28px 46px;  /* Dimensione bottone login */
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                }
+    
+                button:hover {
+                opacity: 0.8;
+                }
+    
+                /* Extra styles for the cancel button */
+                .cancelbtn {
+                width: auto;
+                padding: 10px 18px;
+                background-color: #f44336;
+                }
+    
+                /* Center the image and position the close button */
+                .imgcontainer {
+                text-align: center;
+                margin: 24px 0 12px 0;
+                position: relative;
+                }
+    
+                img.avatar {
+                width: 30%;
+                border-radius: 1%;              /* Mettere 50% per avere il cerchio!!!!!!!!!!!!!! */
+                }
+    
+                .container {
+                padding: 16px;
+                }
+    
+                span.psw {
+                float: right;
+                padding-top: 16px;
+                }
+    
+                /* The Modal (background) */
+                .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                padding-top: 5%;
+                padding-right: 0%;
+                padding-left: 0%;
+                }
+    
+                /* Modal Content/Box */
+                .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+                }
+    
+                /* The Close Button (x) */
+                .close {
+                position: absolute;
+                right: 25px;
+                top: 0;
+                color: #000;
+                font-size: 35px;
+                font-weight: bold;
+                }
+    
+                .close:hover,
+                .close:focus {
+                color: red;
+                cursor: pointer;
+                }
+    
+                /* Add Zoom Animation */
+                .animate {
+                -webkit-animation: animatezoom 0.6s;
+                animation: animatezoom 0.6s
+                }
+    
+                @-webkit-keyframes animatezoom {
+                from {-webkit-transform: scale(0)} 
+                to {-webkit-transform: scale(1)}
+                }
+                
+                @keyframes animatezoom {
+                from {transform: scale(0)} 
+                to {transform: scale(1)}
+                }
+    
+                /* Change styles for span and cancel button on extra small screens */
+                @media screen and (max-width: 300px) {
+                span.psw {
+                    display: block;
+                    float: none;
+                }
+                .cancelbtn {
+                    width: 100%;
+                }
+                }
+                </style>
+                </head>
+                <body>
+    
+                    <style>
+                        .center {
+                          margin: 0;
+                          position: absolute;
+                          left: 50%;
+                          top: 350px;
+                          -ms-transform: translateX(-50%);
+                          transform: translateX(-50%);
+                        }
+                      </style>
+                      
+                      <div class="center">
+                        <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Login</button>
+                      </div>
+    
+    
+                <div id="id01" class="modal">
+                
+                <form class="modal-content animate" action="/SelectBoxes" method="post">
+                    <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                    <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
+                    </div>
+    
+                    <div class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="uname" required>
+    
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="psw" required>
+                        
+                    <button type="submit">Login</button>
+                    <label>
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                    </div>
+    
+                    <div class="container" style="background-color:#f1f1f1">
+                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    </div>
+                </form>
+                </div>
+    
+                <script>
+                // Get the modal
+                var modal = document.getElementById('id01');
+    
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+                </script>
+    
+                </body>
+    
+                <!-- FINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE --> 
+    
+
+
+
+            <div class="container-width" id="izi2">
+                <div class="clearfix">
+
+                </div>
+            </div>
+        </header><section class="bdg-sect" id="ilkt1g"><div class="container-width" id="iq1fhf"><h1 class="bdg-title" id="iijywh">The team</h1><div class="badges" id="ixao7i"><div class="badge" id="i55h1q"><div class="badge-header" id="i01h1m"></div>
+            <img id="ikg6w2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8kwlr6BBRCBC8nJlyYH0O1nqEN-LXTfskLA&usqp=CAU"/>
+            <div class="badge-body"><div class="badge-name" id="ilra1l">Marco Bonfanti</div><div class="badge-role" id="i1cqpa">Biomedical Student </div><div class="badge-desc" id="i2tc4i">s275349@studenti.polito.it</div></div></div><div class="badge" id="ii2amj"><div class="badge-header" id="icnkej"></div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbg-5pgsfDksXgCCKI-IdtDKcx0mi5HVN1AQ&usqp=CAU" id="io97d3"/>
+            <div class="badge-body"><div class="badge-name" id="is94so"><span id="ik20zd">Davide Pedroncelli</span></div><div class="badge-role" id="ii744p">Biomedical Student </div><div class="badge-desc" id="ipjsmf"><span id="im4xnk">s277415</span><span id="isdqxk-2">@studenti.polito.it</span></div></div></div><div class="badge" id="ili4xy"><div class="badge-header" id="ieb6lu"></div>
+            <img src="https://thumbs.dreamstime.com/b/ritratto-di-un-giovane-con-stile-capelli-e-della-barba-avatar-maschio-vettore-105082137.jpg" id="i139zz"/>
+            <div class="badge-body"><div class="badge-name" id="izenwh"><span id="isc5nx">Giulio Quaglia</span></div><div class="badge-role" id="io64pb">Biomedical Student </div><div class="badge-desc" id="isu9uj"><span id="i8tpxd">s280689</span><span id="iw6uqi-2">@studenti.polito.it</span></div></div></div><div class="badge" id="iftz9k"><div class="badge-header" id="irpwng"></div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8h8XFt8-0As9tre_H6I0I_G3sdvlu_aAxjg&usqp=CAU" id="i0uwkf"/>
+            <div class="badge-body"><div class="badge-name" id="ie936b"><span id="iws88f">Beatrice Zanchi</span></div><div class="badge-role" id="izbsue">Biomedical Student </div><div class="badge-desc" id="if9mph"><span id="ichorq">s275372</span><span id="iw87ts-2">@studenti.polito.it</span></div></div></div></div></div><div class="footer-container" id="iyb77y"><div class="foot-lists" id="iorsgw"><div class="foot-list" id="i6rruj"></div><div class="foot-list"></div><div class="clearfix"></div></div><div class="form-sub"></div></div><div class="foot-list-item" id="i7q7a5"><b>Programming for IoT applications</b></div><div class="foot-list-item" id="ivphmp">Prof. Patti<div>Politecnico di Torino</div></div></section></body><html></html>

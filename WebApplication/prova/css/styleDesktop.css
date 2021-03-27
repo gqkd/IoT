@@ -180,10 +180,10 @@
     background-size:auto;
   }
   #ilkt1g{
-    background-image:url("https://static.vecteezy.com/ti/vettori-gratis/p1/1887003-sfondo-sfocatura-sfumatura-vettore-blu-scuro-vettoriale.jpg");
+    background-image:url("https://wallpaper.dog/large/17008634.jpg");
     background-repeat:repeat;
-    background-position:left top;
-    background-attachment:scroll;
+    background-position:center top;
+    background-attachment:fixed; /* prima era scroll !!!!!!!!!!!!!!!*/
     background-size:auto;
   }
   #irpwng{
@@ -304,7 +304,7 @@
   }
   @media (max-width: 992px){
     #iv5r{
-      background-attachment:scroll;
+      background-attachment: fixed;
       background-position:center top;
       background-repeat:repeat;
       border:solid #000000;
