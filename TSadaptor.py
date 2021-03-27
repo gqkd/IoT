@@ -12,7 +12,7 @@ from math import sqrt
 import threading
 
 class TSadaptor:
-    def __init__(self,broker,port,apikey,write_api,channel_ID): 
+    def __init__(self,broker,port,apikey,write_api,read_api,channel_ID): 
         conf=json.load(open("settings.json"))
         apikey2 = conf['apikey_read_bea']
         cid = conf['channel_ID_publicURL']
@@ -27,6 +27,7 @@ class TSadaptor:
         self.api = apikey
         self.diz_write_api = write_api
         self.diz_channel_ID = channel_ID
+        self.diz_read_api = read_api
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
         # self.t = threading.Thread(target=self.notify)
@@ -34,7 +35,7 @@ class TSadaptor:
 
     def topicsearch(self):
         r=requests.get(self.url+"/Dumpitallmodafaccar")
-        print(r.text,r.status_code)
+        # print(r.text,r.status_code)
         jsonBody = json.loads(r.content)
         # listatopicServices = jsonBody["services"]
         listatopicDevices = jsonBody["devices"]
@@ -115,46 +116,24 @@ class TSadaptor:
             'public_flag':True,
         }
         r = requests.post("https://api.thingspeak.com/channels.json",json=payload)
+        # print(r.text)
         jsonBody = json.loads(r.content)
         channel_ID = jsonBody["id"]
         write_api = jsonBody['api_keys'][0]['api_key']
+        read_api = jsonBody['api_keys'][1]['api_key']
         self.diz_write_api[f'{nome_canale[3::]}']=write_api
         self.diz_channel_ID[f'{nome_canale[3::]}']=channel_ID
+        self.diz_read_api[f'{nome_canale[3::]}']=read_api
         # print(json.dumps(jsonBody,indent=2))
         # print(self.write_api)
         with open('settings.json') as fp:
             actual=json.load(fp)
             actual['write_api']=self.diz_write_api
             actual['channel_ID']=self.diz_channel_ID
+            actual['read_api']= self.diz_read_api
         with open('settings.json','w') as pd:
             json.dump(actual, pd,indent=2)
         print(f"nuovo canale creato id:{self.diz_channel_ID}")
-
-    # def createnewchannel(self, nome_canale):
-    #     payload={
-    #         'api_key':self.api,
-    #         'field1':"Temperature",
-    #         'field2':"Acceleration",
-    #         'field3':"Oxygenation",
-    #         'field4':"Lat & Long",
-    #         'name':nome_canale,
-    #         'public_flag':True,
-    #     }
-    #     r = requests.post("https://api.thingspeak.com/channels.json",json=payload)
-    #     jsonBody = json.loads(r.content)
-    #     self.channel_ID = jsonBody["id"]
-    #     self.write_api = jsonBody['api_keys'][0]['api_key']
-    #     # print(json.dumps(jsonBody,indent=2))
-    #     # print(self.write_api)
-    #     with open('settings.json') as fp:
-    #         actual=json.load(fp)
-    #         actual['write_api']=self.write_api
-    #         actual['channel_ID']=self.channel_ID
-    #     with open('settings.json','w') as pd:
-    #         json.dump(actual, pd,indent=2)
-    #     print(f"nuovo canale creato id:{self.channel_ID}")
-        
-
 
     def deletechannel(self, channel_ID):
         payload={'api_key':self.api}
@@ -168,7 +147,8 @@ if __name__ == "__main__":
     port = conf["port"]
     apikey=conf["apikey_giulio"]
     write_api=conf['write_api']
+    read_api=conf['read_api']
     channel_ID=conf['channel_ID']
-    ts=TSadaptor(broker,port,apikey,write_api,channel_ID)
+    ts=TSadaptor(broker,port,apikey,write_api,read_api,channel_ID)
     ts.run()
 

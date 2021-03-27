@@ -9,13 +9,16 @@
   "write_api": {
     "200": "WYW05FBK6AX7DLTA",
     "100": "E1V23RSBX10CNZVG",
-    "400": "9MEWL2XBH8V0W46H",
-    "600": "Q6E5YC3YKWI01ADL"
+    "400": "L4W45PVL1XTMKFAX",
+    "600": "BXHIWGKRG35MGMRN"
+  },
+  "read_api": {
+    "600": "OMX32UEVRY5GYUG7"
   },
   "channel_ID": {
     "200": 1341246,
     "100": 1341247,
-    "400": 1341249,
-    "600": 1341248
+    "400": 1341284,
+    "600": 1341293
   }
 }
