@@ -3,6 +3,19 @@
   "port": 1883,
   "baseTopic": "Ipfsod",
   "apikey_giulio": "Y1TWL3R4UWBVL534",
-  "write_api": "J71KUIBCC8TMHASQ",
-  "channel_ID": 1338189
+  "apikey_read_bea": "74BPJAXGQDBJJPOS",
+  "channel_ID_publicURL": "1341228",
+  "apikey_write_bea": "1V4US3YABOXPC2DB",
+  "write_api": {
+    "200": "WYW05FBK6AX7DLTA",
+    "100": "E1V23RSBX10CNZVG",
+    "400": "9MEWL2XBH8V0W46H",
+    "600": "Q6E5YC3YKWI01ADL"
+  },
+  "channel_ID": {
+    "200": 1341246,
+    "100": 1341247,
+    "400": 1341249,
+    "600": 1341248
+  }
 }

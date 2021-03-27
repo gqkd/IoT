@@ -29,7 +29,7 @@ class Catalog():
                 if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            # print(f"""Lista device attivi: \n {self.deviceList}""")
+            print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
         elif uri[0] == "Service":
@@ -104,11 +104,14 @@ class tunneling:
         jsonBody=json.loads(r.text)
         publicURL=jsonBody["tunnels"][0]["public_url"]
         print(publicURL)
+        conf=json.load(open("settings.json"))
+        apikey = conf['apikey_write_bea']
         #invio il publicURL sul canale Thingspeak creato apposta
-        r1 = requests.get("https://api.thingspeak.com/update?api_key=KKQGIYEG410H7T0L&field1="+publicURL)
+        r1 = requests.get(f"https://api.thingspeak.com/update?api_key={apikey}&field1="+publicURL)
         print(r1.text)
 
 if __name__=="__main__":
+
     # è necessario startare 3 thread per il tunnelling
     t1 = threading.Thread(target=cherry)
     t2 = threading.Thread(target=ngrok)
