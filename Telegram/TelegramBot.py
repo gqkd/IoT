@@ -60,7 +60,7 @@ class TelegramBot:
                     cont += 1
                     if id["chatID"] == chat_ID:
                         self.chatIDs[cont]["boxID"] = boxID
-            self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":})
+            self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":None})
         
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
@@ -70,13 +70,18 @@ class TelegramBot:
     
             
     def on_callback_query(self,msg):     #Quando premo un bottone    
-        #TODO Salvare nel chatIDs se è surgical o transpor
-        query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')        
-        payload = self.__message.copy()        
-        payload['e'][0]['v'] = query_data        
-        payload['e'][0]['t'] = time.time()        
-        self.client.myPublish(self.topic, payload)        
-        self.bot.sendMessage(chat_ID, text=f"Led switched {query_data}")
+        query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
+        
+        cont = -1
+        if self.chatIDs != []:
+            for id in self.chatIDs:
+                cont += 1
+                if id["chatID"] == chat_ID:
+                    self.chatIDs[cont]["team"] = query_data
+        else:
+            self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":query_data})
+
+        self.bot.sendMessage(chat_ID, text=f"Registered as: {query_data} team.")
         
     def notify(self,topic,msg):
         
