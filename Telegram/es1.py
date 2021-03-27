@@ -22,14 +22,15 @@ class TelegramBot:
         self.client.start()
         self.topic = topic
         self.client.mySubscribe(topic)
-        self.__message={"alert":"","action":""}
+        self.__message={"alert":"","action":""}#da inviare all'attuatore per stopparlo
         MessageLoop(self.bot, {'chat': self.on_chat_message}).run_as_thread()
 
-    def on_chat_message(self, msg):
+    def on_chat_message(self, msg):# funzione richiamata quando si riceve un messaggio 
         content_type, chat_type, chat_ID = telepot.glance(msg)
-        self.chatIDs.append(chat_ID)
+        self.chatIDs.append(chat_ID)#aggiungo alla lista delle chatID
         message = msg['text']
         if message=="/start":
+            payload = self.__message.copy()
             self.bot.sendMessage(chat_ID, text="Welcome")
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
