@@ -61,10 +61,15 @@ if __name__ == '__main__':
 
     #Sottoscrizione dei sesori al catalog e invio dei dati campionati:
     temp1.start()
+    time.sleep(20)
     acc1.start()
+    time.sleep(20)
     mass1.start()
+    time.sleep(20)
     oxy1.start()
+    time.sleep(20)
     GPS1.start()
+    time.sleep(20)
     speak1.start()
     contTemp1.start()
     contOx1.start()

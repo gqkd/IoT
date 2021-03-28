@@ -45,8 +45,6 @@ class AccelerationControl(threading.Thread):
         # Richiesta GET per topic
         r = requests.get(self.url+"/GetAcceleration")
         jsonBody = json.loads(r.content.decode("utf-8"))
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n')
-        print(type(r.content), r.content,r.text,r.status_code,self.url)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         #self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
