@@ -1,6 +1,5 @@
 {
-    "telegramToken": "1418431084:AAGbaKM1KCbYERgo61pYgGj2C4ubyAxxZgs",
-    "broker": "test.mosquitto.org",
-    "port": 1883,
-    "baseTopic": "IoT/Bonfanti/bot"
+    "telegramToken": "1689078533:AAH5qRJrvFD1_PKeYbtvNaETfJdJ6Nu2bUg",
+    "brokerIP": "test.mosquitto.org",
+    "brokerPort": 1883
 }
