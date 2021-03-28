@@ -55,6 +55,8 @@ class Catalog():
                 return json.dumps({"topics" : "Ipfsod/+/+/mass"})
             elif uri[0] == "GetOxygenLevel":
                 return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
+            elif uri[0] == "GetGPS":
+                return json.dumps({"topics" : "Ipfsod/+/+/GPS"})
             elif uri[0] == "GetTopic":
                 return json.dumps({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]})
             elif uri[0] == "Dumpitallmodafaccar":
