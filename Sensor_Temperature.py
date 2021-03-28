@@ -56,7 +56,7 @@ class SensorTemperature(threading.Thread):
     def sendData(self):
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = np.random.logistic(37, 0.2, 1) #range 35-38.5 (picco 37)
+        message['e'][0]['v'] = np.random.logistic(37, 0.2, 1).item() #range 35-38.5 (picco 37)
         self.client.myPublish(self.topic,message)
 
     def stop_MyMQTT(self):

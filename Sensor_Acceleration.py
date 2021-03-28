@@ -62,9 +62,9 @@ class SensorAcceleration(threading.Thread):
         message = self.__message
         message['e'][0]['t'] = float(time.time())
         #distribuzione uniforme per accelerazione
-        message['e'][0]['v_xaxis'] = np.random.chisquare(1,1)/10 # range 0-0.8 (picco 0.1)
-        message['e'][0]['v_yaxis'] = np.random.chisquare(1,1)/10
-        message['e'][0]['v_zaxis'] = np.random.chisquare(1,1)/10
+        message['e'][0]['v_xaxis'] = np.random.chisquare(1,1).item()/10 # range 0-0.8 (picco 0.1)
+        message['e'][0]['v_yaxis'] = np.random.chisquare(1,1).item()/10
+        message['e'][0]['v_zaxis'] = np.random.chisquare(1,1).item()/10
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):

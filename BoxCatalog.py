@@ -16,8 +16,8 @@ class Catalog():
             "deviceList": [],
             "servicesList": []
         }
-        self.deviceList = self.catalog['deviceList']
-        self.servicesList = self.catalog['servicesList']
+        self.deviceList = self.catalog["deviceList"]
+        self.servicesList = self.catalog["servicesList"]
         
     def PUT(self,*uri): # Registrare Sensori o Service nel catalog
         body=cherrypy.request.body.read()
@@ -48,20 +48,20 @@ class Catalog():
         if len(uri)!=0:
             # Posso farmi tornare anche topic a cui si sottoscrive speaker?
             if uri[0] == "GetTemperature":
-                return json.dumps({"topics" : "Ipfsod/+/+/temperature"})
+                return json.dumps({"topics": "Ipfsod/+/+/temperature"})
             elif uri[0] == "GetAcceleration":
-                return json.dumps({"topics" : "Ipfsod/+/+/acceleration"})
+                return json.dumps({"topics": "Ipfsod/+/+/acceleration"})
             elif uri[0] == "GetMass":
-                return json.dumps({"topics" : "Ipfsod/+/+/mass"})
+                return json.dumps({"topics": "Ipfsod/+/+/mass"})
             elif uri[0] == "GetOxygenLevel":
-                return json.dumps({"topics" : "Ipfsod/+/+/oxygen"})
+                return json.dumps({"topics": "Ipfsod/+/+/oxygen"})
             elif uri[0] == "GetGPS":
-                return json.dumps({"topics" : "Ipfsod/+/+/GPS"})
+                return json.dumps({"topics": "Ipfsod/+/+/GPS"})
             elif uri[0] == "GetTopic":
-                return json.dumps({'topics':["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl" ]})
+                return json.dumps({"topics":["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl"]})
             elif uri[0] == "Dumpitallmodafaccar":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
-                return json.dumps({'devices':self.deviceList})
+                return json.dumps({"devices":self.deviceList})
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH

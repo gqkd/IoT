@@ -7,18 +7,21 @@
   "channel_ID_publicURL": "1341228",
   "apikey_write_bea": "1V4US3YABOXPC2DB",
   "write_api": {
-    "200": "WYW05FBK6AX7DLTA",
-    "100": "E1V23RSBX10CNZVG",
-    "400": "L4W45PVL1XTMKFAX",
-    "600": "BXHIWGKRG35MGMRN"
+    "200": "JGA9LFK8C61X78DF",
+    "100": "NQ60HCT9A0YUV76B",
+    "400": "G2X1GFZQTJWKHTHW",
+    "600": "L8O9FABOKOJIQGIW"
   },
   "read_api": {
-    "600": "OMX32UEVRY5GYUG7"
+    "600": "WK9MUJQMIL03GH55",
+    "400": "OWN9D1E7I8XY56VL",
+    "100": "2R4QZ58QA2DDVW4W",
+    "200": "YD1C7UT69GZFNDZT"
   },
   "channel_ID": {
-    "200": 1341246,
-    "100": 1341247,
-    "400": 1341284,
-    "600": 1341293
+    "200": 1341650,
+    "100": 1341649,
+    "400": 1341647,
+    "600": 1341648
   }
 }

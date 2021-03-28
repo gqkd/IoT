@@ -59,12 +59,12 @@ class SensorOxygen(threading.Thread):
         #ossigenazione >=96% : tutto ok
         # 93% =< ossigenazione < 95% : possibili problemi
         # ossigenazione <92 % : ossigenazione insufficiente
-        oxy_level = np.random.logistic(100, 0.6, 1) #range 95-100 (picco 100)
+        oxy_level = np.random.logistic(100, 0.6, 1).item() #range 95-100 (picco 100)
         if oxy_level > 100:
             oxy_level = 100
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = float(oxy_level[0])
+        message['e'][0]['v'] = oxy_level
         self.client.myPublish(self.topic, message)
 
     def stop_MyMQTT(self):

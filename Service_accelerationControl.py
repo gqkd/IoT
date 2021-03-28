@@ -17,7 +17,7 @@ class AccelerationControl(threading.Thread):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
         self.topic = topic  # basetopic
-        self.topicresource = '' # topic che verrà chiesto a box catalog
+        self.topicresource = {} # topic che verrà chiesto a box catalog
         self.broker = broker
         self.port = port
         self.payload = {
@@ -32,7 +32,7 @@ class AccelerationControl(threading.Thread):
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
-        self.count = 6
+        self.count = 2
         self.url=publicURL
 
     def request(self):
@@ -44,7 +44,9 @@ class AccelerationControl(threading.Thread):
         
         # Richiesta GET per topic
         r = requests.get(self.url+"/GetAcceleration")
-        jsonBody = json.loads(r.content)
+        jsonBody = json.loads(r.content.decode("utf-8"))
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n')
+        print(type(r.content), r.content,r.text,r.status_code,self.url)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         #self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
@@ -56,7 +58,7 @@ class AccelerationControl(threading.Thread):
     def run(self):
         while True:
             self.topicRequest()
-            if self.count % (self.timerequest/self.timerequestTopic) == 0:
+            if self.count % 2 == 0:
                 self.request()
                 self.count=0
             self.count += 1
