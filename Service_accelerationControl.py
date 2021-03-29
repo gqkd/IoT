@@ -4,7 +4,6 @@ import requests
 from math import sqrt
 from MyMQTT import *
 
-
 # NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOG E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
 # DELLA TEMPERATURA. UNA VOLTA OTTENUTO, DEVE FARE TUTTA LA SUA MANFRINA DEL CONTROLLO
 # QUINDI, WORKFLOW:
@@ -44,7 +43,7 @@ class AccelerationControl(threading.Thread):
         
         # Richiesta GET per topic
         r = requests.get(self.url+"/GetAcceleration")
-        jsonBody = json.loads(r.content.decode("utf-8"))
+        jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         #self.client = MyMQTT(self.serviceID, self.broker, self.port, self)

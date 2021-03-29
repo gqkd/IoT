@@ -21,9 +21,9 @@ if __name__ == '__main__':
     broker = conf["broker"]
     port = conf["port"]
 
-    apikey = conf['apikey_read_bea']
-    cid = conf['channel_ID_publicURL']
-    r = requests.get("https://api.thingspeak.com/channels/1341228/fields/1.json?api_key=74BPJAXGQDBJJPOS&results=1")
+    apikey = conf["publicURL"]["publicURL_read"]
+    cid = conf["publicURL"]["publicURL_channelID"]
+    r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
 
     #richiesta per il public URL del boxcatalog
     jsonBody=json.loads(r.text)

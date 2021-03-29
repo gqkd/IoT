@@ -59,9 +59,9 @@ class Catalog():
                 return json.dumps({"topics": "Ipfsod/+/+/GPS"})
             elif uri[0] == "GetTopic":
                 return json.dumps({"topics":["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl"]})
-            elif uri[0] == "Dumpitallmodafaccar":
+            elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
-                return json.dumps({"devices":self.deviceList})
+                return json.dumps({"devices":self.deviceList, "services":self.servicesList})
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
@@ -107,7 +107,7 @@ class tunneling:
         publicURL=jsonBody["tunnels"][0]["public_url"]
         print(publicURL)
         conf=json.load(open("settings.json"))
-        apikey = conf['apikey_write_bea']
+        apikey = conf["publicURL"]["publicURL_write"]
         #invio il publicURL sul canale Thingspeak creato apposta
         r1 = requests.get(f"https://api.thingspeak.com/update?api_key={apikey}&field1="+publicURL)
         print(r1.text)
