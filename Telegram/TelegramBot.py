@@ -30,6 +30,13 @@ class TelegramBot(threading.Thread):
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
         self.count = 6
+        # richiesta public url catalog 
+        conf=json.load(open("settings.json"))
+        apikey = conf["publicURL"]["publicURL_read"]
+        cid = conf["publicURL"]["publicURL_channelID"]
+        r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
+        jsonBody=json.loads(r.text)
+        self.url=jsonBody['feeds'][0]['field1']
         
     def topicRequest(self):
         # Richiesta GET per topic dei servizi
@@ -90,7 +97,7 @@ class TelegramBot(threading.Thread):
                             flag = 1
                 if flag == 0 or self.chatIDs == []:
                     self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":None,"Notification":[1,1,1]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato
-                self.bot.sendMessage(chat_ID, text=f"Registered to Box {boxID}.")
+                self.bot.sendMessage(chat_ID, text=f"You will receive notifications from Box {boxID}.")
                 self.canSendBoxID = 0
             else: 
                 self.bot.sendMessage(chat_ID, text=f"Invalid Box ID. Try again.")
@@ -123,6 +130,8 @@ class TelegramBot(threading.Thread):
     def notify(self,topic,msg):
 
         messaggio= json.loads(msg)
+        print(messaggio)
+        print(topic)
         # messaggio {
             # 'bn': self.deviceID,
             # 'e': [
@@ -172,11 +181,14 @@ class TelegramBot(threading.Thread):
   
         
         else:
-            if messaggio.values[0] == 1:
+            print("ENTRATO NELL'ELSE!!!!!!!!!!!!!!")
+            valori = list(messaggio.values())
+            if valori[0] == 1:
                 boxID = messaggio['DeviceID'][:3:]
                 for id in self.chatIDs:
                     if id["boxID"] == boxID:
-                        tosend=f"ATTENTION!!!\n{messaggio.keys[0]} out of range."
+                        chiavi = list(messaggio.keys())
+                        tosend=f"ATTENTION!!!\n{chiavi[0]} out of range."
                         chat_ID = id["chatID"]
                         self.bot.sendMessage(chat_ID, text=tosend)
             #TODO aggiungere comando per silenziare l'attuatore 
@@ -185,7 +197,7 @@ class TelegramBot(threading.Thread):
         self.client.stop()
 
 if __name__ == "__main__":
-    conf = json.load(open("settings.json"))
+    conf = json.load(open("settings_bot.json"))
     token = conf["telegramToken"]
 
     broker = conf["brokerIP"]
