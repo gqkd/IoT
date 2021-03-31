@@ -29,7 +29,7 @@ class Catalog():
                 if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
-            print(f"""Lista device attivi: \n {self.deviceList}""")
+            # print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
         elif uri[0] == "Service":
@@ -39,7 +39,7 @@ class Catalog():
                 if str(service["serviceID"]) == str(jsonBody["serviceID"]):
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
-            # print(f"""Lista servizi attivi: \n {self.servicesList}""")
+            print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
         self.catalog["lastUpdate"] = str(datetime.time())
@@ -59,11 +59,11 @@ class Catalog():
                 return json.dumps({"topics": "Ipfsod/+/+/GPS"})
             elif uri[0] == "GetTopic":
                 return json.dumps({"topics":["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl"]})
-            elif uri[0] == "GetTelegram":
-                for s in self.servicesList:
-                    if s["serviceID"] == "6":
-                        TgTopic = s["Topic"]
-                return json.dumps({"topics": TgTopic})
+            # elif uri[0] == "GetTelegram":
+            #     for s in self.servicesList:
+            #         if s["serviceID"] == "6":
+            #             TgTopic = s["Topic"]
+            #             return json.dumps({"topics": TgTopic})
             elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
                 return json.dumps({"devices":self.deviceList, "services":self.servicesList})
@@ -120,16 +120,16 @@ class tunneling:
 if __name__=="__main__":
 
     # è necessario startare 3 thread per il tunnelling
-    t1 = threading.Thread(target=cherry)
-    t2 = threading.Thread(target=ngrok)
-    t3 = threading.Thread(target=tunneling)
+    #t1 = threading.Thread(target=cherry)
+    #t2 = threading.Thread(target=ngrok)
+    #t3 = threading.Thread(target=tunneling)
 
-    t1.start()
-    t2.start()
-    t3.start()
+    #t1.start()
+    #t2.start()
+    #t3.start()
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    # cherry()
+    cherry()
 
     
 

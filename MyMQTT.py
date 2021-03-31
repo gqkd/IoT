@@ -34,13 +34,14 @@ class MyMQTT:
         # self._client.loop_start()
         pubs=self._client.publish(topic, json.dumps(msg), 2)
         if pubs[0]==0:
-            print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
+            pass
+            # print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
         else:
             print("!!!!!!!!!!!!!message NOT published to topic %s" % (topic))
 
     def myon_message(self, _client, userdata, msg):
         self.notifier.notify (msg.topic, msg.payload)
-        print (f"\nmessage: {msg.payload} \n") 
+        # print (f"\nmessage: {msg.payload} \n")
         # self._client.loop_stop()
 
     def mySubscribe(self, topic): #non sono riuscito a fare una prova con un errore di iscrizione al topic
@@ -49,9 +50,10 @@ class MyMQTT:
         self._isSubscriber = True
         self._topic = topic
         if subs[0]==0:
-            print("%s subscibed to topic: %s\n" % (self.client_id, topic))
+            pass
+            # print("%s subscibed to topic: %s\n" % (self.client_id, topic))
         else:
-            print("!!!!!!!!!!!!%s NOT subscibed to topic %s\n" % (self.client_id,topic))
+            print("!!!!!!!!!!!! %s NOT subscibed to topic %s\n" % (self.client_id,topic))
 
     def unsubscribe(self):
         if (self._isSubscriber):

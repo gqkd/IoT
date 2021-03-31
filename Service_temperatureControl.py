@@ -21,7 +21,7 @@ class TemperatureControl(threading.Thread):
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl""""",
+            "Topic": f"""{self.topic}/{self.serviceID}/temperatureControl""",
             "Resource": "Service",
             "Timestamp": None
         }
@@ -45,10 +45,8 @@ class TemperatureControl(threading.Thread):
         jsonBody = json.loads(r.content)
         self.topicresource = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        # self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        # self.client.stop()
-        # self.client.start()
         self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
+
 
 
     def run(self):
@@ -65,12 +63,13 @@ class TemperatureControl(threading.Thread):
         print(f"Messaggio ricevuto da servizio: {payload}")
         # Avvisare speaker e mandare dato a thingspeak
         if payload['e'][0]['v'] < 36 or payload['e'][0]['v'] > 38:
-            messaggio = {'Temperature':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
+            messaggio = {'Temperature':1, "DeviceID": payload['bn']}   # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
+            print(f"TEMPERATURE CONTROL SERVICE: {messaggio}")
         else:
             messaggio = {'Temperature': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE TEMPERATURA VA BENE
+            print(f"TEMPERATURE CONTROL SERVICE: {messaggio}")
         self.client.myPublish(f"{self.topic}/{self.serviceID}/temperatureControl", messaggio)
 
     def stop_MyMQTT(self):
         self.client.stop()
         print('{} has stopped'.format(self.serviceID))
-

@@ -27,7 +27,8 @@ if __name__ == '__main__':
 
     #richiesta per il public URL del boxcatalog
     jsonBody=json.loads(r.text)
-    publicURL=jsonBody['feeds'][0]['field1']
+    #publicURL=jsonBody['feeds'][0]['field1']
+    publicURL = 'http://127.0.0.1:8070'
     # print(publicURL, r.text, r.status_code)
     # Temperatura:
     temp1 = SensorTemperature("100", "001", topic, publicURL)
@@ -41,16 +42,16 @@ if __name__ == '__main__':
     speak1 = Speaker('500','001',broker,port, publicURL)
     # GPS
     GPS1 = SensorGPS('600','001',topic, publicURL)
-    # Controllo temperatura
-    contTemp1 = TemperatureControl('1',topic,broker,port, publicURL)
     # Controllo accelerazione
-    contAcc1 = AccelerationControl('2',topic,broker,port, publicURL)
+    contAcc1 = AccelerationControl('01_Acc_controlService',topic,broker,port, publicURL)
+    # Controllo temperatura
+    contTemp1 = TemperatureControl('02_Temp_controlService', topic, broker, port, publicURL)
     # Controllo ossigeno
-    contOx1 = OxygenControl('3',topic,broker,port, publicURL)
+    contOx1 = OxygenControl('03_OX_controlService',topic,broker,port, publicURL)
     # Controllo massa
-    contMas1 = WeightControl('4',topic,broker,port, publicURL)
+    contMas1 = WeightControl('04_We_controlService',topic,broker,port, publicURL)
     #Controllo stato di salute
-    contHealth1 = HealthControl('5',topic,broker,port, publicURL)
+    contHealth1 = HealthControl('05_Health_controlService',topic,broker,port, publicURL)
 
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
@@ -71,8 +72,8 @@ if __name__ == '__main__':
     GPS1.start()
     time.sleep(20)
     speak1.start()
-    contTemp1.start()
     contOx1.start()
+    contTemp1.start()
     contAcc1.start()
     contMas1.start()
     contHealth1.start()
