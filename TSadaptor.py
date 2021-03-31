@@ -12,7 +12,19 @@ from math import sqrt
 import threading
 
 class TSadaptor:
-    def __init__(self,broker,port,apikey_device,apikey_publicURL,apikey_service,cid,write_api,write_api_service,read_api,read_api_service,channel_ID,channel_ID_service):
+    def __init__(self,conf):
+        broker = conf["broker"]
+        port = conf["port"]
+        apikey_device=conf["canaliSensori"]["canaliSensori_general"]
+        apikey_service = conf["canaleServizio"]["canaleServizio_general"]
+        write_api=conf["canaliSensori"]["canaliSensori_write"]
+        write_api_service = conf["canaleServizio"]["canaleServizio_write"]
+        read_api=conf["canaliSensori"]["canaliSensori_read"]
+        read_api_service = conf["canaleServizio"]["canaleServizio_read"]
+        channel_ID=conf["canaliSensori"]["canaliSensori_channel"]
+        channel_ID_service = conf["canaleServizio"]["canaleServizio_channel"]
+        apikey_publicURL= conf["publicURL"]["publicURL_read"]
+        cid = conf["publicURL"]["publicURL_channelID"]
         r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey_publicURL}&results=1")
         jsonBody=json.loads(r.text)
         # print(r.text, r, r.content)
@@ -31,7 +43,7 @@ class TSadaptor:
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
         # self.t = threading.Thread(target=self.notify)
-
+        self.config = conf
 
     def topicsearch(self):
         r = requests.get(self.url+"/Get_TSadaptor")
@@ -108,21 +120,29 @@ class TSadaptor:
         else:
             r = requests.get("https://api.thingspeak.com/channels.json?api_key=" + self.api_service)
             jsonBody = json.loads(r.content)
-            id_box = list(payload.keys())
+            print(json.dumps(jsonBody,indent=2))
             flag = 0
-            for id in id_box:
-                nomecanale = jsonBody[id]['name']
-                if nomecanale == str(id):  # il canale c'è
-                     flag= 1
-                if not flag:
-                    self.createnewchannel(id,'Health Control', self.api_service)
-                    val = payload[id]['Health Status']
-                    r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api_service[id]}&field1={str(val)}")
-                    print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
+            listanomicanali=[]
+            for element in jsonBody:
+                listanomicanali.append(element['name'])
+            nomecanale = list(payload.keys())[0] + 'Health_Status'
+            # print(type(list(payload.keys())[0]), list(payload.keys())[0], type(nomecanale), nomecanale)
+            if nomecanale in listanomicanali:
+                flag = 1
+                print("il canale c'è")
+            if flag==0:
+                print("il canale non c'è")
+                self.createnewchannel(nomecanale,'Health Control', self.api_service)
+            val = payload[str(list(payload.keys())[0])]['Health Status']
+            # print(type(val), val)
+            r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api_service[nomecanale]}&field1={str(val)}")
+            print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
 
     def run(self):
         while True:
             self.topicsearch()
+            # r = requests.put(self.url+"/UpdateConfig", json=self.config)
+            # print("config uppato con risultato", r.status_code)
             time.sleep(30)
 
     # PER SENSORI
@@ -174,12 +194,12 @@ class TSadaptor:
         # print(self.write_api)
         with open('settings.json') as fp:
             actual=json.load(fp)
-            actual["canaleServizio"]["canaleServizio_write"]=self.diz_write_api
-            actual["canaleServizio"]["canaleServizio_channel"]=self.diz_channel_ID
-            actual["canaleServizio"]["canaleServizio_read"]= self.diz_read_api
+            actual["canaleServizio"]["canaleServizio_write"]=self.diz_write_api_service
+            actual["canaleServizio"]["canaleServizio_channel"]=self.diz_channel_ID_service
+            actual["canaleServizio"]["canaleServizio_read"]= self.diz_read_api_service
         with open('settings.json','w') as pd:
             json.dump(actual, pd,indent=2)
-        print(f"nuovo canale creato id:{self.diz_channel_ID}")
+        print(f"nuovo canale creato id:{self.diz_channel_ID_service}")
 
     # def deletechannel(self, channel_ID):
     #     payload={'api_key':self.api}
@@ -189,18 +209,7 @@ class TSadaptor:
 
 if __name__ == "__main__":
     conf=json.load(open("settings.json"))
-    broker = conf["broker"]
-    port = conf["port"]
-    apikey_device=conf["canaliSensori"]["canaliSensori_general"]
-    apikey_service = conf["canaleServizio"]["canaleServizio_general"]
-    write_api=conf["canaliSensori"]["canaliSensori_write"]
-    write_api_service = conf["canaleServizio"]["canaleServizio_write"]
-    read_api=conf["canaliSensori"]["canaliSensori_read"]
-    read_api_service = conf["canaleServizio"]["canaleServizio_read"]
-    channel_ID=conf["canaliSensori"]["canaliSensori_channel"]
-    channel_ID_service = conf["canaleServizio"]["canaleServizio_channel"]
-    apikey_publicURL= conf["publicURL"]["publicURL_read"]
-    cid = conf["publicURL"]["publicURL_channelID"]
-    ts=TSadaptor(broker,port,apikey_device,apikey_publicURL,apikey_service,cid,write_api,write_api_service,read_api,read_api_service,channel_ID,channel_ID_service)
+    
+    ts=TSadaptor(conf)
     ts.run()
 

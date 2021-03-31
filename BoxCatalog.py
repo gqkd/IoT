@@ -42,7 +42,13 @@ class Catalog():
             print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
+        elif uri[0] == "UpdateConfig":
+            with open('settings2.json','w') as fp:
+                fp.write(json.dumps(jsonBody))
+                fp.close()
+
         self.catalog["lastUpdate"] = str(datetime.time())
+
         
     def GET(self,*uri):
         if len(uri)!=0:
@@ -120,16 +126,16 @@ class tunneling:
 if __name__=="__main__":
 
     # è necessario startare 3 thread per il tunnelling
-    #t1 = threading.Thread(target=cherry)
-    #t2 = threading.Thread(target=ngrok)
-    #t3 = threading.Thread(target=tunneling)
+    t1 = threading.Thread(target=cherry)
+    t2 = threading.Thread(target=ngrok)
+    t3 = threading.Thread(target=tunneling)
 
-    #t1.start()
-    #t2.start()
-    #t3.start()
+    t1.start()
+    t2.start()
+    t3.start()
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    cherry()
+    # cherry()
 
     
 

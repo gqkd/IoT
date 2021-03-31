@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     #richiesta per il public URL del boxcatalog
     jsonBody=json.loads(r.text)
-    #publicURL=jsonBody['feeds'][0]['field1']
-    publicURL = 'http://127.0.0.1:8070'
+    publicURL=jsonBody['feeds'][0]['field1']
+    # publicURL = 'http://127.0.0.1:8070'
     # print(publicURL, r.text, r.status_code)
     # Temperatura:
     temp1 = SensorTemperature("100", "001", topic, publicURL)
