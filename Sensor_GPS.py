@@ -1,5 +1,6 @@
 import time
 import random
+import numpy as np
 import threading
 import requests
 from MyMQTT import *
@@ -62,8 +63,8 @@ class SensorGPS(threading.Thread):
         message['e'][0]['t'] = float(time.time())   
         message['e'][0]['v_lon'] = self.coordinate[self.cont]["lon"]
         message['e'][0]['v_lat'] = self.coordinate[self.cont]["lat"]
-        message['e'][0]['v_time'] = 120-self.cont/4*30/60 #120 perchè è la durata del viaggio simulato in minuti. a cui sottrggo il tempo passato preso dal cont
-        self.cont =+4
+        message['e'][0]['v_time'] = np.round(120-self.cont/4*30/60) #120 perchè è la durata del viaggio simulato in minuti. a cui sottrggo il tempo passato preso dal cont
+        self.cont += 4
         self.client.myPublish(self.topic,message)
 
     def stop_MyMQTT(self):

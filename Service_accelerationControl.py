@@ -72,7 +72,7 @@ class AccelerationControl(threading.Thread):
         # Calcolo dell'accelerazione complessiva
         a_tot = sqrt(ax**2+ay**2+az**2)
         # Avvisare speaker e mandare dato a thingspeak
-        if a_tot> 0.1: # deve essere 0.7 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if a_tot> 0.01: # deve essere 0.7 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             messaggio = {'Acceleration':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE ACCELERAZIONE NON VA BENE
         else:
             messaggio = {'Acceleration': 0, "DeviceID":payload['bn']}      # CODICE PER DIRE CHE ACCELERAZIONE VA BENE
