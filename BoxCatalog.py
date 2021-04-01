@@ -65,11 +65,11 @@ class Catalog():
                 return json.dumps({"topics": "Ipfsod/+/+/GPS"})
             elif uri[0] == "GetTopic":
                 return json.dumps({"topics":["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl"]})
-            # elif uri[0] == "GetTelegram":
-            #     for s in self.servicesList:
-            #         if s["serviceID"] == "6":
-            #             TgTopic = s["Topic"]
-            #             return json.dumps({"topics": TgTopic})
+            elif uri[0] == "GetTelegram":
+                for s in self.servicesList:
+                    if s["serviceID"] == "6":
+                        TgTopic = s["Topic"]
+                        return json.dumps({"topics": TgTopic})
             elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
                 return json.dumps({"devices":self.deviceList, "services":self.servicesList})

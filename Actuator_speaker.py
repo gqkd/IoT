@@ -18,7 +18,7 @@ class Speaker(threading.Thread):
         }
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
-        self.d = {'Temperature': 0, 'Acceleration': 0, 'Oxygen': 0, 'Mass': 1}
+        self.d = {'Temperature': [0,"ON"], 'Acceleration': [0,"ON"], 'Oxygen': [0,"ON"], 'Mass': 1} # la seconda chiave è per le notifhce 
         # Dati utili per timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -45,7 +45,8 @@ class Speaker(threading.Thread):
             
         r = requests.get(self.url+"/GetTelegram")
         jsonBody = json.loads(r.content)
-        self.client.mySubscribe(jsonBody["topics"])
+        self.telegramTopic = jsonBody["topics"]
+        self.client.mySubscribe(self.telegramTopic)
         
     def run(self):
         while True:
@@ -57,35 +58,30 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        if topic[-11:] == "GetTelegram":
+        if topic == self.telegramTopic:
             messaggio = json.loads(msg)
             if messaggio['DeviceID'] == self.boxID:
-                listavalori = list(messaggio.values())
-                toSilence = listavalori[0]
-                #TODO a seconda di quale allarme voglio silenziare lo script dopo va tutto modificiato
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                listaKeys = list(messaggio.keys())
+                toSilence = listaKeys[0] # Parametro da disattivare o attivare
+                toSilence_state = messaggio[toSilence] # se attivare le notifche o disattivarle
+                self.d[toSilence][1] = toSilence_state
+
         else:
             messaggio = json.loads(msg)
             listachiavi = list(messaggio.keys())
             deviceID = messaggio['DeviceID']
-            if self.d['Mass'] == 0 and self.boxID == deviceID[0:3]:
+            if self.boxID == deviceID[0:3]:
                 print(f"""MESSAGGIO RICEVUTO DA ATTUATOREEEEEEEEE:\n {messaggio}""")
                 if 'Mass' in listachiavi:
                     self.d['Mass'] = messaggio['Mass']
                 elif 'Temperature' in listachiavi:
-                    self.d['Temperature'] = messaggio['Temperature']
+                    self.d['Temperature'][0] = messaggio['Temperature']
                 elif 'Acceleration' in listachiavi:
-                    self.d['Acceleration'] = messaggio['Acceleration']
+                    self.d['Acceleration'][0] = messaggio['Acceleration']
                 elif 'Oxygen' in listachiavi:
-                    self.d['Oxygen'] = messaggio['Oxygen']
-
-            if self.d["Mass"] == 0 and sum(list(self.d.values())) > 0: # abbiamo aggiunto self.d["Mass"] == 0 in modo che quando la massa non è presente (1) non continua a dare allarme 
+                    self.d['Oxygen'][0] = messaggio['Oxygen']
+            print(f"Allarmi: {self.d}")
+            if self.d["Mass"]==0 and ((self.d['Temperature'][0]==1 and self.d['Temperature'][1]=="ON")  or (self.d['Acceleration'][0]==1 and self.d['Acceleration'][1]=="ON") or (self.d['Oxygen'][0]==1 and self.d['Oxygen'][1]=="ON")): # abbiamo aggiunto self.d["Mass"] == 0 in modo che quando la massa non è presente (1) non continua a dare allarme 
                 print('A T T E N Z I O N E: \n ALLARME ATTIVO')
             else:
                 pass

@@ -23,13 +23,12 @@ class TelegramBot(threading.Thread):
         self.chatIDs=[]
         self.client = MyMQTT("telegramBotIoT", broker, port, self)
         self.client.start()
-        self.canSendBoxID = 0 #per leggere box id solo quando viene chiesto
+        # self.canSendBoxID = 0 #per leggere box id solo quando viene chiesto
         MessageLoop(self.bot, {'chat': self.on_chat_message,'callback_query': self.on_callback_query}).run_as_thread()
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
-        self.count = 6
         # richiesta public url catalog 
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
@@ -52,10 +51,9 @@ class TelegramBot(threading.Thread):
         r = requests.get(self.url+"/GetTopic") 
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
-        self.client.mySubscribe(listatopicService[0])  # TOPIC temp RICHIESTO A CATALOG
-        self.client.mySubscribe(listatopicService[1])  # TOPIC acc RICHIESTO A CATALOG
-        self.client.mySubscribe(listatopicService[2])  # TOPIC oxyg RICHIESTO A CATALOG
-        r = requests.get(self.url+"/GetGPS") #TODO 
+        for topic in listatopicService[:-1]:
+            self.client.mySubscribe(topic)
+        r = requests.get(self.url+"/GetGPS")
         jsonBody = json.loads(r.content)
         self.client.mySubscribe(jsonBody["topics"])    # TOPIC gps RICHIESTO A CATALOG
             
@@ -65,16 +63,22 @@ class TelegramBot(threading.Thread):
         requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
 
     def run(self):
+        count = 6
         while True:
             self.topicRequest()
-            if self.count % (self.timerequest/self.timerequestTopic) == 0:
+            if count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
-                self.count=0
-            self.count += 1
+                count=0
+            count += 1
             time.sleep(self.timerequestTopic)
     
     def on_chat_message(self, msg):
         content_type, chat_type, chat_ID = telepot.glance(msg)
+        if self.chatIDs != []:
+            for c,id in enumerate(self.chatIDs):
+                if id["chatID"] == chat_ID:
+                    cont = c
+        
         message = msg['text']
         if message == "/start":            
             buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
@@ -83,24 +87,21 @@ class TelegramBot(threading.Thread):
             self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
         elif message == "/changeboxid":
             self.bot.sendMessage(chat_ID, text=f"Insert Box ID: ")
-            self.canSendBoxID = 1
-        elif self.canSendBoxID == 1:
+            self.chatIDs[cont]["Notification"][4] = 1
+            # self.canSendBoxID = 1
+        elif self.chatIDs == [] or self.chatIDs[cont]["Notification"][4] == 1:
             #TODO valutare una richiesta al catalog per avere una lista di tutti i sensori sottoscritti e quindi le box per verificare che l'boxID inserito sia presente nel catalog
             boxID = message
             if len(boxID) == 3:
-                cont = -1
-                flag = 0 #per sapere se l'id della chat non è presente
+                flag = 0 # per sapere se l'id della chat non è presente
                 if self.chatIDs != []:
-                    for id in self.chatIDs:
-                        cont += 1
-                        if id["chatID"] == chat_ID:
-                            self.chatIDs[cont]["boxID"] = boxID
-                            self.chatIDs[cont]["Notification"] = [1,1,1,"ON",1]
-                            flag = 1
+                    self.chatIDs[cont]["boxID"] = boxID
+                    self.chatIDs[cont]["Notification"] = [1,1,1,"ON",0]
+                    flag = 1
                 if flag == 0 or self.chatIDs == []:
-                    self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":None,"Notification":[1,1,1,"ON",1]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato,notifiche telegram, da definire
+                    self.chatIDs.append({"chatID":chat_ID,"boxID":boxID,"team":None,"Notification":[1,1,1,"ON",0]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato,notifiche telegram, controllo che inserisco Box ID solo quando chiesto
                 self.bot.sendMessage(chat_ID, text=f"You will receive notifications from Box {boxID}.")
-                self.canSendBoxID = 0
+                # self.chatIDs[cont]["Notification"][4] = 0
             else: 
                 self.bot.sendMessage(chat_ID, text=f"Invalid Box ID. Try again.")
                 
@@ -116,6 +117,8 @@ class TelegramBot(threading.Thread):
                         InlineKeyboardButton(text=f'Oxygen', callback_data=f'OxygenON')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
             self.bot.sendMessage(chat_ID, text='Which alarm do you want to activate?', reply_markup=keyboard)
+        elif message == "/finish":
+            self.chatIDs.pop(cont)
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
         print(self.chatIDs)
@@ -125,45 +128,41 @@ class TelegramBot(threading.Thread):
             
     def on_callback_query(self,msg):     #Quando premo un bottone    
         query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
+        if self.chatIDs != []:
+            for c,id in enumerate(self.chatIDs):
+                if id["chatID"] == chat_ID:
+                    cont = c
         
         if query_data[-2:] == "ON":
-            cont = -1
-            for id in self.chatIDs:
-                cont += 1
-                if id["chatID"] == chat_ID:
-                    boxID = id["boxID"]
-                    self.chatIDs[cont]["Notification"][3] = query_data[-2:]
+            boxID = self.chatIDs[cont]["boxID"]
+            self.chatIDs[cont]["Notification"][3] = query_data[-2:]
             
-            messaggio = {'Silence': query_data, "DeviceID": boxID}      # CODICE PER DIRE CHE ACCELERAZIONE VA BENE
+            messaggio = {query_data[:-2]: "ON", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
-        elif query_data[-3:] == "OFF":
-            cont = -1
-            for id in self.chatIDs:
-                cont += 1
-                if id["chatID"] == chat_ID:
-                    boxID = id["boxID"]
-                    self.chatIDs[cont]["Notification"][3] = query_data[-3:]
             
-            messaggio = {'Silence': query_data, "DeviceID": boxID}      # CODICE PER DIRE CHE ACCELERAZIONE VA BENE
+        elif query_data[-3:] == "OFF":
+            boxID = self.chatIDs[cont]["boxID"]
+            self.chatIDs[cont]["Notification"][3] = query_data[-3:]
+            
+            messaggio = {query_data[:-3]: "OFF", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
 
         else:
-            cont = -1
+            
             flag = 0
             if self.chatIDs != []:
-                for id in self.chatIDs:
-                    cont += 1
+                for cont,id in enumerate(self.chatIDs):
                     if id["chatID"] == chat_ID:
                         self.chatIDs[cont]["team"] = query_data
+                        self.chatIDs[cont]["Notification"][4] = 1
                         flag = 1
             if flag == 0 or self.chatIDs == []:
                     self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":query_data,"Notification":[1,1,1,"ON",1]})
 
             self.bot.sendMessage(chat_ID, text=f"Registered as {query_data} team.")
             self.bot.sendMessage(chat_ID, text=f"Insert Box ID: ")
-            self.canSendBoxID = 1
             print(self.chatIDs)
         
     def notify(self,topic,msg):
@@ -186,29 +185,25 @@ class TelegramBot(threading.Thread):
             # }
         # messaggio {'Acceleration':1, "DeviceID": 001200}
         
-        if topic[-3:] == "GPS":
+        if topic[-3:] == "GPS":           
             boxID = messaggio["bn"][:3:]           
-            cont = -1
-            for id in self.chatIDs:
-                cont += 1
+            for cont,id in enumerate(self.chatIDs):
                 if id["boxID"] == boxID:
                     chat_ID = id["chatID"]
                     if id["Notification"][0] == 1 and id["team"] == "surgical":
                         self.bot.sendMessage(chat_ID, text=f"Your Box {boxID} is on its way.")
                         self.chatIDs[cont]["Notification"][0] = 0
-            if messaggio["e"][0]["v_time"] < 118:  #deve essere 20
-                cont = -1
-                for id in self.chatIDs:
-                    cont += 1
+                        
+            if messaggio["e"][0]["v_time"] < 20:  # Parte da 120
+                for cont,id in enumerate(self.chatIDs):
                     if id["boxID"] == boxID:
                         chat_ID = id["chatID"]
                         if id["Notification"][1] ==1 and id["team"] == "surgical":
                             self.bot.sendMessage(chat_ID, text=f"Your Box {boxID} will arrive in 20 min.")
-                            self.chatIDs[cont]["Notification"][1] = 0                        
+                            self.chatIDs[cont]["Notification"][1] = 0    
+                                                
             if messaggio["e"][0]["v_time"] < 1:
-                cont = -1
-                for id in self.chatIDs:
-                    cont += 1
+                for cont,id in enumerate(self.chatIDs):
                     if id["boxID"] == boxID:
                         chat_ID = id["chatID"]
                         if id["Notification"][2] == 1 and id["team"] == "surgical":
@@ -227,7 +222,6 @@ class TelegramBot(threading.Thread):
                             tosend=f"ATTENTION!!!\n{chiavi[0]} out of range."
                             chat_ID = id["chatID"]
                             self.bot.sendMessage(chat_ID, text=tosend)
-                            #TODO aggiungere comando per silenziare l'attuatore 
         
     def stop_MyMQTT(self):
         self.client.stop()
@@ -241,15 +235,7 @@ if __name__ == "__main__":
     
     tb=TelegramBot(token,broker,port)
     tb.start()
-    for i in range(100):
+    while True:
         time.sleep(100)
     
 
-    # input("press a key to start...")
-    # test=MyMQTT("testIoTBot",broker,port,None)
-    # test.start()
-    # topic = "orlando/alert/temp"
-    # for i in range(5):
-    #     message={"alert":i,"action":i**2}
-    #     test.myPublish(topic,message)
-    #     time.sleep(3)
