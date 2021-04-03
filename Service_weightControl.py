@@ -17,13 +17,12 @@ class WeightControl(threading.Thread):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
         self.topic = topic  # basetopic
-        self.topicresource = '' # topic che verrà chiesto a box catalog
         self.broker = broker
         self.port = port
         self.payload = {
             "serviceID": self.serviceID,
-            "Topic": f"""{self.topic}/{self.serviceID}/weightControl""""",
-            "Resource": "Service",
+            "Topic": f"{self.topic}/{self.serviceID}/weightControl",
+            "Resource": "WeightControl",
             "Timestamp": None
         }
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
@@ -44,13 +43,14 @@ class WeightControl(threading.Thread):
         # Richiesta GET per topic
         r = requests.get(self.url+"/GetMass")
         jsonBody = json.loads(r.content)
-        self.topicresource = jsonBody["topics"]
+        listatopicSensor = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        # self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        # self.client.stop()
-        # self.client.start()
-        self.client.mySubscribe(self.topicresource)  # TOPIC RICHIESTO A CATALOG
-
+        #self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
+        #self.client.stop()
+        #self.client.start()
+        for topic in listatopicSensor:
+            # self.client.unsubscribe()
+            self.client.mySubscribe(topic)
 
     def run(self):
         while True:

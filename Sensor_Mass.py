@@ -15,7 +15,7 @@ class SensorMass(threading.Thread):
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
-            "Resource": "mass",
+            "Resource": "Mass",
             "Timestamp": None
         }
         #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore

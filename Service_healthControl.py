@@ -8,7 +8,6 @@ class HealthControl(threading.Thread):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
         self.topic = topic  # basetopic
-        self.topicresource = '' # topic che verrà chiesto a box catalog
         self.broker = broker
         self.port = port
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
@@ -16,7 +15,7 @@ class HealthControl(threading.Thread):
         self.payload = {
             "serviceID": self.serviceID,
             "Topic": f"{self.topic}/{self.serviceID}/healthControl",
-            "Resource": "Service",
+            "Resource": "HealthControl",
             "Timestamp": None
         }
         self.dizionario_misure = {}
@@ -34,7 +33,7 @@ class HealthControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
-        r = requests.get(self.url+"/GetTopic")
+        r = requests.get(self.url+"/GetServiceTopic")
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati

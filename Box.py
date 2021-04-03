@@ -11,6 +11,7 @@ from Service_weightControl import *
 from Service_healthControl import *
 import requests
 import time
+import json
 
 if __name__ == '__main__':
     conf2=json.load(open("settingsboxcatalog.json"))

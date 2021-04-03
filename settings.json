@@ -2,6 +2,7 @@
   "broker": "broker.hivemq.com",
   "port": 1883,
   "baseTopic": "Ipfsod",
+  "telegramToken": "1689078533:AAH5qRJrvFD1_PKeYbtvNaETfJdJ6Nu2bUg",
   "publicURL": {
     "publicURL_read": "74BPJAXGQDBJJPOS",
     "publicURL_write": "1V4US3YABOXPC2DB",
@@ -31,13 +32,13 @@
   "canaleServizio": {
     "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
     "canaleServizio_write": {
-      "001Health_Status": "KY2QV66N94IW7RN0"
+      "001Health_Status": "RI10C7KAMZ8EQ7ZJ"
     },
     "canaleServizio_read": {
-      "001Health_Status": "1W2EGGLWQFR6DOEL"
+      "001Health_Status": "KUHO7GH2AT1HTS9P"
     },
     "canaleServizio_channel": {
-      "001Health_Status": 1345415
+      "001Health_Status": 1347853
     }
   }
 }

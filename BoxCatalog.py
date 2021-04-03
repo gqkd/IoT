@@ -29,6 +29,7 @@ class Catalog():
                 if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
+            self.catalog["deviceList"] = self.deviceList
             # print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
@@ -37,8 +38,10 @@ class Catalog():
             for service in self.servicesList:
                 cont += 1
                 if str(service["serviceID"]) == str(jsonBody["serviceID"]):
+                    print("&&&&&&&&&&&& é entrato nell'if >&&&&>")
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
+            self.catalog["servicesList"] = self.servicesList
             print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
@@ -54,21 +57,53 @@ class Catalog():
         if len(uri)!=0:
             # Posso farmi tornare anche topic a cui si sottoscrive speaker?
             if uri[0] == "GetTemperature":
-                return json.dumps({"topics": "Ipfsod/+/+/temperature"})
+                topics = []
+                for device in self.deviceList:
+                    if device["Resource"] == "Temperature":
+                        topics.append(device["Topic"])
+                return json.dumps({"topics": topics})
+            
             elif uri[0] == "GetAcceleration":
-                return json.dumps({"topics": "Ipfsod/+/+/acceleration"})
+                topics = []
+                for device in self.deviceList:
+                    if device["Resource"] == "Acceleration":
+                        topics.append(device["Topic"])
+                return json.dumps({"topics": topics})
+            
             elif uri[0] == "GetMass":
-                return json.dumps({"topics": "Ipfsod/+/+/mass"})
+                topics = []
+                for device in self.deviceList:
+                    if device["Resource"] == "Mass":
+                        topics.append(device["Topic"])
+                return json.dumps({"topics": topics})
+            
             elif uri[0] == "GetOxygenLevel":
-                return json.dumps({"topics": "Ipfsod/+/+/oxygen"})
+                topics = []
+                for device in self.deviceList:
+                    if device["Resource"] == "Oxygen":
+                        topics.append(device["Topic"])
+                return json.dumps({"topics": topics})
+            
             elif uri[0] == "GetGPS":
-                return json.dumps({"topics": "Ipfsod/+/+/GPS"})
-            elif uri[0] == "GetTopic":
-                return json.dumps({"topics":["Ipfsod/+/temperatureControl","Ipfsod/+/accelerationControl","Ipfsod/+/oxygenControl","Ipfsod/+/weightControl"]})
+                topics = []
+                for device in self.deviceList:
+                    if device["Resource"] == "GPS":
+                        topics.append(device["Topic"])
+                return json.dumps({"topics": topics})
+            
+            elif uri[0] == "GetServiceTopic":
+                topics = []
+                print(f"&&&&&{self.servicesList}")
+
+                for service in self.servicesList:
+                    if service["Resource"] == "AccelerationControl" or service["Resource"] == "TemperatureControl" or service["Resource"] == "OxygenControl" or service["Resource"] == "WeightControl":
+                        topics.append(service["Topic"])
+                return json.dumps({"topics": topics})
+                        
             elif uri[0] == "GetTelegram":
-                for s in self.servicesList:
-                    if s["serviceID"] == "6":
-                        TgTopic = s["Topic"]
+                for service in self.servicesList:
+                    if service["Resource"] == "TelegramBot":
+                        TgTopic = service["Topic"]
                         return json.dumps({"topics": TgTopic})
             elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})

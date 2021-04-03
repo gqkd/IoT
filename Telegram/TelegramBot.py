@@ -3,6 +3,7 @@ import time
 import threading
 import requests
 import telepot
+import os
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -39,23 +40,23 @@ class TelegramBot(threading.Thread):
         # messaggio inviato all'attuatore
         self.topic = conf["baseTopic"]
         self.payload = {
-            "serviceID": "6",
-            "Topic": f"{self.topic}/6/telegramBot",
-            "Resource": "Service",
+            "serviceID": "06_TelegramBot",
+            "Topic": f"{self.topic}/06_TelegramBot/telegramBot",
+            "Resource": "TelegramBot",
             "Timestamp": None
         }
         
         
     def topicRequest(self):
         # Richiesta GET per topic dei servizi
-        r = requests.get(self.url+"/GetTopic") 
+        r = requests.get(self.url+"/GetServiceTopic") 
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
-        for topic in listatopicService[:-1]:
+        for topic in listatopicService:
             self.client.mySubscribe(topic)
         r = requests.get(self.url+"/GetGPS")
         jsonBody = json.loads(r.content)
-        self.client.mySubscribe(jsonBody["topics"])    # TOPIC gps RICHIESTO A CATALOG
+        self.client.mySubscribe(jsonBody["topics"][0])    # TOPIC gps RICHIESTO A CATALOG
             
     def request(self):
         # Sottoscrizione al boxcatalog
@@ -213,7 +214,8 @@ class TelegramBot(threading.Thread):
         
         else:
             valori = list(messaggio.values())
-            if valori[0] == 1:
+            chiavi = list(messaggio.keys())
+            if valori[0] == 1 and chiavi[0] != "Mass":
                 boxID = messaggio['DeviceID'][:3:]
                 for id in self.chatIDs:
                     if id["boxID"] == boxID:
