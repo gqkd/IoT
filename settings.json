@@ -11,16 +11,8 @@
   "canaliSensori": {
     "canaliSensori_general": "Y1TWL3R4UWBVL534",
     "canaliSensori_write": {
-      "200": "NKLDI3A13GCFBT62",
-      "100": "YBWOH40OCEZZAZ8F",
-      "400": "RM04V1CS6EWVLBB4",
-      "600": "ONLOL2V9CZINKPHI"
     },
     "canaliSensori_read": {
-      "200": "EHXQ638XVE4DXB12",
-      "100": "C06JQWX5SF8JA1HZ",
-      "400": "H6MMQ7K2187Z1C1J",
-      "600": "U1ZDCJFXJEF3Q4BV"
     },
     "canaliSensori_channel": {
       "200": 1345278,
@@ -32,13 +24,12 @@
   "canaleServizio": {
     "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
     "canaleServizio_write": {
-      "001Health_Status": "RI10C7KAMZ8EQ7ZJ"
+
     },
     "canaleServizio_read": {
-      "001Health_Status": "KUHO7GH2AT1HTS9P"
+
     },
     "canaleServizio_channel": {
-      "001Health_Status": 1347853
     }
   }
 }

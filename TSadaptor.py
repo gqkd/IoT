@@ -9,7 +9,7 @@ import time
 import requests
 import json
 from math import sqrt
-import threading
+
 
 class TSadaptor:
     def __init__(self,conf):
@@ -67,7 +67,6 @@ class TSadaptor:
         payload = json.loads(msg)
         print(f"Messagggggggggggio: {payload}")
         if 'bn' in list(payload.keys()):
-            id_box = payload["bn"][:3:]
             num_sensore = payload['bn'][3::]
             id_num = payload['bn']
             #richiesta per avere la lista dei canali presenti
