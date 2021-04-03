@@ -10,7 +10,6 @@ class Example(object):
     exposed=True
     def __init__(self):
         self.usersData = json.load(open("User_data.json"))
-        self.userList = self.usersData['userList']
         r = requests.get('http://localhost:4040/api/tunnels/WebApp')
         
         self.public_ur = r.json()["public_url"] #"http://localhost:8094" #r.json()["public_url"]
@@ -32,7 +31,8 @@ class Example(object):
                 self.NodeRed2 = params["link"]
             elif uri[0] == "NodeRed3":
                 self.NodeRed3 = params["link"]
-                
+            elif uri[0] == "UsersData":
+                return json.dumps(self.usersData)
         else:
             return open("indexDesktop.html")
       
@@ -42,7 +42,7 @@ class Example(object):
         self.name = params.get('uname')
         self.psw = params.get('psw')
         
-        for user in self.userList:
+        for user in self.usersData['userList']:
             if user["UserName"] == self.name:
                 if user["Psw"] == self.psw:
                     if user["Level"] == "1":
