@@ -141,6 +141,7 @@ class TSadaptor:
     def run(self):
         while True:
             self.topicsearch()
+            r = requests.put(self.url + "/Info", json=self.config)
             # r = requests.put(self.url+"/UpdateConfig", json=self.config)
             # print("config uppato con risultato", r.status_code)
             time.sleep(30)

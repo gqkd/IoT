@@ -38,17 +38,20 @@ class Catalog():
             for service in self.servicesList:
                 cont += 1
                 if str(service["serviceID"]) == str(jsonBody["serviceID"]):
-                    print("&&&&&&&&&&&& é entrato nell'if >&&&&>")
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
             self.catalog["servicesList"] = self.servicesList
-            print(f"""Lista servizi attivi: \n {self.servicesList}""")
+            #print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
 
         elif uri[0] == "UpdateConfig":
             with open('settings2.json','w') as fp:
                 fp.write(json.dumps(jsonBody))
                 fp.close()
+
+        elif uri[0] == "Info":
+            self.info = jsonBody
+            print(self.info)
 
         self.catalog["lastUpdate"] = str(datetime.time())
 
@@ -105,9 +108,13 @@ class Catalog():
                     if service["Resource"] == "TelegramBot":
                         TgTopic = service["Topic"]
                         return json.dumps({"topics": TgTopic})
+
             elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
                 return json.dumps({"devices":self.deviceList, "services":self.servicesList})
+
+            elif uri[0] == "Get_Info":
+                return json.dumps(self.info)
             #----------------
 
     # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
