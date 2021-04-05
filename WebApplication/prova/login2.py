@@ -52,6 +52,7 @@ class Example(object):
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
+        print(f"&>&&&&&&&&&{params}")
         if uri[0] == "Registration":
             self.user["UserName"] = params.get('uname')
             self.user["Psw"] = params.get('psw')

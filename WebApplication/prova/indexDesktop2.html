@@ -50,14 +50,10 @@
                 }
                 
                 /* Aggiunto per al tab */
-                .buttonTab {
-                background-color: #990000;
-                color: white;
-                padding: 8px 10px;  /* Dimensione bottone login */
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
+                .tablinks {
+                width: auto;
+                padding: 10px 18px;
+                background-color: #f44336;
                 }
     
                 button:hover {
@@ -168,8 +164,8 @@
                 /* Style the tab */
                 .tab {
                 overflow: hidden;
-                border: 1px solid #ccc;
-                background-color: #f1f1f1;
+                border: 1px solid rgb(58, 55, 241);
+                background-color: rgb(39, 61, 185);
                 }
 
                 /* Style the buttons inside the tab */
@@ -186,12 +182,12 @@
 
                 /* Change background color of buttons on hover */
                 .tab button:hover {
-                background-color: #ddd;
+                background-color: rgb(57, 69, 233);
                 }
 
                 /* Create an active/current tablink class */
                 .tab button.active {
-                background-color: #ccc;
+                background-color: rgb(16, 27, 175);
                 }
 
                 /* Style the tab content */
@@ -201,6 +197,17 @@
                 border: 1px solid #ccc;
                 border-top: none;
                 }
+                
+                /* Per menù a tendina degli ospedali */
+                input[type=text], select {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+}
                 /*---------------------------------------------------------------------------------------------*/
 
 
@@ -279,21 +286,80 @@
                         <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
                         <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                         </div>
-                        
-                        <div class="container">
-                            
-                        <label for="uname"><b>Username</b></label>
-                        <input type="text" placeholder="Enter Username" name="uname" id = "1" required>
+                        <!----------------------------------------------------------------------------------------->
 
-                        <label for="mail"><b>Email</b></label>
-                        <input type="text" placeholder="Enter Email" name="mail" id="2" required>
-        
-                        <label for="psw"><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" name="psw" id="3" required>
-                            
-                        <button type="submit" onclick="Alert()" >Sing Up</button>
-
+                        <div class="tab">
+                            <button type="button" class="tablinks" onclick="openCity(event, 'SSN')">SSN</button>
+                            <button type="button" class="tablinks" onclick="openCity(event, 'Hospital')">Hospital</button>
+                            <button type="button" class="tablinks" onclick="openCity(event, 'Doctor')">Doctor</button>
                         </div>
+
+                        
+                        <div id="SSN" class="tabcontent">
+                            <div class="container">
+                            
+                                <label for="uname"><b>Username</b></label>
+                                <input type="text" placeholder="Enter Username" name="uname" id = "1" required>
+        
+                                <label for="mail"><b>Email</b></label>
+                                <input type="text" placeholder="Enter Email" name="mail" id="2" required>
+                
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password" name="psw" id="3" required>
+                                    
+                                <button type="submit" onclick="Alert()" >Sing Up</button>
+        
+                            </div>
+                        </div>
+                        
+                        <div id="Hospital" class="tabcontent">
+                            <div class="container">
+                                
+                                <label for="hospital"><b>Hospital</b></label>
+                                <select name="hospital" id="4" required>
+                                    <option value="australia">Select Hospital: </option>
+                                    <option value="canada">ASST Papa Giovanni XXIII</option>
+                                    <option value="usa">Ospedale Molinette Torino</option>
+                                  </select>
+
+                                <label for="uname"><b>Username</b></label>
+                                <input type="text" placeholder="Enter Username" name="uname" id = "5" required>
+        
+                                <label for="mail"><b>Email</b></label>
+                                <input type="text" placeholder="Enter Email" name="mail" id="6" required>
+                
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password" name="psw" id="7" required>
+                                    
+                                <button type="submit" onclick="Alert()" >Sing Up</button>
+        
+                            </div>
+                        </div>
+                        
+                        <div id="Doctor" class="tabcontent">
+                            <div class="container">
+                                <label for="fromHospital"><b>Hospital</b></label>
+                                <select name="fromHospital" id="8" required>
+                                    <option value="australia">Select Hospital you belong to: </option>
+                                    <option value="canada">ASST Papa Giovanni XXIII</option>
+                                    <option value="usa">Ospedale Molinette Torino</option>
+                                  </select>
+
+                                <label for="uname"><b>Username</b></label>
+                                <input type="text" placeholder="Enter Username" name="uname" id = "9" required>
+        
+                                <label for="mail"><b>Email</b></label>
+                                <input type="text" placeholder="Enter Email" name="mail" id="10" required>
+                
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password" name="psw" id="11" required>
+                                    
+                                <button type="submit" onclick="Alert()" >Sing Up</button>
+        
+                            </div>
+                        </div>
+                        <!----------------------------------------------------------------------------------->
+
         
                         <div class="container" style="background-color:#f1f1f1">
                         <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
@@ -302,21 +368,21 @@
                     </div>
                 
                 
-                <script>
-                    //Funzione tab
-                    function openCity(evt, cityName) {
-                        var i, tabcontent, tablinks;
-                        tabcontent = document.getElementsByClassName("tabcontent");
-                        for (i = 0; i < tabcontent.length; i++) {
-                        tabcontent[i].style.display = "none";
+                    <script>
+                        //Funzione tab
+                        function openCity(evt, cityName) {
+                            var i, tabcontent, tablinks;
+                            tabcontent = document.getElementsByClassName("tabcontent");
+                            for (i = 0; i < tabcontent.length; i++) {
+                            tabcontent[i].style.display = "none";
+                            }
+                            tablinks = document.getElementsByClassName("tablinks");
+                            for (i = 0; i < tablinks.length; i++) {
+                            tablinks[i].className = tablinks[i].className.replace(" active", "");
+                            }
+                            document.getElementById(cityName).style.display = "block";
+                            evt.currentTarget.className += " active";
                         }
-                        tablinks = document.getElementsByClassName("tablinks");
-                        for (i = 0; i < tablinks.length; i++) {
-                        tablinks[i].className = tablinks[i].className.replace(" active", "");
-                        }
-                        document.getElementById(cityName).style.display = "block";
-                        evt.currentTarget.className += " active";
-                    }
                     </script>
 
                 
