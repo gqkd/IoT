@@ -10,7 +10,7 @@
 
 
 
-            <!-- Aggiungo parte per il bottone e il po-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
+            <!-- Aggiungo parte per il bottone e il pop-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
 
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,6 +43,17 @@
                 background-color: #990000;
                 color: white;
                 padding: 28px 46px;  /* Dimensione bottone login */
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                }
+                
+                /* Aggiunto per al tab */
+                .buttonTab {
+                background-color: #990000;
+                color: white;
+                padding: 8px 10px;  /* Dimensione bottone login */
                 margin: 8px 0;
                 border: none;
                 cursor: pointer;
@@ -92,7 +103,7 @@
                 height: 100%; /* Full height */
                 background-color: rgb(0,0,0); /* Fallback color */
                 background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-                padding-top: 10%;
+                padding-top: 5%;
                 padding-right: 30%;
                 padding-left: 30%;
                 }
@@ -104,7 +115,34 @@
                 border: 1px solid #888;
                 width: 80%; /* Could be more or less, depending on screen size */
                 }
+
+                /* The Modal (background) */
+                .modal1 {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                padding-top: 1%;
+                padding-right: 10%;
+                padding-left: 10%;
+                }
     
+                /* Modal Content/Box */
+                .modal1-content {
+                background-color: #fefefe;
+                margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+                border: 1px solid #888;
+                width: 80%; /* Could be more or less, depending on screen size */
+                }
+
+
+
+                
                 /* The Close Button (x) */
                 .close {
                 position: absolute;
@@ -126,6 +164,47 @@
                 -webkit-animation: animatezoom 0.6s;
                 animation: animatezoom 0.6s
                 }
+                /*Inserimento della tabellaaaa -----------------------------------------------------------------------------------------*/
+                /* Style the tab */
+                .tab {
+                overflow: hidden;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+                }
+
+                /* Style the buttons inside the tab */
+                .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 8px 10px;
+                transition: 0.3s;
+                font-size: 17px;
+                }
+
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                background-color: #ccc;
+                }
+
+                /* Style the tab content */
+                .tabcontent {
+                display: none;
+                padding: 6px 12px;
+                border: 1px solid #ccc;
+                border-top: none;
+                }
+                /*---------------------------------------------------------------------------------------------*/
+
+
+
     
                 @-webkit-keyframes animatezoom {
                 from {-webkit-transform: scale(0)} 
@@ -164,6 +243,7 @@
                       
                       <div class="center">
                         <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Login</button>
+                        <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog">Sing Up</button>
                       </div>
     
     
@@ -183,9 +263,7 @@
                     <input type="password" placeholder="Enter Password" name="psw" required>
                         
                     <button type="submit">Login</button>
-                    <label>
-                        <input type="checkbox" checked="checked" name="remember"> Remember me
-                    </label>
+
                     </div>
     
                     <div class="container" style="background-color:#f1f1f1">
@@ -193,15 +271,102 @@
                     </div>
                 </form>
                 </div>
-    
+                
+                <div id="id02" class="modal1">
+                
+                    <form class="modal1-content animate" action="/Registration" method="post">
+                        <div class="imgcontainer">
+                        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
+                        </div>
+                        <!----------------------------------------------------------------------------------------->
+                        <div class="tab">
+                            <button class="button" onclick="openCity(event, 'London')">London</button>
+                            <button class="button" onclick="openCity(event, 'Paris')">Paris</button>
+                            <button class="button" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+                        </div>
+                        
+                        <div id="London" class="tabcontent">
+                            <h3>London</h3>
+                            <p>London is the capital city of England.</p>
+                        </div>
+                        
+                        <div id="Paris" class="tabcontent">
+                            <h3>Paris</h3>
+                            <p>Paris is the capital of France.</p> 
+                        </div>
+                        
+                        <div id="Tokyo" class="tabcontent">
+                            <h3>Tokyo</h3>
+                            <p>Tokyo is the capital of Japan.</p>
+                        </div>
+                        <!----------------------------------------------------------------------------------->
+                        <div class="container">
+                            
+                        <label for="uname"><b>Username</b></label>
+                        <input type="text" placeholder="Enter Username" name="uname" id = "1" required>
+
+                        <label for="mail"><b>Email</b></label>
+                        <input type="text" placeholder="Enter Email" name="mail" id="2" required>
+        
+                        <label for="psw"><b>Password</b></label>
+                        <input type="password" placeholder="Enter Password" name="psw" id="3" required>
+                            
+                        <button type="submit" onclick="Alert()" >Sing Up</button>
+
+                        </div>
+        
+                        <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+                        </div>
+                    </form>
+                    </div>
+                
+                
+                <script>
+                    //Funzione tab
+                    function openCity(evt, cityName) {
+                        var i, tabcontent, tablinks;
+                        tabcontent = document.getElementsByClassName("tabcontent");
+                        for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                        }
+                        tablinks = document.getElementsByClassName("tablinks");
+                        for (i = 0; i < tablinks.length; i++) {
+                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                        }
+                        document.getElementById(cityName).style.display = "block";
+                        evt.currentTarget.className += " active";
+                    }
+                    </script>
+
+                
+                <script>
+                // Pop-up email sent
+                function Alert() {
+                    var uname = document.getElementById("1").value;
+                    var mail = document.getElementById("2").value;
+                    var pwd = document.getElementById("3").value;
+                    if(uname.length >0 && mail.length >0 && pwd.length >0){
+                        alert("A confirmation email has been sent to you, please check your email to complete the registration.");
+                     }
+                    
+                }
+                </script>
+
                 <script>
                 // Get the modal
                 var modal = document.getElementById('id01');
+                var modal2 = document.getElementById('id02');
+                
     
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
+                    }
+                    if (event.target == modal2 ) {
+                        modal2.style.display = "none";
                     }
                 }
                 </script>
