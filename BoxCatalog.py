@@ -18,8 +18,14 @@ class Catalog():
         }
         self.deviceList = self.catalog["deviceList"]
         self.servicesList = self.catalog["servicesList"]
+        self.countGET = 0
+        self.countPUT = 0
+        self.timestart = time.time()
         
-    def PUT(self,*uri): # Registrare Sensori o Service nel catalog
+    def PUT(self,*uri): # Registrare Sensori o Service nel catalogùself.countPUT += 1
+        timenow = time.time()
+        print(f"_____________{timenow-self.timestart}__________________")
+        print(f"numero di richieste put: {self.countPUT}")
         body=cherrypy.request.body.read()
         jsonBody=json.loads(body)
         if uri[0] == "Device":
@@ -57,14 +63,20 @@ class Catalog():
 
         
     def GET(self,*uri):
+        self.countGET += 1
+        timenow = time.time()
+        print(f"_____________{timenow - self.timestart}__________________")
+        print(f"numero di richieste get: {self.countGET}")
         if len(uri)!=0:
             # Posso farmi tornare anche topic a cui si sottoscrive speaker?
             if uri[0] == "GetTemperature":
+                d = {}
                 topics = []
                 for device in self.deviceList:
                     if device["Resource"] == "Temperature":
                         topics.append(device["Topic"])
-                return json.dumps({"topics": topics})
+                d["topics"] = topics
+                return json.dumps(d)
             
             elif uri[0] == "GetAcceleration":
                 topics = []
@@ -96,8 +108,6 @@ class Catalog():
             
             elif uri[0] == "GetServiceTopic":
                 topics = []
-                print(f"&&&&&{self.servicesList}")
-
                 for service in self.servicesList:
                     if service["Resource"] == "AccelerationControl" or service["Resource"] == "TemperatureControl" or service["Resource"] == "OxygenControl" or service["Resource"] == "WeightControl":
                         topics.append(service["Topic"])
@@ -165,19 +175,19 @@ class tunneling:
         r1 = requests.get(f"https://api.thingspeak.com/update?api_key={apikey}&field1="+publicURL)
         print(r1.text)
 
-if __name__=="__main__":
+#if __name__=="__main__":
 
     # è necessario startare 3 thread per il tunnelling
-    t1 = threading.Thread(target=cherry)
-    t2 = threading.Thread(target=ngrok)
-    t3 = threading.Thread(target=tunneling)
+    #t1 = threading.Thread(target=cherry)
+    #t2 = threading.Thread(target=ngrok)
+    #t3 = threading.Thread(target=tunneling)
 
-    t1.start()
-    t2.start()
-    t3.start()
+    #t1.start()
+    #t2.start()
+    #t3.start()
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    # cherry()
+    cherry()
 
     
 
