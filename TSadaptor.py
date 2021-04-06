@@ -159,9 +159,9 @@ class TSadaptor:
         channel_ID = jsonBody["id"]
         write_api = jsonBody['api_keys'][0]['api_key']
         read_api = jsonBody['api_keys'][1]['api_key']
-        self.diz_write_api[f'{nome_canale[3::]}']=write_api
-        self.diz_channel_ID[f'{nome_canale[3::]}']=channel_ID
-        self.diz_read_api[f'{nome_canale[3::]}']=read_api
+        self.diz_write_api[f'{nome_canale}']=write_api
+        self.diz_channel_ID[f'{nome_canale}']=channel_ID
+        self.diz_read_api[f'{nome_canale}']=read_api
         # print(json.dumps(jsonBody,indent=2))
         # print(self.write_api)
         with open('settings.json') as fp:

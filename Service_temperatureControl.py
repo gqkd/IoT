@@ -48,6 +48,7 @@ class TemperatureControl(threading.Thread):
         #self.client.stop()
         #self.client.start()
         for topic in listatopicSensor:
+            print(f"<<<<<<<<<<<<<<<<<<<<<<<<<{topic}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             # self.client.unsubscribe()
             self.client.mySubscribe(topic)
 
