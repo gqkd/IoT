@@ -29,7 +29,7 @@ class Example(object):
     def GET(self,*uri,**params):
         if uri:
             if uri[0] == "Desktop":
-                return open("indexDesktop.html")
+                return open("indexDesktop2.html")
             elif uri[0] == "Mobile":
                 return open("indexMobile.html")
             elif uri[0] == "NodeRed1":
@@ -44,39 +44,59 @@ class Example(object):
                 self.usersData["userList"].append(self.user)
                 print(self.usersData)
                 with open("User_data.json","w") as f:
-                   json.dump(self.usersData, f)
-                return open("indexDesktop.html")
-
+                   json.dump(self.usersData , f ,indent=4)
+                return open("indexDesktop2.html")
         else:
-            return open("indexDesktop.html")
+            return open("indexDesktop2.html")
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
-        print(f"&>&&&&&&&&&{params}")
         if uri[0] == "Registration":
             self.user["UserName"] = params.get('uname')
             self.user["Psw"] = params.get('psw')
             self.user["E-mail"] = params.get('mail')
+            if params.get('type') == "SSN":
+                self.user["Level"] = "1"
+            elif params.get('type') == "Hospital":
+                self.user["Hospital"] = params.get('hospital')
+                self.user["Level"] = "2"
+            elif params.get('type') == "Doctor":
+                self.user["Hospital"] = params.get('hospital')
+                self.user["Level"] = "3"
             print(self.user)
             self.SendEmail(self.user["E-mail"])
-            return open("indexDesktop.html")
+            return open("indexDesktop2.html")
+
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
+           
             name = params.get('uname')
             psw = params.get('psw')
+            print(self.usersData['userList'])
             for user in self.usersData['userList']:
                 if user["UserName"] == name:
                     if user["Psw"] == psw:
                         if user["Level"] == "1":
-                            print("ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                            return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
+                            return open("indexDesktop3.html")
+                            #return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
                         elif user["Level"] == "2":
-                            return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
-                        elif user["Level"] == "3":
+                            L_user = []
+                            L_box = user["Boxes"]
+                            for c,i in enumerate(self.usersData['userList']):
+                                if i["Hospital"] == user["Hospital"]:
+                                    L_user.append(self.usersData['userList'][c]["UserName"])
+                            index = open("indexDesktop3.html").read().format(Users="ciao", Boxes="ciao")
+                            return index
+
+                            #return open("indexDesktop3.html")#return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
+                        elif user["Level"] == 3:
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                     else:
-                        pass #return urllib.request.urlopen(self.URL)
+                          return open("indexDesktop2.html")#TODO dovremmo dirgli che la psw è cannatareturn urllib.request.urlopen(self.URL)
 
-            print(f"User name: {self.name}, Password: {self.psw}")
+
+            #print(f"User name: {name}, Password: {psw}")
+        elif uri[0] == "ManageBox":
+            pass
 
     def SendEmail(self, email):
         

@@ -89,6 +89,7 @@
                 }
     
                 /* The Modal (background) */
+                /* The Modal (background) */
                 .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
@@ -247,27 +248,32 @@
                       </style>
                       
                       <div class="center">
-                        <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Login</button>
-                        <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog">Sing Up</button>
+                        <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Manage Box</button>
+                        <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog">Go to NodeRed</button>
                       </div>
     
     
                 <div id="id01" class="modal">
                 
-                <form class="modal-content animate" action="/Desktop" method="post">
+                <form class="modal-content animate" action="/ManageBox" method="post">
                     <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                     <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                     </div>
-    
+                    <body>
+                        <h1>Users available: {Users:}!</h1>
+                        <h1>Boxes available: {Boxes:}!</h1>
+                    </body>
+      
                     <div class="container">
                     <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" name="uname" required>
-    
-                    <label for="psw"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="psw" required>
+                    <input type="text" placeholder="Enter the username to which the box will be associated" name="uname" required>
+
+                    <div class="container">
+                    <label for="uname"><b>Username</b></label>
+                    <input type="text" placeholder="Enter Box ID" name="uname" required>
                         
-                    <button type="submit">Login</button>
+                    <button type="submit">Submit</button>
 
                     </div>
     
@@ -277,128 +283,6 @@
                 </form>
                 </div>
                 
-                <div id="id02" class="modal1">
-                    <form class="modal-content animate" action="/Registration" method="post">
-                        <div class="imgcontainer">
-                        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-                        <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
-                        
-                        <!----------------------------------------------------------------------------------------->
-
-                        <div class="tab">
-                            <button type="button" class="tablinks" onclick="openCity(event, 'SSN')">SSN</button>
-                            <button type="button" class="tablinks" onclick="openCity(event, 'Hospital')">Hospital</button>
-                            <button type="button" class="tablinks" onclick="openCity(event, 'Doctor')">Doctor</button>
-                        </div>
-
-                    </form>
-                        
-                        <div id="SSN" class="tabcontent">
-                            <!--<form class="modal1-content animate" action="/Registration" method="post">-->
-                            <form action="/Registration" method="post">
-                            <div class="container">
-
-                                <input type="hidden" name="type" value="SSN">
-
-                                <label for="uname"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="uname" id = "1" required>
-        
-                                <label for="mail"><b>Email</b></label>
-                                <input type="text" placeholder="Enter Email" name="mail" id="2" required>
-                
-                                <label for="psw"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="psw" id="3" required>
-                                    
-                                <button type="submit" onclick="Alert()" >Sing Up</button>
-        
-                            </div>
-                        </form>
-                        </div>
-                        
-                        <div id="Hospital" class="tabcontent">
-                            <form action="/Registration" method="post">
-                            <div class="container">
-
-                                <input type="hidden" name="type" value="Hospital">
-
-                                <label for="hospital"><b>Hospital</b></label>
-                                <select name="hospital" id="4" required>
-                                    <option >Select Hospital: </option>
-                                    <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-                                    <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
-                                  </select>
-
-                                <label for="uname"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="uname" id = "5" required>
-        
-                                <label for="mail"><b>Email</b></label>
-                                <input type="text" placeholder="Enter Email" name="mail" id="6" required>
-                
-                                <label for="psw"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="psw" id="7" required>
-                                    
-                                <button type="submit" onclick="Alert()" >Sing Up</button>
-        
-                            </div>
-                             </form>
-                        </div>
-                        
-                        <div id="Doctor" class="tabcontent">
-                            <form action="/Registration" method="post">
-                            <div class="container">
-
-                                <input type="hidden" name="type" value="Doctor">
-
-                                <label for="hospital"><b>Hospital</b></label>
-                                <select name="hospital" id="8" required>
-                                    <option >Select Hospital you belong to: </option>
-                                    <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-                                    <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
-                                  </select>
-
-                            
-                                <label for="uname"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="uname" id = "9" required>
-        
-                                <label for="mail"><b>Email</b></label>
-                                <input type="text" placeholder="Enter Email" name="mail" id="10" required>
-                
-                                <label for="psw"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="psw" id="11" required>
-                                    
-                                <button type="submit" onclick="Alert()" >Sing Up</button>
-        
-                            </div>
-                        </form>
-                        </div>
-                    </form>
-
-                        <!----------------------------------------------------------------------------------->
-
-        
-                        <div class="container" style="background-color:#f1f1f1">
-                        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
-                        </div>
-                   </div>
-                    </div>
-                
-                
-                    <script>
-                        //Funzione tab
-                        function openCity(evt, cityName) {
-                            var i, tabcontent, tablinks;
-                            tabcontent = document.getElementsByClassName("tabcontent");
-                            for (i = 0; i < tabcontent.length; i++) {
-                            tabcontent[i].style.display = "none";
-                            }
-                            tablinks = document.getElementsByClassName("tablinks");
-                            for (i = 0; i < tablinks.length; i++) {
-                            tablinks[i].className = tablinks[i].className.replace(" active", "");
-                            }
-                            document.getElementById(cityName).style.display = "block";
-                            evt.currentTarget.className += " active";
-                        }
-                    </script>
 
                 
                 <script>
