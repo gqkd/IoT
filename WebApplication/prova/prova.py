@@ -35,5 +35,4 @@ if __name__ == '__main__':
         }
     }
     # RUN
-    cherrypy.config.update({'server.socket_port':8085}) 
     cherrypy.quickstart(Index(), '/', conf)

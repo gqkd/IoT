@@ -40,7 +40,7 @@ class Example(object):
             if uri[0] == "Desktop":
                 return open("indexDesktop2.html")
             elif uri[0] == "Mobile":
-                return open("indexMobile.html")
+                return open("indexMobile1.html")
             elif uri[0] == "NodeRed1":
                 self.NodeRed1 = params["link"]
             elif uri[0] == "NodeRed2":
@@ -60,7 +60,7 @@ class Example(object):
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
-        if uri[0] == "Registration":
+        if uri[0] == "Registration" or uri[0] == "RegistrationMobile":
             self.user["UserName"] = params.get('uname')
             self.user["Psw"] = params.get('psw')
             self.user["E-mail"] = params.get('mail')
@@ -74,7 +74,11 @@ class Example(object):
                 self.user["Level"] = "3"
             print(self.user)
             self.SendEmail(self.user["E-mail"])
-            return open("indexDesktop2.html")
+            if uri[0] == "Registration":
+                return open("indexDesktop2.html")
+            else:
+                return open("indexMobile1.html")
+        
 
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
            
@@ -99,7 +103,13 @@ class Example(object):
                         elif user["Level"] == 3:
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                     else:
-                          return open("indexDesktop2.html")#TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
+                        if uri[0] == "Desktop":
+                            # return open('indexDesktop4.html')
+                            indexDesktop4 = env.get_template('indexDesktop4.html')
+                            return indexDesktop4.render() #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
+                        else:
+                            indexMobile2 = env.get_template('indexMobile2.html')
+                            return indexMobile2.render() #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
 
 
             #print(f"User name: {name}, Password: {psw}")
