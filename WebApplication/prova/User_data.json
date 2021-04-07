@@ -51,6 +51,22 @@
             "Level": "1",
             "Hospital": null,
             "Boxes": []
+        },
+        {
+            "UserName": "Marco",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": []
+        },
+        {
+            "UserName": null,
+            "E-mail": null,
+            "Psw": null,
+            "Level": null,
+            "Hospital": null,
+            "Boxes": []
         }
     ]
 }

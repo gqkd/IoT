@@ -84,7 +84,7 @@ class Example(object):
                             for c,i in enumerate(self.usersData['userList']):
                                 if i["Hospital"] == user["Hospital"]:
                                     L_user.append(self.usersData['userList'][c]["UserName"])
-                            index = open("indexDesktop3.html").read().format(Users="ciao", Boxes="ciao")
+                            index = open("indexDesktop3.html").read().format(Users='ciao', Boxes='ciao')
                             return index
 
                             #return open("indexDesktop3.html")#return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
