@@ -16,7 +16,7 @@ class Index(object):
     def index(self):
         template = env.get_template('index_prova.html')
         # RENDER TEMPLATE PASSING IN DATA
-        return template.render(title='Amazing Universe', description='Our universe is quite amazing',list_header="Galaxies!", galaxies=self.get_galaxies(),site_title="Camposha.info")
+        return template.render(title='List of Useres and Boxe', description='Our universe is quite amazing',list_header="Galaxies!", galaxies=self.get_galaxies(),site_title="Boxes manager")
 
     # HELPER FUNCTION TO RETURN GALAXIES LIST
     def get_galaxies(self):

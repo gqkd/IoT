@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>SmartOrganDeliveryPlatform ManageBox</title>
         <link rel="stylesheet" href="./css/styleDesktop.css"></head><body><header class="header-banner" id="iv5r"><div class="lead-title" id="iaxw6"><h1>IoT platform for smart organs delivery</h1></div><div class="sub-lead-title" id="i6p05">One of the most critical aspects of organ transport for transplantation is the lack of information on the conditions of transport. In particular, the proposed system envisages monitoring the condition of the organ in order to improve the management and increase the reliability of delivery. The system offers various services dedicated to measuring the temperature of the environment in which the organ is contained, measuring the vibrational state, tracking and delivery time. Access to data relating to the state of the organâ€™s transportation is carried out by the actors at different levels, signing the box in which the organ to be transplanted will be contained. After the subscription, it will be possible to view the above mentioned data sent from the box. Functionalities provided by the system to the stakeholders: 1) The surgical team of the receiving hospital has at its disposal a telegram bot to receive notifications when the box is about to arrive at the hospital to start preparing survey procedures</div>
 
 
@@ -32,23 +33,35 @@
                 background-color: #4CAF50;
                 color: white;
                 padding: 14px 20px;  /* Dimensione bottone login */
-                margin: 8px 0;
+                margin: 8px;
                 border: none;
+                transition: all 0.5s;
                 cursor: pointer;
                 width: 100%;
                 }
 
                 /* Aggiunto per il tasto login nella pagina principale */
                 .buttonLog {
-                background-color: #990000;
-                color: white;
-                padding: 28px 46px;  /* Dimensione bottone login */
-                margin: 8px 0;
+                background-color: #b40000;
+                font-size: 17px;
+                display: inline-block;
+                border-radius: 4px;
                 border: none;
+                color: white;
+                padding: 28px;  /* Dimensione bottone login */
+                margin: 8px;
+                border: none;
+                transition: all 0.5s;
                 cursor: pointer;
-                width: 100%;
+                width: 500px;
                 }
                 
+
+
+                button:hover {
+                opacity: 0.8;
+                }
+
                 /* Aggiunto per al tab */
                 .tablinks {
                 width: auto;
@@ -56,9 +69,7 @@
                 background-color: #f44336;
                 }
     
-                button:hover {
-                opacity: 0.8;
-                }
+                
     
                 /* Extra styles for the cancel button */
                 .cancelbtn {
@@ -159,36 +170,32 @@
                 -webkit-animation: animatezoom 0.6s;
                 animation: animatezoom 0.6s
                 }
-                /*Inserimento della tabellaaaa -----------------------------------------------------------------------------------------*/
-                /* Style the tab */
-                .tab {
-                overflow: hidden;
-                border: 1px solid rgb(58, 55, 241);
-                background-color: rgb(39, 61, 185);
-                }
-
-                /* Style the buttons inside the tab */
-                .tab button {
-                background-color: inherit;
+                /* Inserimento menu tendina allineati ----------------------------------------------------------------*/
+                .dropmenu {
+                width: 100%;
+                height: 45px;
+                padding: 10px 5px;
+                text-align: left;
                 float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 8px 10px;
-                transition: 0.3s;
-                font-size: 17px;
+                margin-right: 2%;
+                margin-bottom: 2%;
+                align-items: center;
+                border-radius: 3px;
                 }
 
-                /* Change background color of buttons on hover */
-                .tab button:hover {
-                background-color: rgb(57, 69, 233);
+                /* Create two equal columns that floats next to each other */
+                .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
                 }
 
-                /* Create an active/current tablink class */
-                .tab button.active {
-                background-color: rgb(16, 27, 175);
+                /* Clear floats after the columns */
+                .row:after {
+                content: "";
+                display: table;
+                clear: both;
                 }
-
                 /* Style the tab content */
                 .tabcontent {
                 display: none;
@@ -196,17 +203,6 @@
                 border: 1px solid #ccc;
                 border-top: none;
                 }
-                
-                /* Per menù a tendina degli ospedali */
-                input[type=text], select {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-}
                 /*---------------------------------------------------------------------------------------------*/
 
 
@@ -248,8 +244,8 @@
                       </style>
                       
                       <div class="center">
-                        <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Manage Box</button>
-                        <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog">Go to NodeRed</button>
+                        <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog"><span>Manage Box</span></button>
+                        <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog"><span>Go to NodeRed</span></button>
                       </div>
     
     
@@ -260,18 +256,64 @@
                     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                     <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                     </div>
-                    <body>
-                        <h1>Users available: {Users:}!</h1>
-                        <h1>Boxes available: {Boxes:}!</h1>
-                    </body>
-      
-                    <div class="container">
-                    <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter the username to which the box will be associated" name="uname" required>
+                    
 
-                    <div class="container">
-                    <label for="uname"><b>Username</b></label>
-                    <input type="text" placeholder="Enter Box ID" name="uname" required>
+                    <div class="container" >
+                        <input type="text" placeholder="Associate each user with the box" name="uname" readonly>
+                        
+
+                        <div class="row">
+                            <div class="column">
+
+                                <select name="user1" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                                <select name="user2" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                                <select name="user3" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                            </div>
+                            
+                            <div class="column">
+                                <select name="box1" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                                <select name="box2" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                                <select name="box3" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                </select>
+
+                            </div>
+                        </div>
+
+
                         
                     <button type="submit">Submit</button>
 
@@ -281,6 +323,11 @@
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
                     </div>
                 </form>
+                </div>
+
+
+                <div id="id01" class="modal">
+                    <form class="modal-content animate" action="/NodeRed2" method="post"></form>
                 </div>
                 
 

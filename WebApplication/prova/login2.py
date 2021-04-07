@@ -4,9 +4,18 @@ import json
 import requests
 import webbrowser
 import urllib.request
+from jinja2 import Environment, FileSystemLoader
+
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+
+# per jinja2
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+env=Environment(loader=FileSystemLoader(CUR_DIR),
+trim_blocks=True)
+
 class Example(object):
     exposed=True
     def __init__(self):
@@ -76,27 +85,47 @@ class Example(object):
                 if user["UserName"] == name:
                     if user["Psw"] == psw:
                         if user["Level"] == "1":
-                            return open("indexDesktop3.html")
-                            #return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
+                            return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
+                        
                         elif user["Level"] == "2":
                             L_user = []
                             L_box = user["Boxes"]
                             for c,i in enumerate(self.usersData['userList']):
-                                if i["Hospital"] == user["Hospital"]:
+                                if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
                                     L_user.append(self.usersData['userList'][c]["UserName"])
-                            index = open("indexDesktop3.html").read().format(Users='ciao', Boxes='ciao')
-                            return index
+                            indexDesktop3 = env.get_template('indexDesktop3.html')
+                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box)       
 
-                            #return open("indexDesktop3.html")#return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
                         elif user["Level"] == 3:
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                     else:
-                          return open("indexDesktop2.html")#TODO dovremmo dirgli che la psw è cannatareturn urllib.request.urlopen(self.URL)
+                          return open("indexDesktop2.html")#TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
 
 
             #print(f"User name: {name}, Password: {psw}")
         elif uri[0] == "ManageBox":
-            pass
+            if params.get('user1') != "None" and params.get('box1') != "None":
+                for c,user in enumerate(self.usersData['userList']):
+                    if user["UserName"] == params.get('user1'):
+                        self.usersData['userList'][c]["Boxes"][0] = params.get('box1')
+                        
+            if params.get('user2') != "None" and params.get('box2') != "None":
+                for c,user in enumerate(self.usersData['userList']):
+                    if user["UserName"] == params.get('user2'):
+                        self.usersData['userList'][c]["Boxes"][0] = params.get('box2')
+                        
+            if params.get('user3') != "None" and params.get('box3') != "None":
+                for c,user in enumerate(self.usersData['userList']):
+                    if user["UserName"] == params.get('user3'):
+                        self.usersData['userList'][c]["Boxes"][0] = params.get('box3')
+                        
+            with open("User_data.json","w") as f:
+                json.dump(self.usersData , f ,indent=4)
+            return open("indexDesktop3.html")
+        
+        elif uri[0] == "NodeRed2":
+            return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
+ 
 
     def SendEmail(self, email):
         

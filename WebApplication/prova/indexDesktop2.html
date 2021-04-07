@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>SmartOrganDeliveryPlatform Login&SingUp</title>
         <link rel="stylesheet" href="./css/styleDesktop.css"></head><body><header class="header-banner" id="iv5r"><div class="lead-title" id="iaxw6"><h1>IoT platform for smart organs delivery</h1></div><div class="sub-lead-title" id="i6p05">One of the most critical aspects of organ transport for transplantation is the lack of information on the conditions of transport. In particular, the proposed system envisages monitoring the condition of the organ in order to improve the management and increase the reliability of delivery. The system offers various services dedicated to measuring the temperature of the environment in which the organ is contained, measuring the vibrational state, tracking and delivery time. Access to data relating to the state of the organâ€™s transportation is carried out by the actors at different levels, signing the box in which the organ to be transplanted will be contained. After the subscription, it will be possible to view the above mentioned data sent from the box. Functionalities provided by the system to the stakeholders: 1) The surgical team of the receiving hospital has at its disposal a telegram bot to receive notifications when the box is about to arrive at the hospital to start preparing survey procedures</div>
 
 
@@ -404,10 +405,18 @@
                 <script>
                 // Pop-up email sent
                 function Alert() {
-                    var uname = document.getElementById("1").value;
-                    var mail = document.getElementById("2").value;
-                    var pwd = document.getElementById("3").value;
-                    if(uname.length >0 && mail.length >0 && pwd.length >0){
+                    var a = document.getElementById("1").value;
+                    var b = document.getElementById("2").value;
+                    var c = document.getElementById("3").value;
+                    var d = document.getElementById("4").value;
+                    var e = document.getElementById("5").value;
+                    var f = document.getElementById("6").value;
+                    var g = document.getElementById("7").value;
+                    var h = document.getElementById("8").value;
+                    var i = document.getElementById("9").value;
+                    var l = document.getElementById("10").value;
+                    var m = document.getElementById("11").value;
+                    if( (a.length >0 && b.length >0 && c.length >0 ) || (d.length >0 && e.length >0 && f.length >0 && g.length >0) || (h.length >0 && i.length >0 && l.length >0 && m.length >0)){
                         alert("A confirmation email has been sent to you, please check your email to complete the registration.");
                      }
                     
