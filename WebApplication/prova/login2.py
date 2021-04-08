@@ -16,10 +16,21 @@ CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env=Environment(loader=FileSystemLoader(CUR_DIR),
 trim_blocks=True)
 
-class Example(object):
+class WebApp(object):
     exposed=True
     def __init__(self):
         self.usersData = json.load(open("User_data.json"))
+        
+        # richiesta public url catalog 
+        conf=json.load(open("settings.json"))
+        apikey = conf["publicURL"]["publicURL_read"]
+        cid = conf["publicURL"]["publicURL_channelID"]
+        r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
+        jsonBody=json.loads(r.text)
+        self.url_catalog=jsonBody['feeds'][0]['field1']
+                
+        requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
+        
         self.user = {
                 "UserName": None,
                 "E-mail":None,
@@ -51,6 +62,7 @@ class Example(object):
                 return json.dumps(self.usersData)
             elif uri[0] == "RegistrationComplete":
                 self.usersData["userList"].append(self.user)
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
                 print(self.usersData)
                 with open("User_data.json","w") as f:
                    json.dump(self.usersData , f ,indent=4)
@@ -188,6 +200,6 @@ if __name__ == '__main__':
 		#  },
 	}
     cherrypy.config.update({'server.socket_port':8095}) 
-    cherrypy.tree.mount(Example(),'/',conf)
+    cherrypy.tree.mount(WebApp(),'/',conf)
     cherrypy.engine.start()
     cherrypy.engine.block()

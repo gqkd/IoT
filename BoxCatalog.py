@@ -49,6 +49,9 @@ class Catalog():
             self.catalog["servicesList"] = self.servicesList
             #print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
+        
+        elif uri[0] == "UserData":
+            self.userData = jsonBody # dizionario degli utenti iscritti alla WebApp 
 
         elif uri[0] == "UpdateConfig":
             with open('settings2.json','w') as fp:
@@ -118,6 +121,9 @@ class Catalog():
                     if service["Resource"] == "TelegramBot":
                         TgTopic = service["Topic"]
                         return json.dumps({"topics": TgTopic})
+                    
+            elif uri[0] == "GetUserData":
+                return json.dumps(self.userData)
 
             elif uri[0] == "Get_TSadaptor":
                 # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
