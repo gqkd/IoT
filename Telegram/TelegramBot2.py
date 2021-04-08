@@ -101,10 +101,11 @@ class TelegramBot(threading.Thread):
             else:
                 self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato,notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
                 
-        # elif message == "/changeboxid":
-        #     self.bot.sendMessage(chat_ID, text=f"Insert Box ID: ")
-        #     self.chatIDs[cont]["Notification"][4] = 1
-        #     # self.canSendBoxID = 1
+        elif message == "/changeteam":
+            buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
+            InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+            
         elif self.chatIDs[cont]["Notification"][4] == 1:
             r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp al catalog
             self.usersData = json.loads(r.content)
@@ -115,7 +116,7 @@ class TelegramBot(threading.Thread):
             for user in self.usersData['userList']:
                 if user["UserName"] == userID:
                     if user["Psw"] == psw:
-                        boxID = user["Boxes"]
+                        boxID = user["Boxes"][0]
                         self.chatIDs[cont]["boxID"] = boxID
                         self.chatIDs[cont]["Notification"] = [1,1,1,"ON",0]
                         

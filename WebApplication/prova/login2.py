@@ -28,9 +28,9 @@ class WebApp(object):
         r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
         jsonBody=json.loads(r.text)
         self.url_catalog=jsonBody['feeds'][0]['field1']
-                
+
         requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
-        
+        print(f"&&&&&&&&&&&&{self.url_catalog}")
         self.user = {
                 "UserName": None,
                 "E-mail":None,

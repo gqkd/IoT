@@ -51,7 +51,7 @@ class Catalog():
             return json.dumps(self.servicesList)
         
         elif uri[0] == "UserData":
-            self.userData = jsonBody # dizionario degli utenti iscritti alla WebApp 
+            self.userData = jsonBody # dizionario degli utenti iscritti alla WebApp             
 
         elif uri[0] == "UpdateConfig":
             with open('settings2.json','w') as fp:
@@ -181,19 +181,19 @@ class tunneling:
         r1 = requests.get(f"https://api.thingspeak.com/update?api_key={apikey}&field1="+publicURL)
         print(r1.text)
 
-#if __name__=="__main__":
+if __name__=="__main__":
 
     # è necessario startare 3 thread per il tunnelling
-    #t1 = threading.Thread(target=cherry)
-    #t2 = threading.Thread(target=ngrok)
-    #t3 = threading.Thread(target=tunneling)
+    t1 = threading.Thread(target=cherry)
+    t2 = threading.Thread(target=ngrok)
+    t3 = threading.Thread(target=tunneling)
 
-    #t1.start()
-    #t2.start()
-    #t3.start()
+    t1.start()
+    t2.start()
+    t3.start()
 
     #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    cherry()
+    # cherry()
 
     
 

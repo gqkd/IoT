@@ -57,6 +57,7 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
+        print(f"&&&&&&&&&&&&&&&&&&&&&&&&&ATTUATORE{topic}")
         if topic == self.telegramTopic:
             messaggio = json.loads(msg)
             if messaggio['DeviceID'] == self.boxID:
@@ -82,8 +83,7 @@ class Speaker(threading.Thread):
             print(f"Allarmi: {self.d}")
             if self.d["Mass"]==0 and ((self.d['Temperature'][0]==1 and self.d['Temperature'][1]=="ON")  or (self.d['Acceleration'][0]==1 and self.d['Acceleration'][1]=="ON") or (self.d['Oxygen'][0]==1 and self.d['Oxygen'][1]=="ON")): # abbiamo aggiunto self.d["Mass"] == 0 in modo che quando la massa non è presente (1) non continua a dare allarme 
                 print('A T T E N Z I O N E: \n ALLARME ATTIVO')
-            else:
-                pass
+
 
     def stop_MyMQTT(self):
         self.client.stop()
