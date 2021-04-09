@@ -87,7 +87,7 @@ class TSadaptor:
                 if not canalebox:
                     self.createnewchannel2(str(id_num),'temperatura',self.api_device)
                 val = payload['e'][0]['v']
-                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api['100']}&field1={str(val)}")
+                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api[id_num]}&field1={str(val)}")
                 print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
             elif num_sensore == '200': #acc
                 if not canalebox:
@@ -96,7 +96,7 @@ class TSadaptor:
                 y = payload['e'][0]["v_yaxis"]
                 z = payload['e'][0]["v_zaxis"]
                 val = sqrt(x**2+y**2+z**2)
-                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api['200']}&field1={str(val)}")
+                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api[id_num]}&field1={str(val)}")
                 print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
             elif num_sensore == '300': #mass
                 pass
@@ -104,15 +104,15 @@ class TSadaptor:
                 if not canalebox:
                     self.createnewchannel2(str(id_num),'ossigenazione',self.api_device)
                 val = payload['e'][0]['v']
-                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api['400']}&field1={str(val)}")
+                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api[id_num]}&field1={str(val)}")
                 print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
             elif num_sensore == '500': #speaker
                 pass
             elif num_sensore == '600': #GPS
                 if not canalebox:
                     self.createnewchannel2(str(id_num),'coordinate',self.api_device)
-                val={'v_lat':payload['e'][0]['v_lat'],'v_lon':payload['e'][0]['v_lon']}
-                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api['600']}&field1={str(val)}")
+                val={'v_lat':payload['e'][0]['v_lat'],'v_lon':payload['e'][0]['v_lon'],'v_time':payload['e'][0]['v_time']}
+                r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api[id_num]}&field1={str(val)}")
                 print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
             else:
                 print("!!!!!!!!!!!!!!!!!!!!!! sensore non riconosciuto !!!!!!!!!!!!!!!!!!")
