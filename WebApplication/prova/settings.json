@@ -1,0 +1,38 @@
+{
+  "broker": "broker.hivemq.com",
+  "port": 1883,
+  "baseTopic": "Ipfsod",
+  "telegramToken": "1689078533:AAH5qRJrvFD1_PKeYbtvNaETfJdJ6Nu2bUg",
+  "publicURL": {
+    "publicURL_read": "74BPJAXGQDBJJPOS",
+    "publicURL_write": "1V4US3YABOXPC2DB",
+    "publicURL_channelID": "1341228"
+  },
+  "canaliSensori": {
+    "canaliSensori_general": "Y1TWL3R4UWBVL534",
+    "canaliSensori_write": {
+      "400": "CF6C6TVATF8ZOIQY",
+      "100": "PE4H69WVGDY6CY0B",
+      "600": "5LKITY1XV8DG4L6A",
+      "200": "135UOIWQ7BVJ6W9J"
+    },
+    "canaliSensori_read": {
+      "400": "RX6V1G2CABM9KCRG",
+      "100": "XFOHQOHTL8OQ1IPA",
+      "600": "CDRZHUTVI0AF9S5K",
+      "200": "9M88E37ZXBCZ0OUT"
+    },
+    "canaliSensori_channel": {
+      "400": 1350178,
+      "100": 1350179,
+      "600": 1350180,
+      "200": 1350181
+    }
+  },
+  "canaleServizio": {
+    "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
+    "canaleServizio_write": {},
+    "canaleServizio_read": {},
+    "canaleServizio_channel": {}
+  }
+}

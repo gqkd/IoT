@@ -52,7 +52,8 @@ class TelegramBot(threading.Thread):
             "Resource": "TelegramBot",
             "Timestamp": None
         }
-        
+        r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp
+        self.usersData = json.loads(r.content)
         
     def topicRequest(self):
         # Richiesta GET per topic dei servizi
@@ -64,8 +65,7 @@ class TelegramBot(threading.Thread):
         r = requests.get(self.url_catalog+"/GetGPS")
         jsonBody = json.loads(r.content)
         self.client.mySubscribe(jsonBody["topics"][0])    # TOPIC gps RICHIESTO A CATALOG
-        requests.get("http://localhost:8094/UsersData")  #TODO: inserire (self.url_webApp + "/UsersData")
-        self.usersData = json.loads(r.content)
+
             
     def request(self):
         # Sottoscrizione al boxcatalog
@@ -84,6 +84,7 @@ class TelegramBot(threading.Thread):
     
     def on_chat_message(self, msg):
         content_type, chat_type, chat_ID = telepot.glance(msg)
+        flag = 0
         if self.chatIDs != []:
             for c,id in enumerate(self.chatIDs):
                 if id["chatID"] == chat_ID:
@@ -100,12 +101,14 @@ class TelegramBot(threading.Thread):
             else:
                 self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato,notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
                 
-        # elif message == "/changeboxid":
-        #     self.bot.sendMessage(chat_ID, text=f"Insert Box ID: ")
-        #     self.chatIDs[cont]["Notification"][4] = 1
-        #     # self.canSendBoxID = 1
+        elif message == "/changeteam":
+            buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
+            InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
+            keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+            
         elif self.chatIDs[cont]["Notification"][4] == 1:
-            #TODO valutare una richiesta al catalog per avere una lista di tutti i sensori sottoscritti e quindi le box per verificare che l'boxID inserito sia presente nel catalog
+            r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp al catalog
+            self.usersData = json.loads(r.content)
             user = message.split("-")
             userID = user[0]
             psw = user[1]
@@ -113,10 +116,15 @@ class TelegramBot(threading.Thread):
             for user in self.usersData['userList']:
                 if user["UserName"] == userID:
                     if user["Psw"] == psw:
-                        boxID = user["Boxes"]
+                        boxID = user["Boxes"][0]
                         self.chatIDs[cont]["boxID"] = boxID
                         self.chatIDs[cont]["Notification"] = [1,1,1,"ON",0]
-                        self.bot.sendMessage(chat_ID, text=f"You will receive notifications from Box {boxID}.")
+                        
+                        buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
+                        InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
+                        keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+                        self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
+                        
                     else:
                         self.bot.sendMessage(chat_ID, text=f"Invalid user ID or password. \nTry again: ")
 
@@ -165,20 +173,9 @@ class TelegramBot(threading.Thread):
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
 
-        # else:
-            
-        #     flag = 0
-        #     if self.chatIDs != []:
-        #         for cont,id in enumerate(self.chatIDs):
-        #             if id["chatID"] == chat_ID:
-        #                 self.chatIDs[cont]["team"] = query_data
-        #                 self.chatIDs[cont]["Notification"][4] = 1
-        #                 flag = 1
-        #     if flag == 0 or self.chatIDs == []:
-        #             self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":query_data,"Notification":[1,1,1,"ON",1]})
-
-        #     self.bot.sendMessage(chat_ID, text=f"Registered as {query_data} team.")
-        #     self.bot.sendMessage(chat_ID, text=f"Insert Box ID: ")
+        else:
+            self.chatIDs[cont]["team"] = query_data
+            self.bot.sendMessage(chat_ID, text=f"Registered as {query_data} team. You will receive notifications from Box {self.chatIDs[cont]['boxID']}.")
             
         
     def notify(self,topic,msg):

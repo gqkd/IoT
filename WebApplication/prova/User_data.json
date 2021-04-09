@@ -1,29 +1,72 @@
 {
-	"projectName": "IoT platform for smart organs delivery",
-	"lastUpdate": "2021-02-19 15:42:10.037565",
-	"userList": [{
-		"UserName": "HPG23",
-		"Psw": "1234",
-		"Level": "2",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["001", "002", "003"]
-	}, {
-		"UserName": "SSN",
-		"Psw": "5678",
-		"Level": "1",
-		"Hospital": "SSN",
-		"Boxes": ["001", "002", "003", "004", "005"]
-	}, {
-		"UserName": "Surgicalteam1",
-		"Psw": "0001",
-		"Level": "3",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["002"]
-	}, {
-		"UserName": "Transportteam1",
-		"Psw": "0002",
-		"Level": "3",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["002"]
-	}]
+    "projectName": "IoT platform for smart organs delivery",
+    "lastUpdate": "2021-02-19 15:42:10.037565",
+    "userList": [
+        {
+            "UserName": "HPG23",
+            "Psw": "1234",
+            "Level": "2",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001",
+                "002",
+                "003"
+            ]
+        },
+        {
+            "UserName": "SSN",
+            "Psw": "5678",
+            "Level": "1",
+            "Hospital": "SSN",
+            "Boxes": [
+                "001",
+                "002",
+                "003",
+                "004",
+                "005"
+            ]
+        },
+        {
+            "UserName": "Surgicalteam1",
+            "Psw": "0001",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001"
+            ]
+        },
+        {
+            "UserName": "Transportteam1",
+            "Psw": "0002",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001"
+            ]
+        },
+        {
+            "UserName": "Davide1223",
+            "E-mail": "IoTorgandelivery@gmail.com",
+            "Psw": "1234",
+            "Level": "1",
+            "Hospital": null,
+            "Boxes": []
+        },
+        {
+            "UserName": "Marco",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": []
+        },
+        {
+            "UserName": null,
+            "E-mail": null,
+            "Psw": null,
+            "Level": null,
+            "Hospital": null,
+            "Boxes": []
+        }
+    ]
 }

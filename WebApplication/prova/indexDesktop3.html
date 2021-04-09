@@ -10,9 +10,7 @@
          <div class="lead-title" id="iaxw6">
             <h1>IoT platform for smart organs delivery</h1>
          </div>
-         <div class="sub-lead-title" id="i6p05">
-            <h3>It is a smart management system for delivering organs among different hospitals aimed to improve the reliability and efficiency of organs delivery by monitoring the organ' state during the transport and tracking the organ to allow clinicians to know its precise position.</h3>
-         </div>
+         <div class="sub-lead-title" id="i6p05">It is a smart management system for delivering organs among different hospitals aimed to improve the reliability and efficiency of organs delivery by monitoring the organ' state during the transport and tracking the organ to allow clinicians to know its precise position.</div>
          <!-- Aggiungo parte per il bottone e il pop-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
          <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,29 +44,35 @@
                background-color: #4CAF50;
                color: white;
                padding: 14px 20px;  /* Dimensione bottone login */
-               margin: 8px 0;
+               margin: 8px;
                border: none;
+               transition: all 0.5s;
                cursor: pointer;
                width: 100%;
                }
                /* Aggiunto per il tasto login nella pagina principale */
                .buttonLog {
-               background-color: #990000;
-               color: white;
-               padding: 28px 46px;  /* Dimensione bottone login */
-               margin: 8px 0;
+               background-color: #b40000;
+               font-size: 17px;
+               display: inline-block;
+               border-radius: 4px;
                border: none;
+               color: white;
+               padding: 28px;  /* Dimensione bottone login */
+               margin: 8px;
+               border: none;
+               transition: all 0.5s;
                cursor: pointer;
-               width: 100%;
+               width: 500px;
+               }
+               button:hover {
+               opacity: 0.8;
                }
                /* Aggiunto per al tab */
                .tablinks {
                width: auto;
                padding: 10px 18px;
                background-color: #f44336;
-               }
-               button:hover {
-               opacity: 0.8;
                }
                /* Extra styles for the cancel button */
                .cancelbtn {
@@ -93,6 +97,7 @@
                float: right;
                padding-top: 16px;
                }
+               /* The Modal (background) */
                /* The Modal (background) */
                .modal {
                display: none; /* Hidden by default */
@@ -154,31 +159,29 @@
                -webkit-animation: animatezoom 0.6s;
                animation: animatezoom 0.6s
                }
-               /*Inserimento della tabellaaaa -----------------------------------------------------------------------------------------*/
-               /* Style the tab */
-               .tab {
-               overflow: hidden;
-               border: 1px solid rgb(58, 55, 241);
-               background-color: rgb(39, 61, 185);
-               }
-               /* Style the buttons inside the tab */
-               .tab button {
-               background-color: inherit;
+               /* Inserimento menu tendina allineati ----------------------------------------------------------------*/
+               .dropmenu {
+               width: 100%;
+               height: 45px;
+               padding: 10px 5px;
+               text-align: left;
                float: left;
-               border: none;
-               outline: none;
-               cursor: pointer;
-               padding: 8px 10px;
-               transition: 0.3s;
-               font-size: 17px;
+               margin-right: 2%;
+               margin-bottom: 2%;
+               align-items: center;
+               border-radius: 3px;
                }
-               /* Change background color of buttons on hover */
-               .tab button:hover {
-               background-color: rgb(57, 69, 233);
+               /* Create two equal columns that floats next to each other */
+               .column {
+               float: left;
+               width: 50%;
+               padding: 10px;
                }
-               /* Create an active/current tablink class */
-               .tab button.active {
-               background-color: rgb(16, 27, 175);
+               /* Clear floats after the columns */
+               .row:after {
+               content: "";
+               display: table;
+               clear: both;
                }
                /* Style the tab content */
                .tabcontent {
@@ -186,16 +189,6 @@
                padding: 6px 12px;
                border: 1px solid #ccc;
                border-top: none;
-               }
-               /* Per menù a tendina degli ospedali */
-               input[type=text], select {
-               width: 100%;
-               padding: 12px 20px;
-               margin: 8px 0;
-               display: block;
-               border: 1px solid #ccc;
-               border-radius: 4px;
-               box-sizing: border-box;
                }
                /*---------------------------------------------------------------------------------------------*/
                @-webkit-keyframes animatezoom {
@@ -230,132 +223,76 @@
                }
             </style>
             <div class="center">
-               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Login</button>
-               <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog">Sign Up</button>
+               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog"><span>Manage Box</span></button>
+               <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog"><span>Go to NodeRed</span></button>
             </div>
             <div id="id01" class="modal">
-               <form class="modal-content animate" action="/Desktop" method="post">
+               <form class="modal-content animate" action="/ManageBox" method="post">
                   <div class="imgcontainer">
                      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                      <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                   </div>
-                  <div class="container">
-                     <label for="uname"><b>Username</b></label>
-                     <input type="text" placeholder="Enter Username" name="uname" required>
-                     <label for="psw"><b>Password</b></label>
-                     <input type="password" placeholder="Enter Password" name="psw" required>
-                     <button type="submit">Login</button>
+                  <div class="container" >
+                     <h3 style="color:black;">  Associate each user with the box:</h3>
+                     <div class="row">
+                        <div class="column">
+                           <select name="user1" class="dropmenu" >
+                              <option value="None">Select User: </option>
+                              {% for user in listUsers %}
+                              <option value={{user}}>{{user}}</option>
+                              {% endfor %} 
+                           </select>
+                           <select name="user2" class="dropmenu" >
+                              <option value="None">Select User: </option>
+                              {% for user in listUsers %}
+                              <option value={{user}}>{{user}}</option>
+                              {% endfor %} 
+                           </select>
+                           <select name="user3" class="dropmenu" >
+                              <option value="None">Select User: </option>
+                              {% for user in listUsers %}
+                              <option value={{user}}>{{user}}</option>
+                              {% endfor %} 
+                           </select>
+                        </div>
+                        <div class="column">
+                           <select name="box1" class="dropmenu" >
+                              <option value="None">Select Box: </option>
+                              {% for box in listBoxes %}
+                              <option value={{box}}>{{box}}</option>
+                              {% endfor %} 
+                           </select>
+                           <select name="box2" class="dropmenu" >
+                              <option value="None">Select Box: </option>
+                              {% for box in listBoxes %}
+                              <option value={{box}}>{{box}}</option>
+                              {% endfor %} 
+                           </select>
+                           <select name="box3" class="dropmenu" >
+                              <option value="None">Select Box: </option>
+                              {% for box in listBoxes %}
+                              <option value={{box}}>{{box}}</option>
+                              {% endfor %} 
+                           </select>
+                        </div>
+                     </div>
+                     <button type="submit">Submit</button>
                   </div>
                   <div class="container" style="background-color:#f1f1f1">
                      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
                   </div>
                </form>
             </div>
-            <div id="id02" class="modal1">
-               <form class="modal-content animate" action="/Registration" method="post">
-                  <div class="imgcontainer">
-                     <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
-                     <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
-                     <!----------------------------------------------------------------------------------------->
-                     <div class="tab">
-                        <button type="button" class="tablinks" onclick="openCity(event, 'SSN')">SSN</button>
-                        <button type="button" class="tablinks" onclick="openCity(event, 'Hospital')">Hospital</button>
-                        <button type="button" class="tablinks" onclick="openCity(event, 'Doctor')">Doctor</button>
-                     </div>
-               </form>
-               <div id="SSN" class="tabcontent">
-               <!--<form class="modal1-content animate" action="/Registration" method="post">-->
-               <form action="/Registration" method="post">
-               <div class="container">
-               <input type="hidden" name="type" value="SSN">
-               <label for="uname"><b>Username</b></label>
-               <input type="text" placeholder="Enter Username" name="uname" id = "1" required>
-               <label for="mail"><b>Email</b></label>
-               <input type="text" placeholder="Enter Email" name="mail" id="2" required>
-               <label for="psw"><b>Password</b></label>
-               <input type="password" placeholder="Enter Password" name="psw" id="3" required>
-               <button type="submit" onclick="Alert()" >Sing Up</button>
-               </div>
-               </form>
-               </div>
-               <div id="Hospital" class="tabcontent">
-               <form action="/Registration" method="post">
-               <div class="container">
-               <input type="hidden" name="type" value="Hospital">
-               <label for="hospital"><b>Hospital</b></label>
-               <select name="hospital" id="4" required>
-               <option >Select Hospital: </option>
-               <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-               <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
-               </select>
-               <label for="uname"><b>Username</b></label>
-               <input type="text" placeholder="Enter Username" name="uname" id = "5" required>
-               <label for="mail"><b>Email</b></label>
-               <input type="text" placeholder="Enter Email" name="mail" id="6" required>
-               <label for="psw"><b>Password</b></label>
-               <input type="password" placeholder="Enter Password" name="psw" id="7" required>
-               <button type="submit" onclick="Alert()" >Sing Up</button>
-               </div>
-               </form>
-               </div>
-               <div id="Doctor" class="tabcontent">
-               <form action="/Registration" method="post">
-               <div class="container">
-               <input type="hidden" name="type" value="Doctor">
-               <label for="hospital"><b>Hospital</b></label>
-               <select name="hospital" id="8" required>
-               <option >Select Hospital you belong to: </option>
-               <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-               <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
-               </select>
-               <label for="uname"><b>Username</b></label>
-               <input type="text" placeholder="Enter Username" name="uname" id = "9" required>
-               <label for="mail"><b>Email</b></label>
-               <input type="text" placeholder="Enter Email" name="mail" id="10" required>
-               <label for="psw"><b>Password</b></label>
-               <input type="password" placeholder="Enter Password" name="psw" id="11" required>
-               <button type="submit" onclick="Alert()" >Sing Up</button>
-               </div>
-               </form>
-               </div>
-               </form>
-               <!----------------------------------------------------------------------------------->
-               <div class="container" style="background-color:#f1f1f1">
-               <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
-               </div>
-               </div>
+            <div id="id01" class="modal">
+               <form class="modal-content animate" action="/NodeRed2" method="post"></form>
             </div>
-            <script>
-               //Funzione tab
-               function openCity(evt, cityName) {
-                   var i, tabcontent, tablinks;
-                   tabcontent = document.getElementsByClassName("tabcontent");
-                   for (i = 0; i < tabcontent.length; i++) {
-                   tabcontent[i].style.display = "none";
-                   }
-                   tablinks = document.getElementsByClassName("tablinks");
-                   for (i = 0; i < tablinks.length; i++) {
-                   tablinks[i].className = tablinks[i].className.replace(" active", "");
-                   }
-                   document.getElementById(cityName).style.display = "block";
-                   evt.currentTarget.className += " active";
-               }
-            </script>
             <script>
                // Pop-up email sent
                function Alert() {
-                   var a = document.getElementById("1").value;
-                   var b = document.getElementById("2").value;
-                   var c = document.getElementById("3").value;
-                   var d = document.getElementById("4").value;
-                   var e = document.getElementById("5").value;
-                   var f = document.getElementById("6").value;
-                   var g = document.getElementById("7").value;
-                   var h = document.getElementById("8").value;
-                   var i = document.getElementById("9").value;
-                   var l = document.getElementById("10").value;
-                   var m = document.getElementById("11").value;
-                   if( (a.length >0 && b.length >0 && c.length >0 ) || (d.length >0 && e.length >0 && f.length >0 && g.length >0) || (h.length >0 && i.length >0 && l.length >0 && m.length >0)){
+                   var uname = document.getElementById("1").value;
+                   var mail = document.getElementById("2").value;
+                   var pwd = document.getElementById("3").value;
+                   if(uname.length >0 && mail.length >0 && pwd.length >0){
                        alert("A confirmation email has been sent to you, please check your email to complete the registration.");
                     }
                    
