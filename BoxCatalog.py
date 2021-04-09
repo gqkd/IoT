@@ -157,7 +157,7 @@ class cherry:
                 'tool.session.on':True
         }
         }
-        cherrypy.config.update({'server.socket_port': 8070})
+        cherrypy.config.update({'server.socket_port': 80})
         cherrypy.tree.mount(Catalog(),'/',conf)
         cherrypy.engine.start()
         
