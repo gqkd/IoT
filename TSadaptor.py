@@ -61,7 +61,6 @@ class TSadaptor:
         for element in listatopicServices:
             if "healthControl" in element["Topic"]:
                 self.client.mySubscribe(element["Topic"])
-        
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
