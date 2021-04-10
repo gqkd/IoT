@@ -12,7 +12,7 @@ class Speaker(threading.Thread):
         self.port = port
         self.payload = {
             "deviceID": self.speakerID,
-            "Resource": 'Speaker',
+            "Resource": "Speaker",
             "Timestamp": None
         }
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
@@ -32,8 +32,12 @@ class Speaker(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
-        r = requests.get(self.url+"/GetTopic")
-        jsonBody = json.loads(r.content)
+        try:
+            r = requests.get(self.url+"/GetServiceTopic")
+            jsonBody = json.loads(r.content)
+        except:
+            print("...............attivato except...............")
+        
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
         #self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
@@ -41,9 +45,12 @@ class Speaker(threading.Thread):
         #self.client.start()
         for topic in listatopicService:
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
-            
-        r = requests.get(self.url+"/GetTelegram")
-        jsonBody = json.loads(r.content)
+        try:
+            r = requests.get(self.url+"/GetTelegram")
+            jsonBody = json.loads(r.content)
+        except :
+            print("...............attivato except...............")
+        
         self.telegramTopic = jsonBody["topics"]
         self.client.mySubscribe(self.telegramTopic)
         

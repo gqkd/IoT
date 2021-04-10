@@ -42,7 +42,12 @@ class AccelerationControl(threading.Thread):
     def topicRequest(self):
         
         # Richiesta GET per topic
-        r = requests.get(self.url+"/GetAcceleration")
+        for i in 5:
+            try:
+                r = requests.get(self.url+"/GetAcceleration")
+            except:
+                print("richiesto andata male service acceleration, riprovo tra 5 secondi")
+                time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -61,8 +66,7 @@ class AccelerationControl(threading.Thread):
                 self.count=0
             self.count += 1
             time.sleep(self.timerequestTopic)
-            
-            
+                   
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"Messaggio ricevuto da servizio: {payload}")
