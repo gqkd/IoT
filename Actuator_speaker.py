@@ -1,5 +1,6 @@
 import threading
 import requests
+import time
 from MyMQTT import *
 
 
@@ -37,6 +38,9 @@ class Speaker(threading.Thread):
             jsonBody = json.loads(r.content)
         except:
             print("...............attivato except...............")
+            time.sleep(5)
+            r = requests.get(self.url + "/GetServiceTopic")
+            jsonBody = json.loads(r.content)
         
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati

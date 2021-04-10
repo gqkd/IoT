@@ -42,7 +42,7 @@ class AccelerationControl(threading.Thread):
     def topicRequest(self):
         
         # Richiesta GET per topic
-        for i in 5:
+        for i in range(5):
             try:
                 r = requests.get(self.url+"/GetAcceleration")
             except:
