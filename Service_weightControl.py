@@ -42,7 +42,12 @@ class WeightControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get(self.url+"/GetMass")
+        for i in range(5):
+            try:
+                r = requests.get(self.url+"/GetMass")
+            except:
+                print("!!! except -> GetMass !!!")
+                time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati

@@ -46,7 +46,7 @@ class AccelerationControl(threading.Thread):
             try:
                 r = requests.get(self.url+"/GetAcceleration")
             except:
-                print("richiesto andata male service acceleration, riprovo tra 5 secondi")
+                print("!!! except -> GetAcceleration !!!")
                 time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]

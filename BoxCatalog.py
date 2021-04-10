@@ -58,7 +58,7 @@ class Catalog():
 
         elif uri[0] == "Info":
             self.info = jsonBody
-            print(self.info)
+            # print(self.info)
 
         self.catalog["lastUpdate"] = str(datetime.time())
 
@@ -163,6 +163,7 @@ class cherry:
 class ngrok:
     def __init__(self):
         time.sleep(5)
+        # os.system('ngrok authtoken 1jrtviNE8MpMMqrakaml6JI68HK_2t6ahDqgiKPxPdQiqXK5k')
         os.system('ngrok http 8070')
 
 class tunneling:

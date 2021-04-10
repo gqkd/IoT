@@ -37,7 +37,7 @@ class Speaker(threading.Thread):
             r = requests.get(self.url+"/GetServiceTopic")
             jsonBody = json.loads(r.content)
         except:
-            print("...............attivato except...............")
+            print("!!! except -> GetServiceTopic !!!")
             time.sleep(5)
             r = requests.get(self.url + "/GetServiceTopic")
             jsonBody = json.loads(r.content)
@@ -53,7 +53,7 @@ class Speaker(threading.Thread):
             r = requests.get(self.url+"/GetTelegram")
             jsonBody = json.loads(r.content)
         except :
-            print("...............attivato except...............")
+            print("!!! except -> GetTelegram !!!")
         
         self.telegramTopic = jsonBody["topics"]
         self.client.mySubscribe(self.telegramTopic)
@@ -68,7 +68,7 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        print(f"&&&&&&&&&&&&&&&&&&&&&&&&&ATTUATORE{topic}")
+        # print(f"Actuator {topic}")
         if topic == self.telegramTopic:
             messaggio = json.loads(msg)
             if messaggio['DeviceID'] == self.boxID:
@@ -82,7 +82,7 @@ class Speaker(threading.Thread):
             listachiavi = list(messaggio.keys())
             deviceID = messaggio['DeviceID']
             if self.boxID == deviceID[0:3]:
-                print(f"""MESSAGGIO RICEVUTO DA ATTUATOREEEEEEEEE:\n {messaggio}""")
+                print(f"""\nMessage from actuator:\n {messaggio}""")
                 if 'Mass' in listachiavi:
                     self.d['Mass'] = messaggio['Mass']
                 elif 'Temperature' in listachiavi:

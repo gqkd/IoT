@@ -35,7 +35,12 @@ class HealthControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
-        r = requests.get(self.url+"/GetServiceTopic")
+        for i in range(5):
+            try:
+                r = requests.get(self.url+"/GetServiceTopic")
+            except:
+                print("!!! except -> GetServiceTopic !!!")
+                time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -52,7 +57,7 @@ class HealthControl(threading.Thread):
             if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
                 if self.dizionario_misure != {}:
-                    print('CIAONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE')
+                    print(f'Publish in Health Control Channel {self.dizionario_misure}')
                     self.calcolo_healthstatus()
                     self.client.myPublish(f"{self.topic}/{self.serviceID}/healthControl", self.dizionario_misure)
                 self.count=0
@@ -60,7 +65,7 @@ class HealthControl(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        print("-------------------------------------------------------------------------------------------------")
+        # print("-------------------------------------------------------------------------------------------------")
         messaggio= json.loads(msg)
         # print(f"Messaggio ricevuto da servizio: {payload}")
         listachiavi = list(messaggio.keys())
@@ -88,8 +93,8 @@ class HealthControl(threading.Thread):
                     lista_valori.pop(cont)
 
             self.dizionario_misure[f'{self.deviceID}']['Health Status'] = (sum(lista_valori*100))/3
-            print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
-            print(lista_valori)
+            # print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
+            # print(lista_valori)
 
     def stop_MyMQTT(self):
         self.client.stop()

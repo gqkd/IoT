@@ -42,7 +42,12 @@ class TemperatureControl(threading.Thread):
 
     def topicRequest(self):
         # Richiesta GET per topic
-        r = requests.get(self.url+"/GetTemperature")
+        for i in range(5):
+            try:
+                r = requests.get(self.url+"/GetTemperature")
+            except:
+                print("!!! except -> GetTemperature !!!")
+                time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]
         # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
@@ -50,7 +55,6 @@ class TemperatureControl(threading.Thread):
         #self.client.stop()
         #self.client.start()
         for topic in listatopicSensor:
-            print(f"<<<<<<<<<<<<<<<<<<<<<<<<<{topic}>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             # self.client.unsubscribe()
             self.client.mySubscribe(topic)
 
