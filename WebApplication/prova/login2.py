@@ -5,7 +5,8 @@ import requests
 import webbrowser
 import urllib.request
 from jinja2 import Environment, FileSystemLoader
-
+import threading
+import time
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -19,18 +20,31 @@ trim_blocks=True)
 class WebApp(object):
     exposed=True
     def __init__(self):
+        time.sleep(12)
         self.usersData = json.load(open("User_data.json"))
-        
+        try:
+            r = requests.get('http://localhost:4040/api/tunnels')
+        except:
+            print("!!! except -> GET api ngrok !!!")
+
+        jsonBody=json.loads(r.text)
+        self.publicURL=jsonBody["tunnels"][0]["public_url"]
+        print(self.publicURL)
+
         # richiesta public url catalog 
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
-        r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
+        try:
+            r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
+        except:
+            print("!!! except -> GET publicURL catalog !!!")
+
         jsonBody=json.loads(r.text)
         self.url_catalog=jsonBody['feeds'][0]['field1']
 
         requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
-        print(f"&&&&&&&&&&&&{self.url_catalog}")
+        # print(f"&&&&&&&&&&&&{self.url_catalog}")
         self.user = {
                 "UserName": None,
                 "E-mail":None,
@@ -62,7 +76,10 @@ class WebApp(object):
                 return json.dumps(self.usersData)
             elif uri[0] == "RegistrationComplete":
                 self.usersData["userList"].append(self.user)
-                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                try:
+                    requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                except:
+                    print("!!! except -> PUT invio dati utenti !!!")
                 print(self.usersData)
                 with open("User_data.json","w") as f:
                    json.dump(self.usersData , f ,indent=4)
@@ -85,7 +102,7 @@ class WebApp(object):
                 self.user["Hospital"] = params.get('hospital')
                 self.user["Level"] = "3"
             print(self.user)
-            self.SendEmail(self.user["E-mail"])
+            self.SendEmail(self.user["E-mail"],self.user["UserName"],self.user["Psw"])
             if uri[0] == "Registration":
                 return open("indexDesktop2.html")
             else:
@@ -149,7 +166,7 @@ class WebApp(object):
             return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
  
 
-    def SendEmail(self, email):
+    def SendEmail(self, email, user, psw):
         
         sender_email = "IoTorgandelivery@gmail.com"
         receiver_email = email
@@ -160,12 +177,13 @@ class WebApp(object):
         message["From"] = sender_email
         message["To"] = receiver_email
         # Create the plain-text and HTML version of your message
-        text = """\
+        text = f"""\
         Hi,
         Thank you for subscribing to IoT Platform for smart organ delivery.
-
+        username: {user}
+        password: {psw}
         Click the following link to complete your registration:
-        http://127.0.0.1:8095/RegistrationComplete
+        {self.publicURL}/RegistrationComplete
         """
         # Turn these into plain/html MIMEText objects
         part1 = MIMEText(text, "plain")
@@ -182,9 +200,9 @@ class WebApp(object):
             server.sendmail(sender_email, receiver_email, message.as_string())
             print("email inviata!")
 
-
-if __name__ == '__main__':
-    conf={
+class cherry:
+    def __init__(self):
+        conf={
         '/':{
                 'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
                 'tools.staticdir.root': os.path.abspath(os.getcwd()),
@@ -199,7 +217,22 @@ if __name__ == '__main__':
 		#  'tools.staticdir.dir':'./js'
 		#  },
 	}
-    cherrypy.config.update({'server.socket_port':8095}) 
-    cherrypy.tree.mount(WebApp(),'/',conf)
-    cherrypy.engine.start()
-    cherrypy.engine.block()
+        cherrypy.config.update({'server.socket_port':8095}) 
+        cherrypy.tree.mount(WebApp(),'/',conf)
+        cherrypy.engine.start()
+        cherrypy.engine.block()
+
+class ngrok:
+    def __init__(self):
+        time.sleep(5)
+        # os.system('ngrok authtoken 1jrtviNE8MpMMqrakaml6JI68HK_2t6ahDqgiKPxPdQiqXK5k')
+        os.system('ngrok http 8095')
+
+
+if __name__ == '__main__':
+    # è necessario startare 3 thread per il tunnelling
+    t1 = threading.Thread(target=cherry)
+    t2 = threading.Thread(target=ngrok)
+
+    t1.start()
+    t2.start()
