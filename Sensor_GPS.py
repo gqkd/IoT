@@ -60,10 +60,13 @@ class SensorGPS(threading.Thread):
 
     def sendData(self):
         message = self.__message
+        if self.cont >= 2060:
+            self.cont=2060
         message['e'][0]['t'] = float(time.time())   
         message['e'][0]['v_lon'] = self.coordinate[self.cont]["lon"]
         message['e'][0]['v_lat'] = self.coordinate[self.cont]["lat"]
         message['e'][0]['v_time'] = np.round(120-self.cont/4*30/60) #120 perchè è la durata del viaggio simulato in minuti. a cui sottrggo il tempo passato preso dal cont
+        print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{message['e'][0]['v_time']}")
         self.cont += 4
         self.client.myPublish(self.topic,message)
 

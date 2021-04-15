@@ -36,6 +36,7 @@ class TelegramBot(threading.Thread):
         cid = conf["publicURL"]["publicURL_channelID"]
         r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
         jsonBody=json.loads(r.text)
+        print(jsonBody)
         self.url_catalog=jsonBody['feeds'][0]['field1']
         # # richiesta public url Web Application 
         # conf=json.load(open("settings.json"))
@@ -105,7 +106,8 @@ class TelegramBot(threading.Thread):
             buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
             InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
-            
+            self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
+
         elif self.chatIDs[cont]["Notification"][4] == 1:
             r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp al catalog
             self.usersData = json.loads(r.content)
