@@ -22,6 +22,7 @@ class WebApp(object):
     def __init__(self):
         time.sleep(12)
         self.usersData = json.load(open("User_data.json"))
+        
         try:
             r = requests.get('http://localhost:4040/api/tunnels')
         except:
@@ -132,7 +133,7 @@ class WebApp(object):
                             indexDesktop3 = env.get_template('indexDesktop3.html')
                             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box)       
 
-                        elif user["Level"] == 3:
+                        elif user["Level"] == "3":
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                     else:
                         if uri[0] == "Desktop":
