@@ -85,11 +85,11 @@ class WebApp(object):
                 with open("User_data.json","w") as f:
                    json.dump(self.usersData , f ,indent=4)
                    
-                indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render() 
+                #indexDesktop2 = env.get_template('indexDesktop2.html')
+                return open("indexDesktop2.html") #indexDesktop2.render() 
         else:
-            indexDesktop2 = env.get_template('indexDesktop2.html')
-            return indexDesktop2.render() 
+            #indexDesktop2 = env.get_template('indexDesktop2.html')
+            return  open("indexDesktop2.html") #indexDesktop2.render() 
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
