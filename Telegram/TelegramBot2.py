@@ -7,9 +7,6 @@ import os
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup
 
-import sys
-sys.path.append("C://Users\marco\Dropbox (Politecnico Di Torino Studenti)\POLITO\I Programming for IoT application\Esercitazioni\MQTT")
-from MyMQTT import *
 
 
 class TelegramBot(threading.Thread):
