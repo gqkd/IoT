@@ -215,18 +215,30 @@
          <body>
             <style>
                .center {
-               margin: 0;
+               margin-left: 41%;
                position: absolute;
-               left: 50%;
+              
+               top: 600px;
+               -ms-transform: translateX(-50%);
+               transform: translateX(-50%);
+               }
+               .center1 {
+               margin-left: 58%;
+               position: absolute;
                top: 600px;
                -ms-transform: translateX(-50%);
                transform: translateX(-50%);
                }
             </style>
+
             <div class="center">
-               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog"><span>Manage Box</span></button>
-               <button type="button" onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonLog"><span>Go to NodeRed</span></button>
+               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Manage Box</button> 
             </div>
+            <form  class="center1" action="/NodeRed2" method="post">
+               <button type="submit" style="width:auto;" class="buttonLog">Go to NodeRed</button>
+               </form>
+           
+
             <div id="id01" class="modal">
                <form class="modal-content animate" action="/ManageBox" method="post">
                   <div class="imgcontainer">
@@ -284,15 +296,8 @@
                   </div>
                </form>
             </div>
-            <div id="id02" class="modal">
-               <form class="modal-content animate" action="/NodeRed2" method="post">
-               
-                  <button type="submit">Submit</button>
-               
-               
-               
-               </form>
-            </div>
+         
+              
             <script>
                // Pop-up email sent
                function Alert() {
