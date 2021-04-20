@@ -24,7 +24,7 @@ class WebApp(object):
         self.usersData = json.load(open("User_data.json"))
         
         try:
-            r = requests.get('http://localhost:4041/api/tunnels')
+            r = requests.get('http://localhost:4040/api/tunnels')
         except:
             print("!!! except -> GET api ngrok !!!")
 
@@ -131,7 +131,7 @@ class WebApp(object):
                                 if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
                                     L_user.append(self.usersData['userList'][c]["UserName"])
                             indexDesktop3 = env.get_template('indexDesktop3.html')
-                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box)       
+                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = user["Hospital"])       
 
                         elif user["Level"] == "3":
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
@@ -146,7 +146,7 @@ class WebApp(object):
 
 
             #print(f"User name: {name}, Password: {psw}")
-        elif uri[0] == "ManageBox":
+        elif uri[0] == "AssociateBox":
             if params.get('user1') != "None" and params.get('box1') != "None":
                 for c,user in enumerate(self.usersData['userList']):
                     if user["UserName"] == params.get('user1'):
@@ -165,6 +165,14 @@ class WebApp(object):
             with open("User_data.json","w") as f:
                 json.dump(self.usersData , f ,indent=4)
             return open("indexDesktop3.html")
+
+        elif uri[0] == "AddBox":
+            boxID = params.get('boxID')
+            Hospital = params.get('UserHospital')
+            print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{Hospital}@@@{boxID}")
+
+
+            pass#TODO prendi box e associo all'ospedale loggato
         
         elif uri[0] == "NodeRed2":
             return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')

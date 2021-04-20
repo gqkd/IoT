@@ -45,7 +45,7 @@
                background-color: #4CAF50;
                color: white;
                padding: 14px 20px;  /* Dimensione bottone login */
-               margin: 8px;
+               margin: 8px 0;
                border: none;
                transition: all 0.5s;
                cursor: pointer;
@@ -192,6 +192,50 @@
                border-top: none;
                }
                /*---------------------------------------------------------------------------------------------*/
+                /*Inserimento della tabellaaaa -----------------------------------------------------------------------------------------*/
+               /* Style the tab */
+               .tab {
+               overflow: hidden;
+               border: 1px solid rgb(58, 55, 241);
+               background-color: rgb(39, 61, 185);
+               }
+               /* Style the buttons inside the tab */
+               .tab button {
+               background-color: inherit;
+               float: left;
+               border: none;
+               outline: none;
+               cursor: pointer;
+               padding: 8px 10px;
+               transition: 0.3s;
+               font-size: 17px;
+               }
+               /* Change background color of buttons on hover */
+               .tab button:hover {
+               background-color: rgb(57, 69, 233);
+               }
+               /* Create an active/current tablink class */
+               .tab button.active {
+               background-color: rgb(16, 27, 175);
+               }
+               /* Style the tab content */
+               .tabcontent {
+               display: none;
+               padding: 6px 12px;
+               border: 1px solid #ccc;
+               border-top: none;
+               }
+               /* Per menù a tendina degli ospedali */
+               input[type=text], select {
+               width: 100%;
+               padding: 12px 20px;
+               margin: 8px 0;
+               display: block;
+               border: 1px solid #ccc;
+               border-radius: 4px;
+               box-sizing: border-box;
+               }
+               /*---------------------------------------------------------------------------------------------*/
                @-webkit-keyframes animatezoom {
                from {-webkit-transform: scale(0)} 
                to {-webkit-transform: scale(1)}
@@ -239,64 +283,104 @@
                </form>
            
 
-            <div id="id01" class="modal">
-               <form class="modal-content animate" action="/ManageBox" method="post">
+            <div id="id01" class="modal1">
+               <form class="modal-content animate">
                   <div class="imgcontainer">
                      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                      <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
+                  
+                   <!----------------------------------------------------------------------------------------->
+                   <div class="tab">
+                     <button type="button" class="tablinks" onclick="openCity(event, 'Associate')">Associate Box</button>
+                     <button type="button" class="tablinks" onclick="openCity(event, 'Add')">Add New Box</button>
                   </div>
-                  <div class="container" >
-                     <h3 style="color:black;">  Associate each user with the box:</h3>
-                     <div class="row">
-                        <div class="column">
-                           <select name="user1" class="dropmenu" >
-                              <option value="None">Select User: </option>
-                              {% for user in listUsers %}
-                              <option value={{user}}>{{user}}</option>
-                              {% endfor %} 
-                           </select>
-                           <select name="user2" class="dropmenu" >
-                              <option value="None">Select User: </option>
-                              {% for user in listUsers %}
-                              <option value={{user}}>{{user}}</option>
-                              {% endfor %} 
-                           </select>
-                           <select name="user3" class="dropmenu" >
-                              <option value="None">Select User: </option>
-                              {% for user in listUsers %}
-                              <option value={{user}}>{{user}}</option>
-                              {% endfor %} 
-                           </select>
+               </form>
+                  <div id="Associate" class="tabcontent">
+                     <form action="/AssociateBox" method="post">
+                        <div class="container" >
+                           <h3 style="color:black;">  Associate each user with the box:</h3>
+                           <div class="row">
+                              <div class="column">
+                                 <select name="user1" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                 </select>
+                                 <select name="user2" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                 </select>
+                                 <select name="user3" class="dropmenu" >
+                                    <option value="None">Select User: </option>
+                                    {% for user in listUsers %}
+                                    <option value={{user}}>{{user}}</option>
+                                    {% endfor %} 
+                                 </select>
+                              </div>
+                              <div class="column">
+                                 <select name="box1" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                 </select>
+                                 <select name="box2" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                 </select>
+                                 <select name="box3" class="dropmenu" >
+                                    <option value="None">Select Box: </option>
+                                    {% for box in listBoxes %}
+                                    <option value={{box}}>{{box}}</option>
+                                    {% endfor %} 
+                                 </select>
+                              </div>
+                           </div>
+                           <button type="submit">Submit</button>
                         </div>
-                        <div class="column">
-                           <select name="box1" class="dropmenu" >
-                              <option value="None">Select Box: </option>
-                              {% for box in listBoxes %}
-                              <option value={{box}}>{{box}}</option>
-                              {% endfor %} 
-                           </select>
-                           <select name="box2" class="dropmenu" >
-                              <option value="None">Select Box: </option>
-                              {% for box in listBoxes %}
-                              <option value={{box}}>{{box}}</option>
-                              {% endfor %} 
-                           </select>
-                           <select name="box3" class="dropmenu" >
-                              <option value="None">Select Box: </option>
-                              {% for box in listBoxes %}
-                              <option value={{box}}>{{box}}</option>
-                              {% endfor %} 
-                           </select>
-                        </div>
+                     </form>
                      </div>
-                     <button type="submit">Submit</button>
-                  </div>
+
+                     <div id="Add" class="tabcontent">
+                        <form action="/AddBox" method="post">
+                        <div class="container">
+                        <h3 style="color:black; text-align: left;">  Enter Box ID: </h3>
+                        <input type="text" placeholder="Enter Box ID" name="boxID" required>
+                        <button type="submit" >Submit</button>
+                        </div>
+                        
+                        <input type="hidden" name = "UserHospital" value={{UserHospital}}>
+                        
+                        </form>
+                     </div>
+                  
                   <div class="container" style="background-color:#f1f1f1">
                      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
                   </div>
+               </div>
                </form>
             </div>
-         
+            <script>
+               //Funzione tab
+               function openCity(evt, cityName) {
+                   var i, tabcontent, tablinks;
+                   tabcontent = document.getElementsByClassName("tabcontent");
+                   for (i = 0; i < tabcontent.length; i++) {
+                   tabcontent[i].style.display = "none";
+                   }
+                   tablinks = document.getElementsByClassName("tablinks");
+                   for (i = 0; i < tablinks.length; i++) {
+                   tablinks[i].className = tablinks[i].className.replace(" active", "");
+                   }
+                   document.getElementById(cityName).style.display = "block";
+                   evt.currentTarget.className += " active";
+               }
+            </script>
               
             <script>
                // Pop-up email sent
