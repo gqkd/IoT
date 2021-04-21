@@ -1,5 +1,6 @@
 import cherrypy
 import os
+import numpy as np
 import json
 import requests
 import webbrowser
@@ -45,7 +46,6 @@ class WebApp(object):
         self.url_catalog=jsonBody['feeds'][0]['field1']
 
         requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
-        # print(f"&&&&&&&&&&&&{self.url_catalog}")
         self.user = {
                 "UserName": None,
                 "E-mail":None,
@@ -54,17 +54,22 @@ class WebApp(object):
                 "Hospital": None,
                 "Boxes": []
             }
-        #r = requests.get('http://localhost:4040/api/tunnels/WebApp')
-        
-        #self.public_ur = r.json()["public_url"] #"http://localhost:8094" #r.json()["public_url"]
-        #print(self.public_ur)
+        # inizializzazione Lista ospedali 
+        self.listHospital = []
+        for user in self.usersData['userList']:
+            if user["Hospital"] != "NHS":
+                self.listHospital.append(user["Hospital"])
+        print(f"&&&&&&&&&&&&{self.listHospital}&&&&")
+        self.listHospital = list(np.unique(self.listHospital))
+        print(f"&&&&&&&&&&&&{self.listHospital}&&&&")
         
 
     
     def GET(self,*uri,**params):
         if uri:
             if uri[0] == "Desktop":
-                return open("indexDesktop2.html")
+                indexDesktop2 = env.get_template('indexDesktop2.html')
+                return indexDesktop2.render(listHospital=self.listHospital)
             elif uri[0] == "Mobile":
                 return open("indexMobile1.html")
             elif uri[0] == "NodeRed1":
@@ -82,14 +87,16 @@ class WebApp(object):
                 except:
                     print("!!! except -> PUT invio dati utenti !!!")
                 print(self.usersData)
+                if self.user["Level"] == "2": #appendo ospedale nuovo alla lista degli ospedali
+                    self.listHospital.append(self.user["Hospital"])
                 with open("User_data.json","w") as f:
                    json.dump(self.usersData , f ,indent=4)
                    
-                #indexDesktop2 = env.get_template('indexDesktop2.html')
-                return open("indexDesktop2.html") #indexDesktop2.render() 
+                indexDesktop2 = env.get_template('indexDesktop2.html')
+                return indexDesktop2.render(listHospital=self.listHospital)
         else:
-            #indexDesktop2 = env.get_template('indexDesktop2.html')
-            return  open("indexDesktop2.html") #indexDesktop2.render() 
+            indexDesktop2 = env.get_template('indexDesktop2.html')
+            return indexDesktop2.render(listHospital=self.listHospital)
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
@@ -97,7 +104,8 @@ class WebApp(object):
             self.user["UserName"] = params.get('uname')
             self.user["Psw"] = params.get('psw')
             self.user["E-mail"] = params.get('mail')
-            if params.get('type') == "SSN":
+            if params.get('type') == "NHS":
+                self.user["Hospital"] = "NHS"
                 self.user["Level"] = "1"
             elif params.get('type') == "Hospital":
                 self.user["Hospital"] = params.get('hospital')
@@ -108,7 +116,8 @@ class WebApp(object):
             print(self.user)
             self.SendEmail(self.user["E-mail"],self.user["UserName"],self.user["Psw"])
             if uri[0] == "Registration":
-                return open("indexDesktop2.html")
+                indexDesktop2 = env.get_template('indexDesktop2.html')
+                return indexDesktop2.render(listHospital=self.listHospital)
             else:
                 return open("indexMobile1.html")
         
@@ -131,7 +140,8 @@ class WebApp(object):
                                 if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
                                     L_user.append(self.usersData['userList'][c]["UserName"])
                             indexDesktop3 = env.get_template('indexDesktop3.html')
-                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = user["Hospital"])       
+                            UHospital = user['Hospital'].replace(" " ,"_")
+                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)       
 
                         elif user["Level"] == "3":
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
@@ -164,15 +174,32 @@ class WebApp(object):
                         
             with open("User_data.json","w") as f:
                 json.dump(self.usersData , f ,indent=4)
-            return open("indexDesktop3.html")
+            L_user = []
+            L_box = user["Boxes"]
+            for c,i in enumerate(self.usersData['userList']):
+                if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
+                    L_user.append(self.usersData['userList'][c]["UserName"])
+            indexDesktop3 = env.get_template('indexDesktop3.html')
+            UHospital = user['Hospital'].replace(" " ,"_")
+            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
 
         elif uri[0] == "AddBox":
             boxID = params.get('boxID')
-            Hospital = params.get('UserHospital')
-            print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{Hospital}@@@{boxID}")
-
-
-            pass#TODO prendi box e associo all'ospedale loggato
+            Hospital = params.get('UHospital')
+            Hospital = Hospital.replace("_" ," ")
+            for c,user in enumerate(self.usersData['userList']):
+                    if user["Hospital"] == Hospital and user["Level"] == "2":
+                        self.usersData['userList'][c]["Boxes"].append(boxID)
+                        with open("User_data.json","w") as f:
+                            json.dump(self.usersData , f ,indent=4)
+            L_user = []
+            L_box = user["Boxes"]
+            for c,i in enumerate(self.usersData['userList']):
+                if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
+                    L_user.append(self.usersData['userList'][c]["UserName"])
+            indexDesktop3 = env.get_template('indexDesktop3.html')
+            UHospital = user['Hospital'].replace(" " ,"_")
+            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
         
         elif uri[0] == "NodeRed2":
             return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')

@@ -10,14 +10,15 @@
             "Boxes": [
                 "001",
                 "002",
-                "003"
+                "003",
+                "009"
             ]
         },
         {
-            "UserName": "SSN",
+            "UserName": "NHS",
             "Psw": "5678",
             "Level": "1",
-            "Hospital": "SSN",
+            "Hospital": "NHS",
             "Boxes": [
                 "001",
                 "002",
@@ -45,51 +46,51 @@
             ]
         },
         {
-            "UserName": "Davide1223",
-            "E-mail": "IoTorgandelivery@gmail.com",
-            "Psw": "1234",
-            "Level": "1",
-            "Hospital": null,
-            "Boxes": []
-        },
-        {
-            "UserName": "Marco",
+            "UserName": "Pippo",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "ASST Papa Giovanni XXIII",
+            "Hospital": "Ospedale",
             "Boxes": []
         },
         {
-            "UserName": null,
-            "E-mail": null,
-            "Psw": null,
-            "Level": null,
-            "Hospital": null,
-            "Boxes": []
-        },
-        {
-            "UserName": "Dott. Filiberto Molinazzi",
-            "E-mail": "heartofreedom@gmail.com",
+            "UserName": "Pippo",
+            "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "ASST Papa Giovanni XXIII",
+            "Hospital": "Ospedale",
             "Boxes": []
         },
         {
-            "UserName": "Dott. Filiberto Molinazzi",
-            "E-mail": "heartofreedom@gmail.com",
+            "UserName": "Pippo",
+            "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "ASST Papa Giovanni XXIII",
+            "Hospital": "Ospedale",
             "Boxes": []
         },
         {
-            "UserName": "Dott. Filiberto Molinazzi",
-            "E-mail": "heartofreedom@gmail.com",
+            "UserName": "Pippo",
+            "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "ASST Papa Giovanni XXIII",
+            "Hospital": "Ospedale",
+            "Boxes": []
+        },
+        {
+            "UserName": "Pippo",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "3",
+            "Hospital": "Ospedale",
+            "Boxes": []
+        },
+        {
+            "UserName": "Pippo",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "3",
+            "Hospital": "Ospedale",
             "Boxes": []
         }
     ]
