@@ -21,19 +21,18 @@ trim_blocks=True)
 class WebApp(object):
     exposed=True
     def __init__(self):
-        # time.sleep(12)
+        time.sleep(12)
         self.usersData = json.load(open("User_data.json"))
         
-        # try:
-        #     r = requests.get('http://localhost:4040/api/tunnels')
-        # except:
-        #     print("!!! except -> GET api ngrok !!!")
+        try:
+            r = requests.get('http://localhost:4040/api/tunnels')
+        except:
+            print("!!! except -> GET api ngrok !!!")
 
-        # jsonBody=json.loads(r.text)
-        # self.publicURL=jsonBody["tunnels"][0]["public_url"]
-        # print(self.publicURL)
+        jsonBody=json.loads(r.text)
+        self.publicURL=jsonBody["tunnels"][0]["public_url"]
+        print(self.publicURL)
         
-        self.publicURL = "http://localhost:8095/" # DA TOGLIEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
         # richiesta public url catalog 
         conf=json.load(open("settings.json"))
@@ -348,7 +347,7 @@ class ngrok:
 if __name__ == '__main__':
     # è necessario startare 3 thread per il tunnelling
     t1 = threading.Thread(target=cherry)
-    # t2 = threading.Thread(target=ngrok)
+    t2 = threading.Thread(target=ngrok)
 
     t1.start()
-    # t2.start()
+    t2.start()
