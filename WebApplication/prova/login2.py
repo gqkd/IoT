@@ -21,17 +21,19 @@ trim_blocks=True)
 class WebApp(object):
     exposed=True
     def __init__(self):
-        time.sleep(12)
+        # time.sleep(12)
         self.usersData = json.load(open("User_data.json"))
         
-        try:
-            r = requests.get('http://localhost:4040/api/tunnels')
-        except:
-            print("!!! except -> GET api ngrok !!!")
+        # try:
+        #     r = requests.get('http://localhost:4040/api/tunnels')
+        # except:
+        #     print("!!! except -> GET api ngrok !!!")
 
-        jsonBody=json.loads(r.text)
-        self.publicURL=jsonBody["tunnels"][0]["public_url"]
-        print(self.publicURL)
+        # jsonBody=json.loads(r.text)
+        # self.publicURL=jsonBody["tunnels"][0]["public_url"]
+        # print(self.publicURL)
+        
+        self.publicURL = "http://localhost:8095/" # DA TOGLIEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
         # richiesta public url catalog 
         conf=json.load(open("settings.json"))
@@ -58,10 +60,10 @@ class WebApp(object):
         self.listHospital = []
         for user in self.usersData['userList']:
             if user["Hospital"] != "NHS":
-                self.listHospital.append(user["Hospital"])
-        print(f"&&&&&&&&&&&&{self.listHospital}&&&&")
+                self.listHospital.append(user["Hospital"].replace(" ","_"))
         self.listHospital = list(np.unique(self.listHospital))
-        print(f"&&&&&&&&&&&&{self.listHospital}&&&&")
+
+                
         
 
     
@@ -81,19 +83,63 @@ class WebApp(object):
             elif uri[0] == "UsersData":
                 return json.dumps(self.usersData)
             elif uri[0] == "RegistrationComplete":
-                self.usersData["userList"].append(self.user)
-                try:
-                    requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
-                except:
-                    print("!!! except -> PUT invio dati utenti !!!")
-                print(self.usersData)
-                if self.user["Level"] == "2": #appendo ospedale nuovo alla lista degli ospedali
-                    self.listHospital.append(self.user["Hospital"])
-                with open("User_data.json","w") as f:
-                   json.dump(self.usersData , f ,indent=4)
-                   
-                indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render(listHospital=self.listHospital)
+                if self.user["UserName"] != None:
+                    self.usersData["userList"].append(self.user)
+                    try:
+                        requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                    except:
+                        print("!!! except -> PUT invio dati utenti !!!")
+                    print(self.usersData)
+                    #appendo ospedale nuovo alla lista degli ospedali
+                    if self.user["Level"] == "2": 
+                        self.listHospital.append(self.user["Hospital"].replace(" ","_"))
+                    #salvo dati utenti nel json
+                    with open("User_data.json","w") as f:
+                        json.dump(self.usersData , f ,indent=4)
+                    
+                    self.user = {
+                    "UserName": None,
+                    "E-mail":None,
+                    "Psw": None,
+                    "Level": None,
+                    "Hospital": None,
+                    "Boxes": []
+                }
+                    
+                    indexDesktop2 = env.get_template('indexDesktop2.html')
+                    return indexDesktop2.render(listHospital=self.listHospital)
+            
+            
+            elif uri[0] == "NHSinfo":
+                DoctorList = []
+                BoxesList = []
+                AssociationDict = []
+                allDataInfo = []
+                for hospital in self.listHospital:
+                    
+                    for user in self.usersData['userList']:
+                        if user["Hospital"] == hospital.replace("_"," ") and user["Level"] =="3":
+                            DoctorList.append(user["UserName"])
+                            diz = {user["UserName"]:user["Boxes"]}
+                            AssociationDict.append(diz)
+                    for user in self.usersData['userList']:
+                        if user["Hospital"] == hospital.replace("_"," ") and user["Level"] =="2":
+                            BoxesList = user["Boxes"]
+                    
+                    description = f"""Available Boxes: {BoxesList}
+                    Doctors of the ospital: {DoctorList}
+                    Associations: {AssociationDict}"""
+                    allDataInfo.append(description)
+                
+                indexDesktop5 = env.get_template('indexDesktop5.html')
+                return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo)
+                
+                
+                
+                
+                
+                
+                
         else:
             indexDesktop2 = env.get_template('indexDesktop2.html')
             return indexDesktop2.render(listHospital=self.listHospital)
@@ -108,10 +154,12 @@ class WebApp(object):
                 self.user["Hospital"] = "NHS"
                 self.user["Level"] = "1"
             elif params.get('type') == "Hospital":
-                self.user["Hospital"] = params.get('hospital')
+                print(f"&&&&&&&&&HOSPITAL&&&&&{params.get('hospital')}&&&&&&&")
+                self.user["Hospital"] = params.get('hospital').replace("_" ," ")
                 self.user["Level"] = "2"
             elif params.get('type') == "Doctor":
-                self.user["Hospital"] = params.get('hospital')
+                print(f"&&&&&&&&&DOCTOR&&&&&{params.get('hospital')}&&&&&&&")
+                self.user["Hospital"] = params.get('hospital').replace("_" ," ")
                 self.user["Level"] = "3"
             print(self.user)
             self.SendEmail(self.user["E-mail"],self.user["UserName"],self.user["Psw"])
@@ -160,22 +208,36 @@ class WebApp(object):
             if params.get('user1') != "None" and params.get('box1') != "None":
                 for c,user in enumerate(self.usersData['userList']):
                     if user["UserName"] == params.get('user1'):
-                        self.usersData['userList'][c]["Boxes"][0] = params.get('box1')
+                        if self.usersData['userList'][c]["Boxes"] != []:
+                            self.usersData['userList'][c]["Boxes"][0] = params.get('box1')
+                        else:
+                            self.usersData['userList'][c]["Boxes"].append(params.get('box1'))
                         
             if params.get('user2') != "None" and params.get('box2') != "None":
                 for c,user in enumerate(self.usersData['userList']):
                     if user["UserName"] == params.get('user2'):
-                        self.usersData['userList'][c]["Boxes"][0] = params.get('box2')
+                        if self.usersData['userList'][c]["Boxes"] != []:
+                            self.usersData['userList'][c]["Boxes"][0] = params.get('box2')
+                        else:
+                            self.usersData['userList'][c]["Boxes"].append(params.get('box2'))
                         
             if params.get('user3') != "None" and params.get('box3') != "None":
                 for c,user in enumerate(self.usersData['userList']):
                     if user["UserName"] == params.get('user3'):
-                        self.usersData['userList'][c]["Boxes"][0] = params.get('box3')
+                        if self.usersData['userList'][c]["Boxes"] != []:
+                            self.usersData['userList'][c]["Boxes"][0] = params.get('box3')
+                        else:
+                            self.usersData['userList'][c]["Boxes"].append(params.get('box3'))
                         
             with open("User_data.json","w") as f:
                 json.dump(self.usersData , f ,indent=4)
             L_user = []
-            L_box = user["Boxes"]
+            
+            Hospital = params.get('UHospital').replace("_" ," ")
+            for c,user in enumerate(self.usersData['userList']):
+                if user["Hospital"] == Hospital and user["Level"] == "2":
+                    L_box = user["Boxes"]
+            
             for c,i in enumerate(self.usersData['userList']):
                 if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
                     L_user.append(self.usersData['userList'][c]["UserName"])
@@ -188,12 +250,32 @@ class WebApp(object):
             Hospital = params.get('UHospital')
             Hospital = Hospital.replace("_" ," ")
             for c,user in enumerate(self.usersData['userList']):
-                    if user["Hospital"] == Hospital and user["Level"] == "2":
-                        self.usersData['userList'][c]["Boxes"].append(boxID)
-                        with open("User_data.json","w") as f:
-                            json.dump(self.usersData , f ,indent=4)
-            L_user = []
-            L_box = user["Boxes"]
+                if user["Hospital"] == Hospital and user["Level"] == "2":
+                    self.usersData['userList'][c]["Boxes"].append(boxID)
+                    with open("User_data.json","w") as f:
+                        json.dump(self.usersData , f ,indent=4)
+                    L_box = user["Boxes"]
+            L_user = []   
+            for c,i in enumerate(self.usersData['userList']):
+                if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
+                    L_user.append(self.usersData['userList'][c]["UserName"])
+            indexDesktop3 = env.get_template('indexDesktop3.html')
+            UHospital = user['Hospital'].replace(" " ,"_")
+            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
+        
+        elif uri[0] == "RemoveBox":
+            boxID = params.get('boxID')
+            Hospital = params.get('UHospital')
+            Hospital = Hospital.replace("_" ," ")
+            for c1,user in enumerate(self.usersData['userList']):
+                if user["Hospital"] == Hospital and user["Level"] == "2":
+                    for c2,box in enumerate(user["Boxes"]):
+                        if box == boxID:
+                           self.usersData['userList'][c1]["Boxes"].pop(c2) 
+                    with open("User_data.json","w") as f:
+                        json.dump(self.usersData , f ,indent=4)
+                    L_box = user["Boxes"]
+            L_user = []   
             for c,i in enumerate(self.usersData['userList']):
                 if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
                     L_user.append(self.usersData['userList'][c]["UserName"])
@@ -271,7 +353,7 @@ class ngrok:
 if __name__ == '__main__':
     # è necessario startare 3 thread per il tunnelling
     t1 = threading.Thread(target=cherry)
-    t2 = threading.Thread(target=ngrok)
+    # t2 = threading.Thread(target=ngrok)
 
     t1.start()
-    t2.start()
+    # t2.start()

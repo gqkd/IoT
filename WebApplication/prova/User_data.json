@@ -10,7 +10,6 @@
             "Boxes": [
                 "001",
                 "002",
-                "003",
                 "009"
             ]
         },
@@ -33,7 +32,7 @@
             "Level": "3",
             "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
-                "001"
+                "009"
             ]
         },
         {
@@ -42,56 +41,78 @@
             "Level": "3",
             "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
-                "001"
+                "009"
             ]
         },
         {
-            "UserName": "Pippo",
+            "UserName": "HMolinette",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "2",
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "008",
+                "009",
+                "111",
+                "555",
+                "555"
+            ]
+        },
+        {
+            "UserName": "Marco",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "Ospedale",
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "009"
+            ]
+        },
+        {
+            "UserName": "HMolinette2",
+            "E-mail": "m.bonfanti07@gmail.com",
+            "Psw": "1234",
+            "Level": "2",
+            "Hospital": "Ospedale Molinette Torino 2",
             "Boxes": []
         },
         {
-            "UserName": "Pippo",
+            "UserName": "Marco23",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "Ospedale",
+            "Hospital": "Ospedale Molinette Torino 2",
             "Boxes": []
         },
         {
-            "UserName": "Pippo",
+            "UserName": "Davide",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "Ospedale",
-            "Boxes": []
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "111"
+            ]
         },
         {
-            "UserName": "Pippo",
+            "UserName": "Giulio",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "Ospedale",
-            "Boxes": []
+            "Hospital": "None",
+            "Boxes": [
+                "002"
+            ]
         },
         {
-            "UserName": "Pippo",
+            "UserName": "Giulio",
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "Ospedale",
-            "Boxes": []
-        },
-        {
-            "UserName": "Pippo",
-            "E-mail": "m.bonfanti07@gmail.com",
-            "Psw": "1234",
-            "Level": "3",
-            "Hospital": "Ospedale",
-            "Boxes": []
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "002"
+            ]
         }
     ]
 }

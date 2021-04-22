@@ -276,7 +276,7 @@
             </style>
 
             <div class="center">
-               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Manage Box</button> 
+               <button type="button" onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonLog">Manage Hospital</button> 
             </div>
             <form  class="center1" action="/NodeRed2" method="post">
                <button type="submit" style="width:auto;" class="buttonLog">Go to NodeRed</button>
@@ -289,7 +289,27 @@
                      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                      <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                   
-                   <!----------------------------------------------------------------------------------------->
+                     <!----------------------------------------------------------------------------------------->
+                     <form action="/Registration" method="post">
+                        <div class="container">
+                           <select name="hospital" class="dropmenu" id="8" required>
+                              <option value="None">Select Hospital to display: </option>
+                              {% for hospital in listHospital %}
+                              <option value={{hospital}}>{{hospital}}</option>
+                              {% endfor %} 
+                           </select>
+                           <button type="button" class="tablinks" onclick="loadHospital(event, 'Search')">Search</button>
+                           <h5>{{allDataInfo}}</h5>
+
+                        </div>
+
+
+
+
+
+
+
+
                    <div class="tab">
                      <button type="button" class="tablinks" onclick="openBox(event, 'Associate')">Associate Box</button>
                      <button type="button" class="tablinks" onclick="openBox(event, 'Add')">Add New Box</button>
