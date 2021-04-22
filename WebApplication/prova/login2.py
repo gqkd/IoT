@@ -104,7 +104,7 @@ class WebApp(object):
                     "Level": None,
                     "Hospital": None,
                     "Boxes": []
-                }
+                    }
                     
                     indexDesktop2 = env.get_template('indexDesktop2.html')
                     return indexDesktop2.render(listHospital=self.listHospital)
@@ -114,7 +114,7 @@ class WebApp(object):
                 DoctorList = []
                 BoxesList = []
                 AssociationDict = []
-                allDataInfo = []
+                allDataInfo = {}
                 for hospital in self.listHospital:
                     
                     for user in self.usersData['userList']:
@@ -126,20 +126,15 @@ class WebApp(object):
                         if user["Hospital"] == hospital.replace("_"," ") and user["Level"] =="2":
                             BoxesList = user["Boxes"]
                     
-                    description = f"""Available Boxes: {BoxesList}
-                    Doctors of the ospital: {DoctorList}
+                    description = f"""Available Boxes: {BoxesList} \n
+                    Doctors of the ospital: {DoctorList} \n
                     Associations: {AssociationDict}"""
-                    allDataInfo.append(description)
+                               
+                    allDataInfo[hospital.replace("_"," ")] = description
                 
                 indexDesktop5 = env.get_template('indexDesktop5.html')
-                return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo)
-                
-                
-                
-                
-                
-                
-                
+                return indexDesktop5.render(listHospital_json=json.dumps(self.listHospital),listHospital=self.listHospital, allDataInfo = allDataInfo)
+
         else:
             indexDesktop2 = env.get_template('indexDesktop2.html')
             return indexDesktop2.render(listHospital=self.listHospital)
@@ -179,7 +174,7 @@ class WebApp(object):
                 if user["UserName"] == name:
                     if user["Psw"] == psw:
                         if user["Level"] == "1":
-                            return urllib.request.urlopen(self.NodeRed1+'/ui/#!/0')
+                            return urllib.request.urlopen(self.publicURL+'/NHSinfo')
                         
                         elif user["Level"] == "2":
                             L_user = []

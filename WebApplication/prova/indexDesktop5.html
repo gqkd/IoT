@@ -290,111 +290,31 @@
                      <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
                   
                      <!----------------------------------------------------------------------------------------->
-                     <form action="/Registration" method="post">
                         <div class="container">
-                           <select name="hospital" class="dropmenu" id="8" required>
-                              <option value="None">Select Hospital to display: </option>
-                              {% for hospital in listHospital %}
-                              <option value={{hospital}}>{{hospital}}</option>
-                              {% endfor %} 
-                           </select>
-                           <button type="button" class="tablinks" onclick="loadHospital(event, 'Search')">Search</button>
-                           <h5>{{allDataInfo}}</h5>
+
+
+                           <script>
+                              function gestSelectedHospital() {
+                              var mylist = document.getElementById("myList");
+                              document.getElementById("favourite").innerHTML = mylist.options[mylist.selectedIndex].value;
+                              }
+                              </script>
+                              
+                              <body>
+                              <form>
+                              <b> Select you favourite tutorial site using dropdown list </b>
+                              <select id = "myList" onchange = "gestSelectedHospital()" >
+                                 {% for hospital, infoHospital in allDataInfo.items() %}
+                                 <option value="{{infoHospital}}" id = "{{hospital}}">{{hospital}}</option>
+                                 {% endfor %}
+                              </select>
+                              
+                              
+                              <h3 id = "favourite" style="color:black; text-align: left;" > </h3>
+                              </form>
+                              </body>
 
                         </div>
-
-
-
-
-
-
-
-
-                   <div class="tab">
-                     <button type="button" class="tablinks" onclick="openBox(event, 'Associate')">Associate Box</button>
-                     <button type="button" class="tablinks" onclick="openBox(event, 'Add')">Add New Box</button>
-                     <button type="button" class="tablinks" onclick="openBox(event, 'Remove')">Remove Box</button>
-                  </div>
-               </form>
-                  <div id="Associate" class="tabcontent">
-                     <form action="/AssociateBox" method="post">
-                        <div class="container" >
-                           <h3 style="color:black;">  Associate each user with the box:</h3>
-                           <div class="row">
-                              <div class="column">
-                                 <select name="user1" class="dropmenu" >
-                                    <option value="None">Select User: </option>
-                                    {% for user in listUsers %}
-                                    <option value={{user}}>{{user}}</option>
-                                    {% endfor %} 
-                                 </select>
-                                 <select name="user2" class="dropmenu" >
-                                    <option value="None">Select User: </option>
-                                    {% for user in listUsers %}
-                                    <option value={{user}}>{{user}}</option>
-                                    {% endfor %} 
-                                 </select>
-                                 <select name="user3" class="dropmenu" >
-                                    <option value="None">Select User: </option>
-                                    {% for user in listUsers %}
-                                    <option value={{user}}>{{user}}</option>
-                                    {% endfor %} 
-                                 </select>
-                              </div>
-                              <div class="column">
-                                 <select name="box1" class="dropmenu" >
-                                    <option value="None">Select Box: </option>
-                                    {% for box in listBoxes %}
-                                    <option value={{box}}>{{box}}</option>
-                                    {% endfor %} 
-                                 </select>
-                                 <select name="box2" class="dropmenu" >
-                                    <option value="None">Select Box: </option>
-                                    {% for box in listBoxes %}
-                                    <option value={{box}}>{{box}}</option>
-                                    {% endfor %} 
-                                 </select>
-                                 <select name="box3" class="dropmenu" >
-                                    <option value="None">Select Box: </option>
-                                    {% for box in listBoxes %}
-                                    <option value={{box}}>{{box}}</option>
-                                    {% endfor %} 
-                                 </select>
-                              </div>
-                           </div>
-                           <button type="submit">Submit</button>
-                           <input type="hidden" name = "UHospital" value={{UserHospital}}>
-                        </div>
-                     </form>
-                     </div>
-
-                     <div id="Add" class="tabcontent">
-                        <form action="/AddBox" method="post">
-                        <div class="container">
-                        <h3 style="color:black; text-align: left;">  Enter Box ID you want add: </h3>
-                        <input type="text" placeholder="Enter Box ID" name="boxID" required>
-                        <button type="submit" >Submit</button>
-                        <input type="hidden" name = "UHospital" value={{UserHospital}}>
-                        </div>
-                        </form>
-                     </div>
-
-                     <div id="Remove" class="tabcontent">
-                        <form action="/RemoveBox" method="post">
-                        <div class="container">
-                        <h3 style="color:black; text-align: left;">  Enter Box ID you want remove: </h3>
-
-                        <select name="boxID" class="dropmenu" >
-                           <option value="None">Select Box: </option>
-                           {% for box in listBoxes %}
-                           <option value={{box}}>{{box}}</option>
-                           {% endfor %} 
-                        </select>
-                        <button type="submit" >Submit</button>
-                        <input type="hidden" name = "UHospital" value={{UserHospital}}>
-                        </div>
-                        </form>
-                     </div>
                   
                   <div class="container" style="background-color:#f1f1f1">
                      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
