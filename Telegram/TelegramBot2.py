@@ -6,7 +6,7 @@ import telepot
 import os
 from telepot.loop import MessageLoop
 from telepot.namedtuple import InlineKeyboardButton, InlineKeyboardMarkup
-
+from MyMQTT import *
 
 
 class TelegramBot(threading.Thread):
@@ -58,6 +58,7 @@ class TelegramBot(threading.Thread):
         r = requests.get(self.url_catalog+"/GetServiceTopic") 
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
+        print(listatopicService)
         for topic in listatopicService:
             self.client.mySubscribe(topic)
         r = requests.get(self.url_catalog+"/GetGPS")
@@ -142,6 +143,7 @@ class TelegramBot(threading.Thread):
             self.bot.sendMessage(chat_ID, text='Which alarm do you want to activate?', reply_markup=keyboard)
         elif message == "/finish":
             self.chatIDs.pop(cont)
+            self.bot.sendMessage(chat_ID, text='Your session has ended. Thank you for using Smart_Organ_Delivery_Bot!')
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
         print(self.chatIDs)
