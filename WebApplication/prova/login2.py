@@ -148,11 +148,9 @@ class WebApp(object):
                 self.user["Hospital"] = "NHS"
                 self.user["Level"] = "1"
             elif params.get('type') == "Hospital":
-                print(f"&&&&&&&&&HOSPITAL&&&&&{params.get('hospital')}&&&&&&&")
                 self.user["Hospital"] = params.get('hospital').replace("_" ," ")
                 self.user["Level"] = "2"
             elif params.get('type') == "Doctor":
-                print(f"&&&&&&&&&DOCTOR&&&&&{params.get('hospital')}&&&&&&&")
                 self.user["Hospital"] = params.get('hospital').replace("_" ," ")
                 self.user["Level"] = "3"
             print(self.user)
@@ -224,7 +222,7 @@ class WebApp(object):
                             self.usersData['userList'][c]["Boxes"].append(params.get('box3'))
                         
             with open("User_data.json","w") as f:
-                json.dump(self.usersData , f ,indent=4)
+                json.dump(self.usersData , f ,indent=4)                
             L_user = []
             
             Hospital = params.get('UHospital').replace("_" ," ")
@@ -237,6 +235,12 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
+            
+            try:
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+            except:
+                print("!!! except -> PUT invio dati utenti !!!")
+                        
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
 
         elif uri[0] == "AddBox":
@@ -255,6 +259,11 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
+            try:
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+            except:
+                print("!!! except -> PUT invio dati utenti !!!")
+            
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
         
         elif uri[0] == "RemoveBox":
@@ -275,6 +284,12 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
+            
+            try:
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+            except:
+                print("!!! except -> PUT invio dati utenti !!!")
+                        
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
         
         elif uri[0] == "NodeRed2":
