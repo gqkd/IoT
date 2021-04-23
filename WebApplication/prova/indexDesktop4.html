@@ -284,32 +284,29 @@
                <div id="Hospital" class="tabcontent">
                <form action="/Registration" method="post">
                <div class="container">
-               <input type="hidden" name="type" value="Hospital">
+                  <input type="hidden" name="type" value="Hospital">
                <label for="hospital"><b>Hospital</b></label>
-               <select name="hospital" id="4" required>
-               <option >Select Hospital: </option>
-               <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-               <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
-               </select>
+               <input type="text" placeholder="Enter Hospital" name="hospital" id = "4" required>
                <label for="uname"><b>Username</b></label>
                <input type="text" placeholder="Enter Username" name="uname" id = "5" required>
                <label for="mail"><b>Email</b></label>
                <input type="text" placeholder="Enter Email" name="mail" id="6" required>
                <label for="psw"><b>Password</b></label>
                <input type="password" placeholder="Enter Password" name="psw" id="7" required>
-               <button type="submit" onclick="Alert()" >Sing Up</button>
+               <button type="submit" onclick="Alert()" >Sign Up</button>
                </div>
                </form>
                </div>
+               
                <div id="Doctor" class="tabcontent">
                <form action="/Registration" method="post">
                <div class="container">
                <input type="hidden" name="type" value="Doctor">
-               <label for="hospital"><b>Hospital</b></label>
-               <select name="hospital" id="8" required>
-               <option >Select Hospital you belong to: </option>
-               <option value="ASST Papa Giovanni XXIII">ASST Papa Giovanni XXIII</option>
-               <option value="Ospedale Molinette Torino">Ospedale Molinette Torino</option>
+               <select name="hospital" class="dropmenu" id="8" required>
+                  <option value="None">Select Hospital you belong to: </option>
+                  {% for hospital in listHospital %}
+                  <option value={{hospital}}>{{hospital}}</option>
+                  {% endfor %} 
                </select>
                <label for="uname"><b>Username</b></label>
                <input type="text" placeholder="Enter Username" name="uname" id = "9" required>
@@ -317,7 +314,7 @@
                <input type="text" placeholder="Enter Email" name="mail" id="10" required>
                <label for="psw"><b>Password</b></label>
                <input type="password" placeholder="Enter Password" name="psw" id="11" required>
-               <button type="submit" onclick="Alert()" >Sing Up</button>
+               <button type="submit" onclick="Alert()" >Sign Up</button>
                </div>
                </form>
                </div>

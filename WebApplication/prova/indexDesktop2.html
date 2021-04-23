@@ -311,15 +311,12 @@
                <form action="/Registration" method="post">
                <div class="container">
                <input type="hidden" name="type" value="Doctor">
-
                <select name="hospital" class="dropmenu" id="8" required>
                   <option value="None">Select Hospital you belong to: </option>
                   {% for hospital in listHospital %}
                   <option value={{hospital}}>{{hospital}}</option>
                   {% endfor %} 
                </select>
-
-
                <label for="uname"><b>Username</b></label>
                <input type="text" placeholder="Enter Username" name="uname" id = "9" required>
                <label for="mail"><b>Email</b></label>

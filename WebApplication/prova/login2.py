@@ -72,7 +72,8 @@ class WebApp(object):
                 indexDesktop2 = env.get_template('indexDesktop2.html')
                 return indexDesktop2.render(listHospital=self.listHospital)
             elif uri[0] == "Mobile":
-                return open("indexMobile1.html")
+                indexMobile1 = env.get_template('indexMobile1.html')
+                return indexMobile1.render(listHospital=self.listHospital)
             elif uri[0] == "NodeRed1":
                 self.NodeRed1 = params["link"]
             elif uri[0] == "NodeRed2":
@@ -159,7 +160,8 @@ class WebApp(object):
                 indexDesktop2 = env.get_template('indexDesktop2.html')
                 return indexDesktop2.render(listHospital=self.listHospital)
             else:
-                return open("indexMobile1.html")
+                indexMobile1 = env.get_template('indexMobile1.html')
+                return indexMobile1.render(listHospital=self.listHospital)
         
 
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
@@ -187,12 +189,12 @@ class WebApp(object):
                             return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
                     else:
                         if uri[0] == "Desktop":
-                            # return open('indexDesktop4.html')
                             indexDesktop4 = env.get_template('indexDesktop4.html')
-                            return indexDesktop4.render() #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
+                            return indexDesktop4.render(listHospital=self.listHospital) #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
                         else:
                             indexMobile2 = env.get_template('indexMobile2.html')
-                            return indexMobile2.render() #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
+                            return indexMobile2.render(listHospital=self.listHospital) #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
+
 
 
             #print(f"User name: {name}, Password: {psw}")
