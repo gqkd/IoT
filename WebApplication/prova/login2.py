@@ -78,6 +78,7 @@ class WebApp(object):
                 self.NodeRed1 = params["link"]
             elif uri[0] == "NodeRed2":
                 self.NodeRed2 = params["link"]
+                print(self.NodeRed2)
             elif uri[0] == "NodeRed3":
                 self.NodeRed3 = params["link"]
             elif uri[0] == "UsersData":
@@ -111,12 +112,16 @@ class WebApp(object):
             
             
             elif uri[0] == "NHSinfo":
-                DoctorList = []
-                BoxesList = []
-                AssociationDict = []
+                
+                
+                
                 allDataInfo = {}
+                BoxDataInfo = {}
+                BOXL = []
                 for hospital in self.listHospital:
-                    
+                    DoctorList = []
+                    BoxesList = []
+                    AssociationDict = []
                     for user in self.usersData['userList']:
                         if user["Hospital"] == hospital.replace("_"," ") and user["Level"] =="3":
                             DoctorList.append(user["UserName"])
@@ -125,15 +130,42 @@ class WebApp(object):
                     for user in self.usersData['userList']:
                         if user["Hospital"] == hospital.replace("_"," ") and user["Level"] =="2":
                             BoxesList = user["Boxes"]
+                            BOXL.extend(BoxesList)
                     
-                    description = f"""Available Boxes: {BoxesList} \n
-                    Doctors of the ospital: {DoctorList} \n
-                    Associations: {AssociationDict}"""
-                               
+                    description = f"<p>Available Boxes:</p> {BoxesList}<br><p>Doctors of the Hospital:</p> {DoctorList}<br><p>Associations:</p> {AssociationDict}"
+                    description = description.replace("{","")
+                    description = description.replace("}","")
+                    description = description.replace("[]","None")
+                    description = description.replace("[","")
+                    description = description.replace("]","")
+                    description =description.replace("'","")
                     allDataInfo[hospital.replace("_"," ")] = description
-                
+               
+                BOXL  = list(np.unique(BOXL))
+                for box in BOXL:
+                    L =[]
+                    D = ["None"]
+                    for user in self.usersData['userList']:
+                        print(user["Boxes"])
+                        if user["Boxes"]!=[]:
+                            if user["Boxes"][0]== box and user["Level"]=="3":
+                                L.append(user["UserName"])
+                            if box in user["Boxes"] and user["Level"]=="2":
+                                D[0]=user["Hospital"]
+                    if L!=[]:
+                        d = f"<p>Hospital:</p> {D}<br><p>Association:</p> {L}"
+                        d = d.replace("[","")
+                        d = d.replace("]","")
+                        d = d.replace("'","")
+                        BoxDataInfo[box] = d
+                    else: 
+                        d = f"<p>Hospital:</p> {D}<br><p>Association:</p> The box has not been associated with any user."  
+                        d = d.replace("[","")
+                        d = d.replace("]","")
+                        d =d.replace("'","")
+                        BoxDataInfo[box] =  d  
                 indexDesktop5 = env.get_template('indexDesktop5.html')
-                return indexDesktop5.render(listHospital_json=json.dumps(self.listHospital),listHospital=self.listHospital, allDataInfo = allDataInfo)
+                return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo,BoxDataInfo = BoxDataInfo)
 
         else:
             indexDesktop2 = env.get_template('indexDesktop2.html')
@@ -186,7 +218,7 @@ class WebApp(object):
                             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)       
 
                         elif user["Level"] == "3":
-                            return urllib.request.urlopen(self.NodeRed3+'/ui/#!/0')
+                            return webbrowser.open(self.NodeRed3+'/ui/#!/0')
                     else:
                         if uri[0] == "Desktop":
                             indexDesktop4 = env.get_template('indexDesktop4.html')
@@ -295,7 +327,7 @@ class WebApp(object):
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
         
         elif uri[0] == "NodeRed2":
-            return urllib.request.urlopen(self.NodeRed2+'/ui/#!/0')
+            return webbrowser.open(self.NodeRed2+'/ui')
  
 
     def SendEmail(self, email, user, psw):
@@ -358,7 +390,7 @@ class ngrok:
     def __init__(self):
         time.sleep(5)
         # os.system('ngrok authtoken 1jrtviNE8MpMMqrakaml6JI68HK_2t6ahDqgiKPxPdQiqXK5k')
-        os.system('ngrok http 8095')
+        os.system('ngrok http -subdomain=SmartOrganDelivery 8095')
 
 
 if __name__ == '__main__':

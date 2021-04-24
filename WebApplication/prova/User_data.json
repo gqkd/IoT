@@ -10,7 +10,8 @@
             "Boxes": [
                 "001",
                 "002",
-                "009"
+                "009",
+                "0112"
             ]
         },
         {
@@ -18,13 +19,7 @@
             "Psw": "5678",
             "Level": "1",
             "Hospital": "NHS",
-            "Boxes": [
-                "001",
-                "002",
-                "003",
-                "004",
-                "005"
-            ]
+            "Boxes": []
         },
         {
             "UserName": "Surgicalteam1",
@@ -32,7 +27,7 @@
             "Level": "3",
             "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
-                "009"
+                "001"
             ]
         },
         {
@@ -41,7 +36,7 @@
             "Level": "3",
             "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
-                "009"
+                "001"
             ]
         },
         {
@@ -52,9 +47,7 @@
             "Hospital": "Ospedale Molinette Torino",
             "Boxes": [
                 "008",
-                "009",
                 "111",
-                "555",
                 "555"
             ]
         },
@@ -65,7 +58,7 @@
             "Level": "3",
             "Hospital": "Ospedale Molinette Torino",
             "Boxes": [
-                "009"
+                "111"
             ]
         },
         {
@@ -74,7 +67,10 @@
             "Psw": "1234",
             "Level": "2",
             "Hospital": "Ospedale Molinette Torino 2",
-            "Boxes": []
+            "Boxes": [
+                "333",
+                "033"
+            ]
         },
         {
             "UserName": "Marco23",
@@ -99,20 +95,18 @@
             "E-mail": "m.bonfanti07@gmail.com",
             "Psw": "1234",
             "Level": "3",
-            "Hospital": "None",
+            "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
-                "002"
+                "0112"
             ]
         },
         {
-            "UserName": "Giulio",
-            "E-mail": "m.bonfanti07@gmail.com",
+            "UserName": "Marco",
+            "E-mail": "ocram.bonfa@gmail.com",
             "Psw": "1234",
             "Level": "3",
             "Hospital": "ASST Papa Giovanni XXIII",
-            "Boxes": [
-                "002"
-            ]
+            "Boxes": []
         }
     ]
 }

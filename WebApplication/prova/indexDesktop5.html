@@ -254,6 +254,22 @@
                width: 100%;
                }
                }
+                /*--------TABELLA PROVA-------------------------------------------------------------------------------------*/
+                table {
+                  font-family: arial, sans-serif;
+                  border-collapse: collapse;
+                  width: 100%;
+                  }
+
+                  td, th {
+                  border: 1px solid #dddddd;
+                  text-align: left;
+                  padding: 8px;
+                  }
+
+                  tr:nth-child(even) {
+                  background-color: #dddddd;
+                  }
             </style>
          </head>
          <body>
@@ -288,33 +304,30 @@
                   <div class="imgcontainer">
                      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                      <img src="https://image.flaticon.com/icons/png/512/33/33777.png" alt="Avatar" class="avatar">
-                  
+                     
+
                      <!----------------------------------------------------------------------------------------->
                         <div class="container">
-
-
-                           <script>
-                              function gestSelectedHospital() {
-                              var mylist = document.getElementById("myList");
-                              document.getElementById("favourite").innerHTML = mylist.options[mylist.selectedIndex].value;
-                              }
-                              </script>
-                              
-                              <body>
-                              <form>
-                              <b> Select you favourite tutorial site using dropdown list </b>
+                           <div class="tab">
+                              <button type="button" class="tablinks" onclick="openBox(event, 'Hospital')">Search for Hospital</button>
+                              <button type="button" class="tablinks" onclick="openBox(event, 'Box')">Search for Box</button>
+                           </div>
+                           <div id="Hospital" class="tabcontent">
                               <select id = "myList" onchange = "gestSelectedHospital()" >
                                  {% for hospital, infoHospital in allDataInfo.items() %}
                                  <option value="{{infoHospital}}" id = "{{hospital}}">{{hospital}}</option>
                                  {% endfor %}
-                              </select>
-                              
-                              
+                              </select> 
                               <h3 id = "favourite" style="color:black; text-align: left;" > </h3>
-                              </form>
-                              </body>
-
                         </div>
+                        <div id="Box" class="tabcontent">
+                           <select id = "myList1" onchange = "gestSelectedHospital()" >
+                              {% for box, infoBox in BoxDataInfo.items() %}
+                              <option value="{{infoBox}}" id = "{{box}}">{{box}}</option>
+                              {% endfor %}
+                           </select> 
+                           <h3 id = "favourite1" style="color:black; text-align: left;" > </h3>
+                     </div>
                   
                   <div class="container" style="background-color:#f1f1f1">
                      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
@@ -322,6 +335,18 @@
                </div>
                </form>
             </div>
+
+
+            <script>
+               function gestSelectedHospital() {
+               var mylist = document.getElementById("myList");
+               var mylist1 = document.getElementById("myList1");
+               document.getElementById("favourite").innerHTML =  mylist.options[mylist.selectedIndex].value;
+               document.getElementById("favourite1").innerHTML =  mylist1.options[mylist1.selectedIndex].value;
+               }
+               </script>
+
+
             <script>
                //Funzione tab
                function openBox(evt, Name) {
