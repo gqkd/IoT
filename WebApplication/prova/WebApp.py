@@ -11,6 +11,7 @@ import time
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import base64
 
 
 # per jinja2
@@ -75,12 +76,11 @@ class WebApp(object):
                 indexMobile1 = env.get_template('indexMobile1.html')
                 return indexMobile1.render(listHospital=self.listHospital)
             elif uri[0] == "NodeRed1":
-                self.NodeRed1 = params["link"]
+                self.NodeRed1 = params["link"]+"/ui"
             elif uri[0] == "NodeRed2":
-                self.NodeRed2 = params["link"]
-                print(self.NodeRed2)
+                self.NodeRed2 = params["link"]+"/ui"
             elif uri[0] == "NodeRed3":
-                self.NodeRed3 = params["link"]
+                self.NodeRed3[uri[1]] = params["link"]+"/ui"
             elif uri[0] == "UsersData":
                 return json.dumps(self.usersData)
             elif uri[0] == "RegistrationComplete":
@@ -215,10 +215,11 @@ class WebApp(object):
                                     L_user.append(self.usersData['userList'][c]["UserName"])
                             indexDesktop3 = env.get_template('indexDesktop3.html')
                             UHospital = user['Hospital'].replace(" " ,"_")
-                            return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)       
+                            return  indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital,urlNodered2 = self.NodeRed2),     
 
                         elif user["Level"] == "3":
-                            return webbrowser.open(self.NodeRed3+'/ui/#!/0')
+                            indexMobile3 = env.get_template('indexMobile3.html')
+                            return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"]])
                     else:
                         if uri[0] == "Desktop":
                             indexDesktop4 = env.get_template('indexDesktop4.html')
@@ -326,8 +327,8 @@ class WebApp(object):
                         
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
         
-        elif uri[0] == "NodeRed2":
-            return webbrowser.open(self.NodeRed2+'/ui')
+        # elif uri[0] == "NodeRed2":
+        #     return json.dumps(self.NodeRed2+'/ui/#!/0')
  
 
     def SendEmail(self, email, user, psw):
