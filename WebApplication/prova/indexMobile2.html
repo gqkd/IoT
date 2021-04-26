@@ -17,7 +17,7 @@
             }
          </script>
          <script>Alert1();</script>
-         <!-- Aggiungo parte per il mottone e il po-up!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --> 
+         <!-- Aggiungo parte per il mottone e il pop-up --> 
          <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <style>
@@ -88,7 +88,7 @@
                }
                img.avatar {
                width: 30%;
-               border-radius: 1%;              /* Mettere 50% per avere il cerchio!!!!!!!!!!!!!! */
+               border-radius: 1%;              /* Mettere 50% per avere il cerchio */
                }
                .container {
                padding: 16px;
@@ -159,7 +159,7 @@
                -webkit-animation: animatezoom 0.6s;
                animation: animatezoom 0.6s
                }
-               /*Inserimento della tabellaaaa -----------------------------------------------------------------------------------------*/
+               /*Inserimento della tabella -----------------------------------------------------------------------------------------*/
                /* Style the tab */
                .tab {
                overflow: hidden;
@@ -261,15 +261,15 @@
                   <div class="imgcontainer">
                      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
                      <img src="https://i.imgur.com/7XTeCsU.jpg" alt="Avatar" class="avatar">
-                     <!----------------------------------------------------------------------------------------->
+                 
                      <div class="tab">
-                        <button type="button" class="tablinks" onclick="openCity(event, 'NHS')">NHS</button>
-                        <button type="button" class="tablinks" onclick="openCity(event, 'Hospital')">Hospital</button>
-                        <button type="button" class="tablinks" onclick="openCity(event, 'Doctor')">Doctor</button>
+                        <button type="button" class="tablinks" onclick="openBox(event, 'NHS')">NHS</button>
+                        <button type="button" class="tablinks" onclick="openBox(event, 'Hospital')">Hospital</button>
+                        <button type="button" class="tablinks" onclick="openBox(event, 'Doctor')">Doctor</button>
                      </div>
                </form>
                <div id="NHS" class="tabcontent">
-               <!--<form class="modal1-content animate" action="/Registration" method="post">-->
+          
                <form action="/RegistrationMobile" method="post">
                <div class="container">
                <input type="hidden" name="type" value="NHS">
@@ -321,7 +321,7 @@
                </form>
                </div>
                </form>
-               <!----------------------------------------------------------------------------------->
+            
                <div class="container" style="background-color:#f1f1f1">
                <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
                </div>
@@ -329,7 +329,7 @@
             </div>
             <script>
                //Funzione tab
-               function openCity(evt, cityName) {
+               function openBox(evt, cityName) {
                    var i, tabcontent, tablinks;
                    tabcontent = document.getElementsByClassName("tabcontent");
                    for (i = 0; i < tabcontent.length; i++) {
@@ -379,7 +379,7 @@
                }
             </script>
    </body>
-   <!-- FINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE --> 
+
    <div class="container-width" id="izi2">
    <div class="clearfix">
    </div>
