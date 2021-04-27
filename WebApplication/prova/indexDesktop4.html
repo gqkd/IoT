@@ -247,7 +247,7 @@
                      <input type="text" placeholder="Enter Username" name="uname" required>
                      <label for="psw"><b>Password</b></label>
                      <input type="password" placeholder="Enter Password" name="psw" required>
-                     <button type="submit">Login</button>
+                     <button onclick="Alert_flag({{flag}})" type="submit">Login</button>
                   </div>
                   <div class="container" style="background-color:#f1f1f1">
                      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
@@ -360,8 +360,15 @@
                     }
                    
                }
+                // Pop-up wrong psw or username
+                function Alert_flag(flag) {
+                   if(flag === 1){
+                       alert("Wrong user name or password. Try again.");
+                    }  
+               }
                
                
+            </script>
             </script>
             <script>
                // Get the modal
@@ -447,12 +454,7 @@
          <div>Politecnico di Torino</div>
       </div>
    </section>
-   <script>
-      function Alert1() {
-              alert("Wrong user name or password. Try again.");    
-      }
-   </script>
-   <script>Alert1();</script>
+  
    </body>
    <html>
    </html>

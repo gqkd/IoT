@@ -355,7 +355,15 @@
                     }
                    
                }
+
+               // Pop-up wrong psw or username
+               function Alert_flag(flag) {
+                   if(flag === 1){
+                       alert("Wrong user name or password. Try again.");
+                    }  
+               }
             </script>
+            <script>Alert_flag({{flag}});</script>
             <script>
                // Get the modal
                var modal = document.getElementById('id01');

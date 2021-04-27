@@ -13,11 +13,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import base64
 
-
 # per jinja2
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
-env=Environment(loader=FileSystemLoader(CUR_DIR),
-trim_blocks=True)
+env=Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 
 class WebApp(object):
     exposed=True
@@ -30,12 +28,12 @@ class WebApp(object):
         except:
             print("!!! except -> GET api ngrok !!!")
 
-        jsonBody=json.loads(r.text)
-        self.publicURL=jsonBody["tunnels"][0]["public_url"]
-        print(self.publicURL)
-        
+        # jsonBody=json.loads(r.text)
+        # self.publicURL=jsonBody["tunnels"][0]["public_url"]
+        # print(self.publicURL)
+        self.publicURL= "http://smartorgandelivery.ngrok.io " # l'url del sito è sempre la stessa
 
-        # richiesta public url catalog 
+        # Richiesta public url catalog:
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
@@ -56,25 +54,24 @@ class WebApp(object):
                 "Hospital": None,
                 "Boxes": []
             }
-        # inizializzazione Lista ospedali 
+
+        # Inizializzazione Lista ospedali disponibili:
         self.listHospital = []
         for user in self.usersData['userList']:
             if user["Hospital"] != "NHS":
                 self.listHospital.append(user["Hospital"].replace(" ","_"))
         self.listHospital = list(np.unique(self.listHospital))
 
-                
-        
+    # Definizione metodi della classe:
 
-    
     def GET(self,*uri,**params):
         if uri:
             if uri[0] == "Desktop":
                 indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render(listHospital=self.listHospital)
+                return indexDesktop2.render(listHospital=self.listHospital, flag=0) 
             elif uri[0] == "Mobile":
                 indexMobile1 = env.get_template('indexMobile1.html')
-                return indexMobile1.render(listHospital=self.listHospital)
+                return indexMobile1.render(listHospital=self.listHospital, flag=0)
             elif uri[0] == "NodeRed1":
                 self.NodeRed1 = params["link"]+"/ui"
             elif uri[0] == "NodeRed2":
@@ -106,15 +103,12 @@ class WebApp(object):
                     "Hospital": None,
                     "Boxes": []
                     }
-                    
+
                     indexDesktop2 = env.get_template('indexDesktop2.html')
-                    return indexDesktop2.render(listHospital=self.listHospital)
+                    return indexDesktop2.render(listHospital=self.listHospital, flag=0)
             
             
             elif uri[0] == "NHSinfo":
-                
-                
-                
                 allDataInfo = {}
                 BoxDataInfo = {}
                 BOXL = []
@@ -168,8 +162,9 @@ class WebApp(object):
                 return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo,BoxDataInfo = BoxDataInfo)
 
         else:
+            #Restituisco di defoult il sito versione desktop
             indexDesktop2 = env.get_template('indexDesktop2.html')
-            return indexDesktop2.render(listHospital=self.listHospital)
+            return indexDesktop2.render(listHospital=self.listHospital, flag=0)
       
     def POST(self,*uri,**params):
         body = cherrypy.request.body.read()
@@ -197,37 +192,44 @@ class WebApp(object):
         
 
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
-           
+            count_username = 0
+            count_psw = 0
             name = params.get('uname')
             psw = params.get('psw')
-            print(self.usersData['userList'])
+            #Controllo se lo username esiste:
             for user in self.usersData['userList']:
                 if user["UserName"] == name:
-                    if user["Psw"] == psw:
-                        if user["Level"] == "1":
-                            return urllib.request.urlopen(self.publicURL+'/NHSinfo')
-                        
-                        elif user["Level"] == "2":
-                            L_user = []
-                            L_box = user["Boxes"]
-                            for c,i in enumerate(self.usersData['userList']):
-                                if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
-                                    L_user.append(self.usersData['userList'][c]["UserName"])
-                            indexDesktop3 = env.get_template('indexDesktop3.html')
-                            UHospital = user['Hospital'].replace(" " ,"_")
-                            return  indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital,urlNodered2 = self.NodeRed2),     
+                    count = 1# se esiste contatore = 1:
+            if count_username == 1:
+                #Controllo se la pwd è corretta:
+                for user in self.usersData['userList']:
+                    if user["UserName"] == name:
+                        count_psw == 1
+                        if user["Psw"] == psw:
+                            if user["Level"] == "1":
+                                return urllib.request.urlopen(self.publicURL+'/NHSinfo')
+                            
+                            elif user["Level"] == "2":
+                                L_user = []
+                                L_box = user["Boxes"]
+                                for c,i in enumerate(self.usersData['userList']):
+                                    if i["Hospital"] == user["Hospital"] and i["Level"] == "3":
+                                        L_user.append(self.usersData['userList'][c]["UserName"])
+                                indexDesktop3 = env.get_template('indexDesktop3.html')
+                                UHospital = user['Hospital'].replace(" " ,"_")
+                                return  indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital,urlNodered2 = self.NodeRed2),     
 
-                        elif user["Level"] == "3":
-                            indexMobile3 = env.get_template('indexMobile3.html')
-                            return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"]])
-                    else:
-                        if uri[0] == "Desktop":
-                            indexDesktop4 = env.get_template('indexDesktop4.html')
-                            return indexDesktop4.render(listHospital=self.listHospital) #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
-                        else:
-                            indexMobile2 = env.get_template('indexMobile2.html')
-                            return indexMobile2.render(listHospital=self.listHospital) #TODO dovremmo dirgli che la psw è cannata return urllib.request.urlopen(self.URL)
-
+                            elif user["Level"] == "3":
+                                indexMobile3 = env.get_template('indexMobile3.html')
+                                return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"]])
+                                
+            if count_username == 0 or count_username == 0:
+                if uri[0] == "Desktop":
+                    indexDesktop2 = env.get_template('indexDesktop2.html')
+                    return indexDesktop2.render(listHospital=self.listHospital, flag=1) 
+                else:
+                    indexMobile1 = env.get_template('indexMobile1.html')
+                    return indexMobile1.render(listHospital=self.listHospital, flag=1) 
 
 
             #print(f"User name: {name}, Password: {psw}")
