@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import base64
 
-# per jinja2
+# Per jinja2
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env=Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 
@@ -31,7 +31,7 @@ class WebApp(object):
         # jsonBody=json.loads(r.text)
         # self.publicURL=jsonBody["tunnels"][0]["public_url"]
         # print(self.publicURL)
-        self.publicURL= "http://smartorgandelivery.ngrok.io " # l'url del sito è sempre la stessa
+        self.publicURL= "http://smartorgandelivery.ngrok.io" # l'url del sito è sempre la stessa
 
         # Richiesta public url catalog:
         conf=json.load(open("settings.json"))
@@ -62,16 +62,14 @@ class WebApp(object):
                 self.listHospital.append(user["Hospital"].replace(" ","_"))
         self.listHospital = list(np.unique(self.listHospital))
 
-    # Definizione metodi della classe:
-
     def GET(self,*uri,**params):
         if uri:
             if uri[0] == "Desktop":
                 indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render(listHospital=self.listHospital, flag=0) 
+                return indexDesktop2.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
             elif uri[0] == "Mobile":
                 indexMobile1 = env.get_template('indexMobile1.html')
-                return indexMobile1.render(listHospital=self.listHospital, flag=0)
+                return indexMobile1.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
             elif uri[0] == "NodeRed1":
                 self.NodeRed1 = params["link"]+"/ui"
             elif uri[0] == "NodeRed2":
@@ -83,15 +81,17 @@ class WebApp(object):
             elif uri[0] == "RegistrationComplete":
                 if self.user["UserName"] != None:
                     self.usersData["userList"].append(self.user)
+                    # Invio dati Utenti al catalog ogni volta ho un nuovo sign up
                     try:
-                        requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                        requests.put(self.url_catalog+"/UserData", json=self.usersData) 
                     except:
                         print("!!! except -> PUT invio dati utenti !!!")
-                    print(self.usersData)
-                    #appendo ospedale nuovo alla lista degli ospedali
+                    print(f"New user registered: {self.user}")
+                    print(f"UserData:/n{self.usersData}")
+                    # Appendo ospedale nuovo alla lista degli ospedali
                     if self.user["Level"] == "2": 
                         self.listHospital.append(self.user["Hospital"].replace(" ","_"))
-                    #salvo dati utenti nel json
+                    # Salvo dati utenti nel json
                     with open("User_data.json","w") as f:
                         json.dump(self.usersData , f ,indent=4)
                     
@@ -126,14 +126,14 @@ class WebApp(object):
                             BoxesList = user["Boxes"]
                             BOXL.extend(BoxesList)
                     
-                    description = f"<p>Available Boxes:</p> {BoxesList}<br><p>Doctors of the Hospital:</p> {DoctorList}<br><p>Associations:</p> {AssociationDict}"
-                    description = description.replace("{","")
-                    description = description.replace("}","")
-                    description = description.replace("[]","None")
-                    description = description.replace("[","")
-                    description = description.replace("]","")
-                    description =description.replace("'","")
-                    allDataInfo[hospital.replace("_"," ")] = description
+                    d = f"<p>Available Boxes:</p> {BoxesList}<br><p>Doctors of the Hospital:</p> {DoctorList}<br><p>Associations:</p> {AssociationDict}"
+                    d = d.replace("{","")
+                    d = d.replace("}","")
+                    d = d.replace("[]","None")
+                    d = d.replace("[","")
+                    d = d.replace("]","")
+                    d = d.replace("'","")
+                    allDataInfo[hospital.replace("_"," ")] = d
                
                 BOXL  = list(np.unique(BOXL))
                 for box in BOXL:
@@ -156,13 +156,13 @@ class WebApp(object):
                         d = f"<p>Hospital:</p> {D}<br><p>Association:</p> The box has not been associated with any user."  
                         d = d.replace("[","")
                         d = d.replace("]","")
-                        d =d.replace("'","")
+                        d = d.replace("'","")
                         BoxDataInfo[box] =  d  
                 indexDesktop5 = env.get_template('indexDesktop5.html')
-                return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo,BoxDataInfo = BoxDataInfo)
+                return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo, BoxDataInfo = BoxDataInfo)
 
         else:
-            #Restituisco di defoult il sito versione desktop
+            # Restituisco di defoult il sito versione desktop
             indexDesktop2 = env.get_template('indexDesktop2.html')
             return indexDesktop2.render(listHospital=self.listHospital, flag=0)
       
@@ -192,16 +192,16 @@ class WebApp(object):
         
 
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
-            count_username = 0
-            count_psw = 0
+            count_username = 0# contatore = 1 se esiste lo username
+            count_psw = 0# contatore =1 se esiste la psw
             name = params.get('uname')
             psw = params.get('psw')
-            #Controllo se lo username esiste:
+            # Controllo se lo username esiste:
             for user in self.usersData['userList']:
                 if user["UserName"] == name:
-                    count = 1# se esiste contatore = 1:
+                    count_username = 1
             if count_username == 1:
-                #Controllo se la pwd è corretta:
+                # Controllo se la psw è corretta:
                 for user in self.usersData['userList']:
                     if user["UserName"] == name:
                         count_psw == 1
@@ -223,7 +223,7 @@ class WebApp(object):
                                 indexMobile3 = env.get_template('indexMobile3.html')
                                 return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"]])
                                 
-            if count_username == 0 or count_username == 0:
+            if count_username == 0 or count_psw == 0:
                 if uri[0] == "Desktop":
                     indexDesktop2 = env.get_template('indexDesktop2.html')
                     return indexDesktop2.render(listHospital=self.listHospital, flag=1) 
@@ -231,8 +231,6 @@ class WebApp(object):
                     indexMobile1 = env.get_template('indexMobile1.html')
                     return indexMobile1.render(listHospital=self.listHospital, flag=1) 
 
-
-            #print(f"User name: {name}, Password: {psw}")
         elif uri[0] == "AssociateBox":
             if params.get('user1') != "None" and params.get('box1') != "None":
                 for c,user in enumerate(self.usersData['userList']):
@@ -272,9 +270,9 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
-            
+            # Invio dati Utenti al catalog per aggiornare le nuove associazioni
             try:
-                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
                 print("!!! except -> PUT invio dati utenti !!!")
                         
@@ -296,8 +294,9 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
+            # Invio dati Utenti al catalog per aggiornare la nuova box aggiunta
             try:
-                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
                 print("!!! except -> PUT invio dati utenti !!!")
             
@@ -321,20 +320,15 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
-            
+            # Invio dati Utenti al catalog per aggiornare la box eliminata
             try:
-                requests.put(self.url_catalog+"/UserData", json=self.usersData) # invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
                 print("!!! except -> PUT invio dati utenti !!!")
                         
             return indexDesktop3.render(listUsers=L_user, listBoxes = L_box, UserHospital = UHospital)
-        
-        # elif uri[0] == "NodeRed2":
-        #     return json.dumps(self.NodeRed2+'/ui/#!/0')
  
-
     def SendEmail(self, email, user, psw):
-        
         sender_email = "IoTorgandelivery@gmail.com"
         receiver_email = email
         port = 465  # For SSL
@@ -355,7 +349,6 @@ class WebApp(object):
         # Turn these into plain/html MIMEText objects
         part1 = MIMEText(text, "plain")
 
-        # Add HTML/plain-text parts to MIMEMultipart message
         # The email client will try to render the last part first
         message.attach(part1)
 
@@ -365,7 +358,7 @@ class WebApp(object):
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
             server.login("IoTorgandelivery@gmail.com", password)
             server.sendmail(sender_email, receiver_email, message.as_string())
-            print("email inviata!")
+            print("Email sent successfully!")
 
 class cherry:
     def __init__(self):
@@ -379,11 +372,7 @@ class cherry:
 		 'tools.staticdir.on': True,
 		 'tools.staticdir.dir':'./css'
 		 },
-		#  '/js':{
-		#  'tools.staticdir.on': True,
-		#  'tools.staticdir.dir':'./js'
-		#  },
-	}
+	    }
         cherrypy.config.update({'server.socket_port':8095}) 
         cherrypy.tree.mount(WebApp(),'/',conf)
         cherrypy.engine.start()
@@ -397,7 +386,7 @@ class ngrok:
 
 
 if __name__ == '__main__':
-    # è necessario startare 3 thread per il tunnelling
+    # Thread per il tunnelling
     t1 = threading.Thread(target=cherry)
     t2 = threading.Thread(target=ngrok)
 

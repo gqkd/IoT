@@ -27,7 +27,7 @@ class TelegramBot(threading.Thread):
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
-        # richiesta public url catalog 
+        # Richiesta public url catalog 
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
@@ -42,7 +42,8 @@ class TelegramBot(threading.Thread):
         # r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
         # jsonBody=json.loads(r.text)
         # self.url_webApp=jsonBody['feeds'][0]['field1']
-        # messaggio inviato all'attuatore
+
+        # Messaggio inviato all'attuatore
         self.topic = conf["baseTopic"]
         self.payload = {
             "serviceID": "06_TelegramBot",
@@ -50,7 +51,7 @@ class TelegramBot(threading.Thread):
             "Resource": "TelegramBot",
             "Timestamp": None
         }
-        r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp
+        r = requests.get(self.url_catalog+"/GetUserData") # Richiesta elenco utenti WebApp
         self.usersData = json.loads(r.content)
         
     def topicRequest(self):
@@ -63,7 +64,7 @@ class TelegramBot(threading.Thread):
             self.client.mySubscribe(topic)
         r = requests.get(self.url_catalog+"/GetGPS")
         jsonBody = json.loads(r.content)
-        self.client.mySubscribe(jsonBody["topics"][0])    # TOPIC gps RICHIESTO A CATALOG
+        self.client.mySubscribe(jsonBody["topics"][0])    # Topic GPS richiesto al catalog
 
             
     def request(self):
@@ -98,7 +99,8 @@ class TelegramBot(threading.Thread):
             if flag == 1:
                 self.chatIDs[cont]["Notification"][4] = 1
             else:
-                self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato,notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
+                # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato, notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
+                self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) 
                 
         elif message == "/changeteam":
             buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
@@ -107,7 +109,7 @@ class TelegramBot(threading.Thread):
             self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
 
         elif self.chatIDs[cont]["Notification"][4] == 1:
-            r = requests.get(self.url_catalog+"/GetUserData") #richiesta elenco utenti WebApp al catalog
+            r = requests.get(self.url_catalog+"/GetUserData") # Richiesta elenco utenti WebApp al catalog
             self.usersData = json.loads(r.content)
             user = message.split("-")
             userID = user[0]
@@ -151,7 +153,7 @@ class TelegramBot(threading.Thread):
 
     
             
-    def on_callback_query(self,msg):     #Quando premo un bottone    
+    def on_callback_query(self,msg):     # Quando premo un bottone    
         query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
         if self.chatIDs != []:
             for c,id in enumerate(self.chatIDs):
@@ -248,8 +250,10 @@ if __name__ == "__main__":
     broker = conf["brokerIP"]
     port = conf["brokerPort"]
     
+    # Start telegrambot:
     tb=TelegramBot(token,broker,port)
     tb.start()
+
     while True:
         time.sleep(100)
     
