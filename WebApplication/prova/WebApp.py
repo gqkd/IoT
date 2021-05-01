@@ -61,6 +61,7 @@ class WebApp(object):
             if user["Hospital"] != "NHS":
                 self.listHospital.append(user["Hospital"].replace(" ","_"))
         self.listHospital = list(np.unique(self.listHospital))
+        self.NodeRed3={}
 
     def GET(self,*uri,**params):
         if uri:
@@ -76,8 +77,7 @@ class WebApp(object):
                 self.NodeRed2 = params["link"]+"/ui"
             elif uri[0] == "NodeRed3":
                 print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{uri[1]}")
-                a = uri[1]
-                self.NodeRed3[a] = params["link"]+"/ui"
+                self.NodeRed3[uri[1]] = params["link"]+"/ui"
                 print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3}")
             elif uri[0] == "UsersData":
                 return json.dumps(self.usersData)
@@ -225,8 +225,7 @@ class WebApp(object):
                             elif user["Level"] == "3":
                                 indexMobile3 = env.get_template('indexMobile3.html')
                                 print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3}")
-                                print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3[user['Boxes']]}")
-                                return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"]])
+                                return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"][0]])
                                 
             if count_username == 0 or count_psw == 0:
                 if uri[0] == "Desktop":
