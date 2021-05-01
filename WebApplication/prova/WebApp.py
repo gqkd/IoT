@@ -75,7 +75,9 @@ class WebApp(object):
             elif uri[0] == "NodeRed2":
                 self.NodeRed2 = params["link"]+"/ui"
             elif uri[0] == "NodeRed3":
-                self.NodeRed3[uri[1]] = params["link"]+"/ui"
+                print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{uri[1]}")
+                a = uri[1]
+                self.NodeRed3[a] = params["link"]+"/ui"
                 print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3}")
             elif uri[0] == "UsersData":
                 return json.dumps(self.usersData)
