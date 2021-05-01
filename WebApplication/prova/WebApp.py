@@ -31,7 +31,7 @@ class WebApp(object):
         # jsonBody=json.loads(r.text)
         # self.publicURL=jsonBody["tunnels"][0]["public_url"]
         # print(self.publicURL)
-        self.publicURL= "http://smartorgandelivery.ngrok.io " # l'url del sito è sempre la stessa
+        self.publicURL= "http://smartorgandelivery.ngrok.io" # l'url del sito è sempre la stessa
 
         # Richiesta public url catalog:
         conf=json.load(open("settings.json"))
