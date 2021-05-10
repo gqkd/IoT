@@ -23,12 +23,12 @@ class TelegramBot(threading.Thread):
         self.client.start()
         MessageLoop(self.bot, {'chat': self.on_chat_message,'callback_query': self.on_callback_query}).run_as_thread()
 
-        # Dati utili per il timing
+        # Data for the timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
 
-        # Richiesta public url catalog 
+        # Catalog public url request 
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
@@ -36,7 +36,7 @@ class TelegramBot(threading.Thread):
         jsonBody=json.loads(r.text)
         self.url_catalog = jsonBody['feeds'][0]['field1']
    
-        # Messaggio inviato all'attuatore
+        # Message sent to the actuator
         self.topic = conf["baseTopic"]
         self.payload = {
             "serviceID": "06_TelegramBot",
@@ -48,7 +48,7 @@ class TelegramBot(threading.Thread):
         self.usersData = json.loads(r.content)
         
     def topicRequest(self):
-        # Richiesta GET per topic dei servizi
+        # GET request for services topics 
         r = requests.get(self.url_catalog+"/GetServiceTopic") 
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
@@ -60,9 +60,9 @@ class TelegramBot(threading.Thread):
 
             
     def request(self):
-        # Sottoscrizione al boxcatalog
+        # Boxcatalog subscription
         self.payload["Timestamp"] = time.time()
-        requests.put(self.url_catalog+"/Service", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url_catalog+"/Service", json=self.payload)  
 
     def run(self):
         count = 6
@@ -81,7 +81,7 @@ class TelegramBot(threading.Thread):
             for c,id in enumerate(self.chatIDs):
                 if id["chatID"] == chat_ID:
                     cont = c
-                    flag = 1 # per sapere se l'id della chat non è presente
+                    flag = 1 # 1 if chat ID is not already present 
  
         message = msg['text']
         if message == "/start":            
@@ -89,7 +89,7 @@ class TelegramBot(threading.Thread):
             if flag == 1:
                 self.chatIDs[cont]["Notification"][4] = 1
             else:
-                # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato, notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
+                # Notification flag: Box departure, 20min left, arrived, telegram notifications, insertion userID-psw control only when required
                 self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) 
                 
         elif message == "/changeteam": 
@@ -99,7 +99,7 @@ class TelegramBot(threading.Thread):
             self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
 
         elif self.chatIDs[cont]["Notification"][4] == 1:
-            r = requests.get(self.url_catalog + "/GetUserData") # Richiesta elenco utenti WebApp al catalog
+            r = requests.get(self.url_catalog + "/GetUserData") # Catalog request to GET User's data 
             self.usersData = json.loads(r.content)
             user = message.split("-")
             userID = user[0]
@@ -142,7 +142,7 @@ class TelegramBot(threading.Thread):
             self.bot.sendMessage(chat_ID, text="Command not supported")
         print(self.chatIDs)
     
-    def on_callback_query(self,msg):     # Quando premo un bottone    
+    def on_callback_query(self,msg):    
         query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
         if self.chatIDs != []:
             for c,id in enumerate(self.chatIDs):
@@ -171,22 +171,7 @@ class TelegramBot(threading.Thread):
     def notify(self,topic,msg):
 
         messaggio= json.loads(msg)
-
-        # messaggio {
-            # 'bn': self.deviceID,
-            # 'e': [
-            #         {
-            #             'n': 'GPS',
-            #             'u': 'DD',
-            #             't': None,
-            #             'v_lat': None,
-            #             'v_lon': None,
-            #             'v_time': None
-            #         }
-            #     ]
-            # }
-        # messaggio {'Acceleration':1, "DeviceID": 001200}
-        
+       
         if topic[-3:] == "GPS":           
             boxID = messaggio["bn"][:3:]           
             for cont,id in enumerate(self.chatIDs):
@@ -196,7 +181,7 @@ class TelegramBot(threading.Thread):
                         self.bot.sendMessage(chat_ID, text=f"Your Box {boxID} is on its way.")
                         self.chatIDs[cont]["Notification"][0] = 0
                         
-            if messaggio["e"][0]["v_time"] < 20:  # Parte da 120
+            if messaggio["e"][0]["v_time"] < 20:  # Start from 120
                 for cont,id in enumerate(self.chatIDs):
                     if id["boxID"] == boxID:
                         chat_ID = id["chatID"]
