@@ -15,33 +15,27 @@ class TelegramBot(threading.Thread):
         threading.Thread.__init__(self)
         # Local token
         self.tokenBot = token
+
         # Catalog token
-        # self.tokenBot=requests.get("http://catalogIP/telegram_token").json()["telegramToken"]
         self.bot = telepot.Bot(self.tokenBot)
         self.chatIDs=[]
         self.client = MyMQTT("telegramBotIoT", broker, port, self)
         self.client.start()
-        # self.canSendBoxID = 0 #per leggere box id solo quando viene chiesto
         MessageLoop(self.bot, {'chat': self.on_chat_message,'callback_query': self.on_callback_query}).run_as_thread()
+
         # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
+
         # Richiesta public url catalog 
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
         r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
         jsonBody=json.loads(r.text)
-        self.url_catalog=jsonBody['feeds'][0]['field1']
-        # # richiesta public url Web Application 
-        # conf=json.load(open("settings.json"))
-        # apikey = conf["publicURL"]["publicURL_read"]
-        # cid = conf["publicURL"]["publicURL_channelID"]
-        # r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
-        # jsonBody=json.loads(r.text)
-        # self.url_webApp=jsonBody['feeds'][0]['field1']
-
+        self.url_catalog = jsonBody['feeds'][0]['field1']
+   
         # Messaggio inviato all'attuatore
         self.topic = conf["baseTopic"]
         self.payload = {
@@ -88,26 +82,24 @@ class TelegramBot(threading.Thread):
                 if id["chatID"] == chat_ID:
                     cont = c
                     flag = 1 # per sapere se l'id della chat non è presente
-        
-                  
-        
+ 
         message = msg['text']
         if message == "/start":            
-            self.bot.sendMessage(chat_ID, text=f"Insert insert your user ID e pasword: \nE.g. 'user01-psw01'" )
+            self.bot.sendMessage(chat_ID, text=f"Insert insert your user ID e password: \nE.g. 'user01-psw01'" )
             if flag == 1:
                 self.chatIDs[cont]["Notification"][4] = 1
             else:
                 # Notification ha tre flag per disattivare le tre notifiche: partenza, 20min left, arrivato, notifiche telegram, controllo che inserisco userID-psw solo quando chiesto
                 self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) 
                 
-        elif message == "/changeteam":
+        elif message == "/changeteam": 
             buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
             InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
             self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
 
         elif self.chatIDs[cont]["Notification"][4] == 1:
-            r = requests.get(self.url_catalog+"/GetUserData") # Richiesta elenco utenti WebApp al catalog
+            r = requests.get(self.url_catalog + "/GetUserData") # Richiesta elenco utenti WebApp al catalog
             self.usersData = json.loads(r.content)
             user = message.split("-")
             userID = user[0]
@@ -128,29 +120,28 @@ class TelegramBot(threading.Thread):
                     else:
                         self.bot.sendMessage(chat_ID, text=f"Invalid user ID or password. \nTry again: ")
 
-                
         elif message == "/allarmoff":
             buttons = [[InlineKeyboardButton(text=f'Temperature', callback_data=f'TemperatureOFF'),
                         InlineKeyboardButton(text=f'Acceleration', callback_data=f'AccelerationOFF'),
                         InlineKeyboardButton(text=f'Oxygen', callback_data=f'OxygenOFF')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
             self.bot.sendMessage(chat_ID, text='Which alarm do you want to silence?', reply_markup=keyboard)
+
         elif message == "/allarmon":
             buttons = [[InlineKeyboardButton(text=f'Temperature', callback_data=f'TemperatureON'),
                         InlineKeyboardButton(text=f'Acceleration', callback_data=f'AccelerationON'),
                         InlineKeyboardButton(text=f'Oxygen', callback_data=f'OxygenON')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
             self.bot.sendMessage(chat_ID, text='Which alarm do you want to activate?', reply_markup=keyboard)
+
         elif message == "/finish":
             self.chatIDs.pop(cont)
             self.bot.sendMessage(chat_ID, text='Your session has ended. Thank you for using Smart_Organ_Delivery_Bot!')
+            
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
         print(self.chatIDs)
-        
-
     
-            
     def on_callback_query(self,msg):     # Quando premo un bottone    
         query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
         if self.chatIDs != []:
@@ -161,15 +152,13 @@ class TelegramBot(threading.Thread):
         if query_data[-2:] == "ON":
             boxID = self.chatIDs[cont]["boxID"]
             self.chatIDs[cont]["Notification"][3] = query_data[-2:]
-            
             messaggio = {query_data[:-2]: "ON", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
             
         elif query_data[-3:] == "OFF":
             boxID = self.chatIDs[cont]["boxID"]
-            self.chatIDs[cont]["Notification"][3] = query_data[-3:]
-            
+            self.chatIDs[cont]["Notification"][3] = query_data[-3:]            
             messaggio = {query_data[:-3]: "OFF", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
@@ -252,6 +241,6 @@ if __name__ == "__main__":
     tb.start()
 
     while True:
-        time.sleep(100)
+        time.sleep(1000)
     
 

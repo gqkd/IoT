@@ -1,29 +1,79 @@
 {
-	"projectName": "IoT platform for smart organs delivery",
-	"lastUpdate": "2021-02-19 15:42:10.037565",
-	"userList": [{
-		"UserName": "HPG23",
-		"Psw": "1234",
-		"Level": "2",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["001", "002", "003"]
-	}, {
-		"UserName": "SSN",
-		"Psw": "5678",
-		"Level": "1",
-		"Hospital": "SSN",
-		"Boxes": ["001", "002", "003", "004", "005"]
-	}, {
-		"UserName": "Surgicalteam1",
-		"Psw": "0001",
-		"Level": "3",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["002"]
-	}, {
-		"UserName": "Transportteam1",
-		"Psw": "0002",
-		"Level": "3",
-		"Hospital": "ASST Papa Giovanni XXIII",
-		"Boxes": ["002"]
-	}]
+    "projectName": "IoT platform for smart organs delivery",
+    "lastUpdate": "2021-02-19 15:42:10.037565",
+    "userList": [
+        {
+            "UserName": "HPG23",
+			"E-mail": "papagio@gmail.com",
+            "Psw": "1234",
+            "Level": "2",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001",
+                "005",
+                "006"
+            ]
+        },
+        {
+            "UserName": "NHS",
+			"E-mail": "NHS@gmail.com",
+            "Psw": "5678",
+            "Level": "1",
+            "Hospital": "NHS",
+            "Boxes": []
+        },
+        {
+            "UserName": "MarcoBonfanti",
+			"E-mail": "s275349@studenti.polito.it",
+            "Psw": "0001",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001"
+            ]
+        },
+		{
+            "UserName": "DavidePedroncelli",
+			"E-mail": "s277415@studenti.polito.it",
+            "Psw": "0002",
+            "Level": "3",
+            "Hospital": "ASST Papa Giovanni XXIII",
+            "Boxes": [
+                "001"
+            ]
+        },
+		{
+            "UserName": "GiulioQuaglia",
+			"E-mail": "s234561@studenti.polito.it",
+            "Psw": "0003",
+            "Level": "3",
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "002"
+            ]
+        },
+		{
+            "UserName": "BetariceZanchi",
+			"E-mail": "s275369@studenti.polito.it",
+            "Psw": "0004",
+            "Level": "3",
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "002"
+            ]
+        },
+      {
+            "UserName": "HMolinette",
+            "E-mail": "hmolinette@gmail.com",
+            "Psw": "1234",
+            "Level": "2",
+            "Hospital": "Ospedale Molinette Torino",
+            "Boxes": [
+                "002",
+                "003",
+                "004"
+            ]
+        }
+	]
 }
+       

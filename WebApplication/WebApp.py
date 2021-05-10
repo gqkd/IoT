@@ -28,9 +28,6 @@ class WebApp(object):
         except:
             print("!!! except -> GET api ngrok !!!")
 
-        # jsonBody=json.loads(r.text)
-        # self.publicURL=jsonBody["tunnels"][0]["public_url"]
-        # print(self.publicURL)
         self.publicURL= "http://smartorgandelivery.ngrok.io" # l'url del sito è sempre la stessa
 
         # Richiesta public url catalog:
