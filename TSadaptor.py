@@ -25,13 +25,13 @@ class TSadaptor:
         self.broker = conf["broker"]
         self.port = conf["port"]
         self.api_service = conf["canaleServizio"]["canaleServizio_general"]
-        self.api_device = conf["canaliSensori"]["canaliSensori_general"]
-        self.diz_write_api = conf["canaliSensori"]["canaliSensori_write"]
         self.diz_write_api_service = conf["canaleServizio"]["canaleServizio_write"]
-        self.diz_channel_ID = conf["canaliSensori"]["canaliSensori_channel"]
         self.diz_channel_ID_service = conf["canaleServizio"]["canaleServizio_channel"]
-        self.diz_read_api = conf["canaliSensori"]["canaliSensori_read"]
         self.diz_read_api_service = conf["canaleServizio"]["canaleServizio_read"]
+        self.api_device = conf["canaliSensori"]["canaliSensori_general"] #questo diventa una lista
+        self.diz_write_api = conf["canaliSensori"]["canaliSensori_write"]
+        self.diz_channel_ID = conf["canaliSensori"]["canaliSensori_channel"]
+        self.diz_read_api = conf["canaliSensori"]["canaliSensori_read"]
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
         self.config = conf
