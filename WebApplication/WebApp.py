@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import base64
 
-# Per jinja2
+# jinja2
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env=Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 
@@ -28,12 +28,9 @@ class WebApp(object):
         except:
             print("!!! except -> GET api ngrok !!!")
 
-        # jsonBody=json.loads(r.text)
-        # self.publicURL=jsonBody["tunnels"][0]["public_url"]
-        # print(self.publicURL)
-        self.publicURL= "http://smartorgandelivery.ngrok.io" # l'url del sito è sempre la stessa
+        self.publicURL= "http://smartorgandelivery.ngrok.io" # url is always the same
 
-        # Richiesta public url catalog:
+        # Public url catalog request:
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
@@ -45,7 +42,7 @@ class WebApp(object):
         jsonBody=json.loads(r.text)
         self.url_catalog=jsonBody['feeds'][0]['field1']
 
-        requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
+        requests.put(self.url_catalog+"/UserData", json=self.usersData) 
         self.user = {
                 "UserName": None,
                 "E-mail":None,
@@ -55,7 +52,7 @@ class WebApp(object):
                 "Boxes": []
             }
 
-        # Inizializzazione Lista ospedali disponibili:
+        # Inizialization of the hospital list:
         self.listHospital = []
         for user in self.usersData['userList']:
             if user["Hospital"] != "NHS":
@@ -67,10 +64,10 @@ class WebApp(object):
         if uri:
             if uri[0] == "Desktop":
                 indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
+                return indexDesktop2.render(listHospital=self.listHospital, flag=0) # flag for the pop-up in case psw and username doesn't match
             elif uri[0] == "Mobile":
                 indexMobile1 = env.get_template('indexMobile1.html')
-                return indexMobile1.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
+                return indexMobile1.render(listHospital=self.listHospital, flag=0)
             elif uri[0] == "NodeRed1":
                 self.NodeRed1 = params["link"]+"/ui"
             elif uri[0] == "NodeRed2":
@@ -82,17 +79,17 @@ class WebApp(object):
             elif uri[0] == "RegistrationComplete":
                 if self.user["UserName"] != None:
                     self.usersData["userList"].append(self.user)
-                    # Invio dati Utenti al catalog ogni volta ho un nuovo sign up
+                    # Send of the user's information to the catalog each time a new sign up is performed
                     try:
                         requests.put(self.url_catalog+"/UserData", json=self.usersData) 
                     except:
                         print("!!! except -> PUT invio dati utenti !!!")
                     print(f"New user registered: {self.user}")
                     print(f"UserData:/n{self.usersData}")
-                    # Appendo ospedale nuovo alla lista degli ospedali
+                    # Append the new hospital to the hospital's list
                     if self.user["Level"] == "2": 
                         self.listHospital.append(self.user["Hospital"].replace(" ","_"))
-                    # Salvo dati utenti nel json
+                    # Save user's data in the json file
                     with open("User_data.json","w") as f:
                         json.dump(self.usersData , f ,indent=4)
                     
@@ -162,7 +159,6 @@ class WebApp(object):
                 return indexDesktop5.render(listHospital=self.listHospital, allDataInfo = allDataInfo, BoxDataInfo = BoxDataInfo)
 
         else:
-            # Restituisco di defoult il sito versione desktop
             indexDesktop2 = env.get_template('indexDesktop2.html')
             return indexDesktop2.render(listHospital=self.listHospital, flag=0)
       
@@ -191,16 +187,16 @@ class WebApp(object):
         
 
         elif uri[0] == "Desktop" or uri[0] == "Mobile":
-            count_username = 0# contatore = 1 se esiste lo username
-            count_psw = 0# contatore =1 se esiste la psw
+            count_username = 0 # contatore = 1 if username exist
+            count_psw = 0 # contatore = 1 if psw exist
             name = params.get('uname')
             psw = params.get('psw')
-            # Controllo se lo username esiste:
+            # Check if username exist:
             for user in self.usersData['userList']:
                 if user["UserName"] == name:
                     count_username = 1
             if count_username == 1:
-                # Controllo se la psw è corretta:
+                # Check if psw match with the username
                 for user in self.usersData['userList']:
                     if user["UserName"] == name:
                         count_psw == 1
@@ -269,7 +265,7 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
-            # Invio dati Utenti al catalog per aggiornare le nuove associazioni
+            # Send user's data to the catalog to update box associations
             try:
                 requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
@@ -293,7 +289,7 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
-            # Invio dati Utenti al catalog per aggiornare la nuova box aggiunta
+            # Send user's data to the catalog to update the new box added
             try:
                 requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
@@ -319,7 +315,7 @@ class WebApp(object):
                     L_user.append(self.usersData['userList'][c]["UserName"])
             indexDesktop3 = env.get_template('indexDesktop3.html')
             UHospital = user['Hospital'].replace(" " ,"_")
-            # Invio dati Utenti al catalog per aggiornare la box eliminata
+            # Send user's data to the catalog to update the box deleted
             try:
                 requests.put(self.url_catalog+"/UserData", json=self.usersData) 
             except:
@@ -380,12 +376,11 @@ class cherry:
 class ngrok:
     def __init__(self):
         time.sleep(5)
-        # os.system('ngrok authtoken 1jrtviNE8MpMMqrakaml6JI68HK_2t6ahDqgiKPxPdQiqXK5k')
         os.system('ngrok http -subdomain=SmartOrganDelivery 8095')
 
 
 if __name__ == '__main__':
-    # Thread per il tunnelling
+    # Thread for tunnelling
     t1 = threading.Thread(target=cherry)
     t2 = threading.Thread(target=ngrok)
 
