@@ -12,7 +12,7 @@ from math import sqrt
 
 
 class TSadaptor:
-    def __init__(self,conf):
+    def __init__(self,conf,numerobox):
         apikey_publicURL= conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
         try:
@@ -28,7 +28,12 @@ class TSadaptor:
         self.diz_write_api_service = conf["canaleServizio"]["canaleServizio_write"]
         self.diz_channel_ID_service = conf["canaleServizio"]["canaleServizio_channel"]
         self.diz_read_api_service = conf["canaleServizio"]["canaleServizio_read"]
-        self.api_device = conf["canaliSensori"]["canaliSensori_general"] #questo diventa una lista
+        if numerobox == '001':
+            self.api_device = conf["canaliSensori"]["canaliSensori_general"][0]
+        else:
+            self.api_device = conf["canaliSensori"]["canaliSensori_general"][1]
+        for item in conf["canaliSensori"]["canaliSensori_write"]:
+            pass
         self.diz_write_api = conf["canaliSensori"]["canaliSensori_write"]
         self.diz_channel_ID = conf["canaliSensori"]["canaliSensori_channel"]
         self.diz_read_api = conf["canaliSensori"]["canaliSensori_read"]
