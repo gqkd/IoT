@@ -68,6 +68,7 @@ class TSadaptor:
                 print("!!! except -> GET lista canali presenti !!!")
             jsonBody = json.loads(r.content)
 
+
             canalebox=0
             for channel in range(len(jsonBody)):
                 nomecanale = jsonBody[channel]['name']
