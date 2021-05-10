@@ -9,36 +9,54 @@
     "publicURL_channelID": "1341228"
   },
   "canaliSensori": {
-    "canaliSensori_general": "Y1TWL3R4UWBVL534",
+    "canaliSensori_general": [
+      "Y1TWL3R4UWBVL534",
+      "9P6LC8CQ784DFSSW"
+    ],
     "canaliSensori_write": {
-      "001200": "PUZJL6IREB5U03JV",
-      "001400": "QIKKS7A579VU37B1",
-      "001100": "IEOFSDN1JIFPIRU8",
-      "001600": "6I40ZLU1TP44Q399"
+      "001400": "T7VETNX7R2OA3GAC",
+      "001100": "4S0ZQ5XRBDL1BJEE",
+      "002400": "SXSSTLLRG277QW4S",
+      "002100": "LH5EYJ9NTYVT3295",
+      "001600": "27C0QFFP0IGLOUUI",
+      "001200": "5YO4STUVCDQ4ZE89",
+      "002600": "HKIU8KDX5BVL97TO",
+      "002200": "P8JQD5HRWGG2UT4E"
     },
     "canaliSensori_read": {
-      "001200": "S0KXTYRL8ZDOA2NM",
-      "001400": "ZARPJ28DJERIBXCO",
-      "001100": "BHYL73PHSD0UC1Y6",
-      "001600": "49I07Q8EBS6TLCIH"
+      "001400": "W66KHJ039YRA4AQP",
+      "001100": "3RR2E1XFXVFNWUCO",
+      "002400": "OTRPTU4W87OEU5JY",
+      "002100": "58U2S4MBMR6C0RAB",
+      "001600": "G6PGM41IH8QJKEL0",
+      "001200": "ZDMOSHLH7T3XRRJ4",
+      "002600": "4PDRTNPTQJ37L1NL",
+      "002200": "RV4WROJL4W0ZRJLV"
     },
     "canaliSensori_channel": {
-      "001200": 1350282,
-      "001400": 1350283,
-      "001100": 1350284,
-      "001600": 1350285
+      "001400": 1385920,
+      "001100": 1385921,
+      "002400": 1385922,
+      "002100": 1385923,
+      "001600": 1385924,
+      "001200": 1385925,
+      "002600": 1385926,
+      "002200": 1385927
     }
   },
   "canaleServizio": {
     "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
     "canaleServizio_write": {
-      "001Health_Status": "CAWVCSW4XQHDFNUB"
+      "001Health_Status": "MDOXTSCW7IAUHELZ",
+      "002Health_Status": "44II91KKKCU55L3C"
     },
     "canaleServizio_read": {
-      "001Health_Status": "TDBTI5ATS91R77WQ"
+      "001Health_Status": "CMV4UG0ZYB7XU2JW",
+      "002Health_Status": "CN80S15S0IZ4U78B"
     },
     "canaleServizio_channel": {
-      "001Health_Status": 1353607
+      "001Health_Status": 1385936,
+      "002Health_Status": 1385945
     }
   }
 }
