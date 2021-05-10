@@ -44,7 +44,7 @@ class SensorOxygen(threading.Thread):
         self.payload["Timestamp"] = time.time()
         #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
+        print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
 
     def run(self):
         while True:
@@ -66,6 +66,7 @@ class SensorOxygen(threading.Thread):
         message['e'][0]['t'] = float(time.time())
         message['e'][0]['v'] = oxy_level
         self.client.myPublish(self.topic, message)
+        print("\nMessage published by OxygenLevel Sensor")
 
     def stop_MyMQTT(self):
         self.client.stop()

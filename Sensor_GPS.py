@@ -47,7 +47,7 @@ class SensorGPS(threading.Thread):
     def request(self):
         self.payload["Timestamp"] = time.time()
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
+        print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
     
     def run(self):
         while True:
@@ -68,6 +68,7 @@ class SensorGPS(threading.Thread):
         message['e'][0]['v_time'] = np.round(120-self.cont/4*30/60) #120 perchè è la durata del viaggio simulato in minuti. a cui sottrggo il tempo passato preso dal cont
         self.cont += 4
         self.client.myPublish(self.topic,message)
+        print("\nMessage published by GPS Sensor")
 
     def stop_MyMQTT(self):
         self.client.stop()

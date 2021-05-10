@@ -76,9 +76,7 @@ class WebApp(object):
             elif uri[0] == "NodeRed2":
                 self.NodeRed2 = params["link"]+"/ui"
             elif uri[0] == "NodeRed3":
-                print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{uri[1]}")
                 self.NodeRed3[uri[1]] = params["link"]+"/ui"
-                print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3}")
             elif uri[0] == "UsersData":
                 return json.dumps(self.usersData)
             elif uri[0] == "RegistrationComplete":
@@ -143,7 +141,6 @@ class WebApp(object):
                     L =[]
                     D = ["None"]
                     for user in self.usersData['userList']:
-                        print(user["Boxes"])
                         if user["Boxes"]!=[]:
                             if user["Boxes"][0]== box and user["Level"]=="3":
                                 L.append(user["UserName"])
@@ -184,7 +181,6 @@ class WebApp(object):
             elif params.get('type') == "Doctor":
                 self.user["Hospital"] = params.get('hospital').replace("_" ," ")
                 self.user["Level"] = "3"
-            print(self.user)
             self.SendEmail(self.user["E-mail"],self.user["UserName"],self.user["Psw"])
             if uri[0] == "Registration":
                 indexDesktop2 = env.get_template('indexDesktop2.html')
@@ -224,7 +220,6 @@ class WebApp(object):
 
                             elif user["Level"] == "3":
                                 indexMobile3 = env.get_template('indexMobile3.html')
-                                print(f"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{self.NodeRed3}")
                                 return indexMobile3.render(urlNodered3 = self.NodeRed3[user["Boxes"][0]])
                                 
             if count_username == 0 or count_psw == 0:

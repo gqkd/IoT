@@ -47,7 +47,7 @@ class SensorAcceleration(threading.Thread):
         self.payload["Timestamp"] = time.time()
         #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
+        print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
 
     def run(self):
         while True:
@@ -66,6 +66,7 @@ class SensorAcceleration(threading.Thread):
         message['e'][0]['v_yaxis'] = np.random.chisquare(1,1).item()/10
         message['e'][0]['v_zaxis'] = np.random.chisquare(1,1).item()/10
         self.client.myPublish(self.topic, message)
+        print("\nMessage published by Acceleration Sensor")
 
     def stop_MyMQTT(self):
         self.client.stop()

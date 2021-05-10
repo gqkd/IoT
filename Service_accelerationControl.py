@@ -69,7 +69,7 @@ class AccelerationControl(threading.Thread):
                    
     def notify(self, topic, msg):
         payload = json.loads(msg)
-        print(f"Messaggio ricevuto da servizio: {payload}")
+        print(f"\nAcceleration Control Service received a message")
         # Estrazione dei valori di accelerazione su ogni asse
         ax = payload['e'][0]["v_xaxis"]
         ay = payload['e'][0]["v_yaxis"]

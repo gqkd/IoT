@@ -69,7 +69,7 @@ class WeightControl(threading.Thread):
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
-        print(f"Messaggio ricevuto da servizio: {payload}")
+        print(f"\nWeight Control Service received a message")
         # Avvisare speaker e mandare dato a thingspeak
         if payload['e'][0]['v'] == 0:
             messaggio = {'Mass':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE ORGANO NON è INSERITO NELLA SCATOLA

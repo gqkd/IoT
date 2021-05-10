@@ -69,7 +69,8 @@ class OxygenControl(threading.Thread):
 
     def notify(self, topic, msg):
         payload = json.loads(msg)
-        print(f"Messaggio ricevuto da servizio: {payload}")
+        print("\nOxygen Control Service received a message")
+
         # Avvisare speaker e mandare dato a thingspeak
         if payload['e'][0]['v'] < 97:
             messaggio = {'Oxygen':1, "DeviceID": payload['bn']}       # CODICE PER DIRE CHE OSSIGENO NON VA BENE

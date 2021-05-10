@@ -33,7 +33,6 @@ class TelegramBot(threading.Thread):
         cid = conf["publicURL"]["publicURL_channelID"]
         r = requests.get(f"https://api.thingspeak.com/channels/{cid}/fields/1.json?api_key={apikey}&results=1")
         jsonBody=json.loads(r.text)
-        print(jsonBody)
         self.url_catalog=jsonBody['feeds'][0]['field1']
         # # richiesta public url Web Application 
         # conf=json.load(open("settings.json"))
@@ -59,7 +58,6 @@ class TelegramBot(threading.Thread):
         r = requests.get(self.url_catalog+"/GetServiceTopic") 
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
-        print(listatopicService)
         for topic in listatopicService:
             self.client.mySubscribe(topic)
         r = requests.get(self.url_catalog+"/GetGPS")
@@ -184,8 +182,7 @@ class TelegramBot(threading.Thread):
     def notify(self,topic,msg):
 
         messaggio= json.loads(msg)
-        print(messaggio)
-        print(topic)
+
         # messaggio {
             # 'bn': self.deviceID,
             # 'e': [

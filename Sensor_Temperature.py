@@ -42,7 +42,7 @@ class SensorTemperature(threading.Thread):
     def request(self):
         self.payload["Timestamp"] = time.time()
         r = requests.put(self.url+"/Device", json=self.payload)
-        print(f"{self.deviceID} registrato al box con risultato {r.status_code}")
+        print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
     
     def run(self):
         while True:
@@ -58,6 +58,7 @@ class SensorTemperature(threading.Thread):
         message['e'][0]['t'] = float(time.time())
         message['e'][0]['v'] = np.random.logistic(37, 0.2, 1).item() #range 35-38.5 (picco 37)
         self.client.myPublish(self.topic,message)
+        print("\nMessage published by Temperature Sensor")
 
     def stop_MyMQTT(self):
         self.client.stop()

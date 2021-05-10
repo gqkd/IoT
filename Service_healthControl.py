@@ -57,7 +57,6 @@ class HealthControl(threading.Thread):
             if self.count % (self.timerequest/self.timerequestTopic) == 0:
                 self.request()
                 if self.dizionario_misure != {}:
-                    print(f'Publish in Health Control Channel {self.dizionario_misure}')
                     self.calcolo_healthstatus()
                     self.client.myPublish(f"{self.topic}/{self.serviceID}/healthControl", self.dizionario_misure)
                 self.count=0
@@ -65,7 +64,7 @@ class HealthControl(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        # print("-------------------------------------------------------------------------------------------------")
+        
         messaggio= json.loads(msg)
         # print(f"Messaggio ricevuto da servizio: {payload}")
         listachiavi = list(messaggio.keys())
@@ -80,6 +79,7 @@ class HealthControl(threading.Thread):
                 self.dizionario_misure[f'{self.deviceID}']['Oxygen'] = messaggio['Oxygen']
         else:
             self.dizionario_misure[f'{self.deviceID}']={}
+        print(f"\nHealth Control Service received a message from {list(messaggio.keys())[0]} Service")
 
 
     def calcolo_healthstatus(self):
@@ -93,8 +93,7 @@ class HealthControl(threading.Thread):
                     lista_valori.pop(cont)
 
             self.dizionario_misure[f'{self.deviceID}']['Health Status'] = (sum(lista_valori*100))/3
-            # print(f'AMICIIIIII CI SIAMOOOOOO: {self.dizionario_misure}')
-            # print(lista_valori)
+            
 
     def stop_MyMQTT(self):
         self.client.stop()

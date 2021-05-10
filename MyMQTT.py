@@ -17,7 +17,7 @@ class MyMQTT:
         self.start() #richiamo lo start del thread
 
     def myon_connect(self, _client, userdata, flags, rc):
-        print ("%s connected to %s with result code: %d\n" % (self.client_id, self.broker, rc))
+        print ("\n%s Connected to %s with result code: %d\n" % (self.client_id, self.broker, rc))
     
     # def myon_subscribe(self,client, userdata, mid, granted_qos):
     #     self._client.loop_stop()
@@ -26,7 +26,7 @@ class MyMQTT:
         try:
             self._client.connect(self.broker, self.port) #connetto al broker
         except: #se non si connette al broker esce dall'esecuzione del programma
-            print("!!!!!!!!!!!Not connected to the broker %s\n", self.broker)
+            print("\nNot connected to the broker %s", self.broker)
             # quit()
         self._client.loop_start() #starta il thread per il loop
         
@@ -37,7 +37,7 @@ class MyMQTT:
             pass
             # print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
         else:
-            print("!!!!!!!!!!!!!message NOT published to topic %s" % (topic))
+            print("\nMessage NOT published to topic %s" % (topic))
 
     def myon_message(self, _client, userdata, msg):
         self.notifier.notify (msg.topic, msg.payload)
@@ -53,7 +53,7 @@ class MyMQTT:
             pass
             # print("%s subscibed to topic: %s\n" % (self.client_id, topic))
         else:
-            print("!!!!!!!!!!!! %s NOT subscibed to topic %s\n" % (self.client_id,topic))
+            print("\n %s NOT subscibed to topic %s\n" % (self.client_id,topic))
 
     def unsubscribe(self):
         if (self._isSubscriber):

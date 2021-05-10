@@ -82,7 +82,6 @@ class Speaker(threading.Thread):
             listachiavi = list(messaggio.keys())
             deviceID = messaggio['DeviceID']
             if self.boxID == deviceID[0:3]:
-                print(f"""\nMessage from actuator:\n {messaggio}""")
                 if 'Mass' in listachiavi:
                     self.d['Mass'] = messaggio['Mass']
                 elif 'Temperature' in listachiavi:
@@ -91,9 +90,8 @@ class Speaker(threading.Thread):
                     self.d['Acceleration'][0] = messaggio['Acceleration']
                 elif 'Oxygen' in listachiavi:
                     self.d['Oxygen'][0] = messaggio['Oxygen']
-            print(f"Allarmi: {self.d}")
             if self.d["Mass"]==0 and ((self.d['Temperature'][0]==1 and self.d['Temperature'][1]=="ON")  or (self.d['Acceleration'][0]==1 and self.d['Acceleration'][1]=="ON") or (self.d['Oxygen'][0]==1 and self.d['Oxygen'][1]=="ON")): # abbiamo aggiunto self.d["Mass"] == 0 in modo che quando la massa non è presente (1) non continua a dare allarme 
-                print('A T T E N Z I O N E: \n ALLARME ATTIVO')
+                print('\nALLARM ON')
 
 
     def stop_MyMQTT(self):
