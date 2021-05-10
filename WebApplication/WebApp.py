@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import base64
 
-# Per jinja2
+# jinja2
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env=Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 
@@ -28,9 +28,9 @@ class WebApp(object):
         except:
             print("!!! except -> GET api ngrok !!!")
 
-        self.publicURL= "http://smartorgandelivery.ngrok.io" # l'url del sito è sempre la stessa
+        self.publicURL= "http://smartorgandelivery.ngrok.io" # url is always the same
 
-        # Richiesta public url catalog:
+        # Public url catalog request:
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_read"]
         cid = conf["publicURL"]["publicURL_channelID"]
@@ -42,7 +42,7 @@ class WebApp(object):
         jsonBody=json.loads(r.text)
         self.url_catalog=jsonBody['feeds'][0]['field1']
 
-        requests.put(self.url_catalog+"/UserData", json=self.usersData) # Invio al catalog il dizionario degli utenti
+        requests.put(self.url_catalog+"/UserData", json=self.usersData) 
         self.user = {
                 "UserName": None,
                 "E-mail":None,
@@ -52,7 +52,7 @@ class WebApp(object):
                 "Boxes": []
             }
 
-        # Inizializzazione Lista ospedali disponibili:
+        # Inizialization of the hospital list:
         self.listHospital = []
         for user in self.usersData['userList']:
             if user["Hospital"] != "NHS":
@@ -64,7 +64,7 @@ class WebApp(object):
         if uri:
             if uri[0] == "Desktop":
                 indexDesktop2 = env.get_template('indexDesktop2.html')
-                return indexDesktop2.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
+                return indexDesktop2.render(listHospital=self.listHospital, flag=0)# flag for the pop-up access
             elif uri[0] == "Mobile":
                 indexMobile1 = env.get_template('indexMobile1.html')
                 return indexMobile1.render(listHospital=self.listHospital, flag=0)# flag per il pop-up delle credenziali d'accesso 
