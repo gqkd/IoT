@@ -8,7 +8,7 @@ from MyMQTT import *
 class SensorTemperature(threading.Thread):
     def __init__(self, deviceID, boxID, topic, publicURL):
         threading.Thread.__init__(self)
-        self.deviceID = f"{boxID}{deviceID}" # ID deve essere numerico 
+        self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
         self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature" # self.topic= "Ipfsod"
         self.payload = {

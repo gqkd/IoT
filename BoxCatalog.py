@@ -20,7 +20,7 @@ class Catalog():
         self.servicesList = self.catalog["servicesList"]
         self.timestart = time.time()
         
-    def PUT(self,*uri): # Registrare Sensori o Service nel catalogùself.countPUT += 1
+    def PUT(self,*uri):
         timenow = time.time()
         print(f"_____________{timenow-self.timestart}__________________")
         
@@ -30,11 +30,10 @@ class Catalog():
             cont = -1
             for box in self.deviceList:
                 cont += 1
-                if str(box["deviceID"]) == str(jsonBody["deviceID"]): # Controllo se esiste gia il sensore e nel caso la elimino
+                if str(box["deviceID"]) == str(jsonBody["deviceID"]):
                     self.deviceList.pop(cont)
             self.deviceList.append(jsonBody)
             self.catalog["deviceList"] = self.deviceList
-            # print(f"""Lista device attivi: \n {self.deviceList}""")
             return json.dumps(self.deviceList)
 
         elif uri[0] == "Service":
@@ -45,20 +44,14 @@ class Catalog():
                     self.servicesList.pop(cont)
             self.servicesList.append(jsonBody)
             self.catalog["servicesList"] = self.servicesList
-            #print(f"""Lista servizi attivi: \n {self.servicesList}""")
             return json.dumps(self.servicesList)
         
         elif uri[0] == "UserData":
-            self.userData = jsonBody # dizionario degli utenti iscritti alla WebApp             
-
-        elif uri[0] == "UpdateConfig":
-            with open('settings2.json','w') as fp:
-                fp.write(json.dumps(jsonBody))
-                fp.close()
+            # dizionario degli utenti iscritti alla WebApp
+            self.userData = jsonBody
 
         elif uri[0] == "Info":
             self.info = jsonBody
-            # print(self.info)
 
         self.catalog["lastUpdate"] = str(datetime.time())
 
@@ -69,7 +62,6 @@ class Catalog():
         print(f"_____________{timenow - self.timestart}__________________")
         
         if len(uri)!=0:
-            # Posso farmi tornare anche topic a cui si sottoscrive speaker?
             if uri[0] == "GetTemperature":
                 d = {}
                 topics = []
@@ -123,28 +115,13 @@ class Catalog():
             elif uri[0] == "GetUserData":
                 return json.dumps(self.userData)
 
-            elif uri[0] == "Get_TSadaptor":
-                # return json.dumps({'services':self.servicesList,'devices':self.deviceList})
-                return json.dumps({"devices":self.deviceList, "services":self.servicesList})
-
             elif uri[0] == "Get_Info":
                 return json.dumps(self.info)
-            #----------------
 
-    # CHI LA RICHIAMA STA FUNZIONE? UN CAZZO DI NESSUNO, QUINDI NON CREDO VADA EHEH
-    def TimeControl(self):
-        cont_device = 0
-        cont_service = 0
-        for device in self.deviceList:
-            if time.time()-device["Timestamp"] > 120:
-                self.deviceList.pop(cont_device)
-                return print(f"Device deleted: {device}")
-            cont_device += 1
-        for service in self.servicesList:
-            if time.time()-service["Timestamp"] > 120:
-                self.servicesList.pop(cont_service)
-                return print(f"Service deleted: {service}")
-            cont_service += 1
+            elif uri[0] == "Get_TSadaptor":
+                return json.dumps({"devices":self.deviceList, "services":self.servicesList})
+
+            #----------------
 
 class cherry:
     def __init__(self):

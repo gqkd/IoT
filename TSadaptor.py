@@ -20,20 +20,15 @@ class TSadaptor:
         except:
             print("!!! except -> richiesta publicURL !!!")
         jsonBody=json.loads(r.text)
+        self.numerobox = numerobox
         self.url=jsonBody['feeds'][0]['field1']
-        self.serviceID = "TSadaptor"
+        self.serviceID = "TSadaptor"+self.numerobox+"kdjghsldigu"
         self.broker = conf["broker"]
         self.port = conf["port"]
         self.api_service = conf["canaleServizio"]["canaleServizio_general"]
         self.diz_write_api_service = conf["canaleServizio"]["canaleServizio_write"]
         self.diz_channel_ID_service = conf["canaleServizio"]["canaleServizio_channel"]
         self.diz_read_api_service = conf["canaleServizio"]["canaleServizio_read"]
-        if numerobox == '001':
-            self.api_device = conf["canaliSensori"]["canaliSensori_general"][0]
-        else:
-            self.api_device = conf["canaliSensori"]["canaliSensori_general"][1]
-        for item in conf["canaliSensori"]["canaliSensori_write"]:
-            pass
         self.diz_write_api = conf["canaliSensori"]["canaliSensori_write"]
         self.diz_channel_ID = conf["canaliSensori"]["canaliSensori_channel"]
         self.diz_read_api = conf["canaliSensori"]["canaliSensori_read"]
@@ -62,12 +57,17 @@ class TSadaptor:
         if 'bn' in list(payload.keys()): #controllo se c'è bn, se c'è è un sensore altrimenti un servizio
             num_sensore = payload['bn'][3::]
             id_num = payload['bn']
+            if self.numerobox == payload['bn'][:3:]:
+                self.api_device = conf["canaliSensori"]["canaliSensori_general"][0]
+            else:
+                self.api_device = conf["canaliSensori"]["canaliSensori_general"][1]
             #richiesta per avere la lista dei canali presenti
             try:
                 r = requests.get("https://api.thingspeak.com/channels.json?api_key="+self.api_device)
             except:
                 print("!!! except -> GET lista canali presenti !!!")
             jsonBody = json.loads(r.content)
+
 
             canalebox=0
             for channel in range(len(jsonBody)):
@@ -203,6 +203,7 @@ class TSadaptor:
 if __name__ == "__main__":
     conf=json.load(open("settings.json"))
     
-    ts=TSadaptor(conf)
+    ts=TSadaptor(conf,'001')
+    ts2 = TSadaptor(conf,'002')
     ts.run()
-
+    ts2.run()
