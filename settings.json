@@ -14,25 +14,46 @@
       "9P6LC8CQ784DFSSW"
     ],
     "canaliSensori_write": {
-
+      "001100": "NEK9GA8WT7A90QK3",
+      "002100": "MUT0ESHF9AQFT7QA",
+      "001200": "LWNKYMPTXABINUYJ",
+      "002200": "YI5ZNO6IDORWW3IZ",
+      "001400": "DADWR0OQFRHNEDAO",
+      "002400": "QKS8DAK4HTTZS2DW",
+      "001600": "VZW2KBHIBSRO2WEO",
+      "002600": "QE5M9GJU09SPRS8O"
     },
     "canaliSensori_read": {
-
+      "001100": "1KSV37CQKU43UNZO",
+      "002100": "KSZOLUQQ01HAKUB1",
+      "001200": "V7CCQODVLHPMH1UP",
+      "002200": "MLYSAGTTI4OG4O8B",
+      "001400": "LMJ4I6QRB54CUDCX",
+      "002400": "PK7D8KSTJ073HU2T",
+      "001600": "SP8HG5C9TUOVZXWP",
+      "002600": "HEPU1SUEOW7ZHRN5"
     },
     "canaliSensori_channel": {
-
+      "001100": 1386833,
+      "002100": 1386834,
+      "001200": 1386835,
+      "002200": 1386836,
+      "001400": 1386837,
+      "002400": 1386838,
+      "001600": 1386839,
+      "002600": 1386840
     }
   },
   "canaleServizio": {
     "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
     "canaleServizio_write": {
-
+      "002Health_Status": "GCITSQIMP6CU21V3"
     },
     "canaleServizio_read": {
-
+      "002Health_Status": "OKZB76U3LAL2XV1Z"
     },
     "canaleServizio_channel": {
-
+      "002Health_Status": 1386841
     }
   }
 }
