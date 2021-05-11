@@ -10,6 +10,7 @@
             "Hospital": "ASST Papa Giovanni XXIII",
             "Boxes": [
                 "001",
+                "002",
                 "005",
                 "006"
             ]
@@ -49,7 +50,7 @@
             "Level": "3",
             "Hospital": "Ospedale Molinette Torino",
             "Boxes": [
-                "002"
+                "003"
             ]
         },
 		{
@@ -59,7 +60,7 @@
             "Level": "3",
             "Hospital": "Ospedale Molinette Torino",
             "Boxes": [
-                "002"
+                "004"
             ]
         },
       {
@@ -69,7 +70,7 @@
             "Level": "2",
             "Hospital": "Ospedale Molinette Torino",
             "Boxes": [
-                "002",
+                "007",
                 "003",
                 "004"
             ]
