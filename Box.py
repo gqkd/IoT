@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # Controllo massa
     contMas1 = WeightControl('04_We_controlService',topic,broker,port, publicURL)
     #Controllo stato di salute
-    contHealth1 = HealthControl('05_Ciao',topic,broker,port, publicURL)
+    contHealth1 = HealthControl('05_Health_controlService',topic,broker,port, publicURL)
 
 
     #Connessione al broker
