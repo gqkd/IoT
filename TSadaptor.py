@@ -22,7 +22,7 @@ class TSadaptor:
         jsonBody=json.loads(r.text)
         self.numerobox = numerobox
         self.url=jsonBody['feeds'][0]['field1']
-        self.serviceID = "TSadaptor"+self.numerobox
+        self.serviceID = "TSadaptor"+self.numerobox+"kdjghsldigu"
         self.broker = conf["broker"]
         self.port = conf["port"]
         self.api_service = conf["canaleServizio"]["canaleServizio_general"]
