@@ -204,7 +204,7 @@ class TSadaptor:
 
 if __name__ == "__main__":
     conf=json.load(open("settings.json"))
-    
+
     ts=TSadaptor(conf,'001')
     ts2 = TSadaptor(conf,'002')
     ts.run()

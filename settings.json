@@ -47,13 +47,16 @@
   "canaleServizio": {
     "canaleServizio_general": "ZQ0PNWJ11TTZSL5U",
     "canaleServizio_write": {
-      "002Health_Status": "GCITSQIMP6CU21V3"
+      "002Health_Status": "GCITSQIMP6CU21V3",
+      "001Health_Status": "HMX68MB529LCH1M2"
     },
     "canaleServizio_read": {
-      "002Health_Status": "OKZB76U3LAL2XV1Z"
+      "002Health_Status": "OKZB76U3LAL2XV1Z",
+      "001Health_Status": "N35CXPFM4Y9RK6SI"
     },
     "canaleServizio_channel": {
-      "002Health_Status": 1386841
+      "002Health_Status": 1386841,
+      "001Health_Status": 1386855
     }
   }
 }

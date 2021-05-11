@@ -54,6 +54,7 @@ if __name__ == '__main__':
     #Controllo stato di salute
     contHealth1 = HealthControl('05_Ciao',topic,broker,port, publicURL)
 
+
     #Connessione al broker
     temp1.start_MyMQTT(broker, port)
     acc1.start_MyMQTT(broker, port)

@@ -34,8 +34,8 @@ class MyMQTT:
         # self._client.loop_start()
         pubs=self._client.publish(topic, json.dumps(msg), 2)
         if pubs[0]==0:
-            pass
-            # print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
+            # pass
+            print("%s published:\n %s\n to topic: %s\n" % (self.client_id,json.dumps(msg), topic))
         else:
             print("\nMessage NOT published to topic %s" % (topic))
 
@@ -50,8 +50,8 @@ class MyMQTT:
         self._isSubscriber = True
         self._topic = topic
         if subs[0]==0:
-            pass
-            # print("%s subscibed to topic: %s\n" % (self.client_id, topic))
+            # pass
+            print("%s subscibed to topic: %s\n" % (self.client_id, topic))
         else:
             print("\n %s NOT subscibed to topic %s\n" % (self.client_id,topic))
 
