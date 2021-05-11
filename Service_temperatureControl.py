@@ -1,17 +1,6 @@
-import time
 import threading
 import requests
-import json
-from math import sqrt
 from MyMQTT import *
-
-
-# NOTE BEA: SERVIZIO DEVE CONNETTERSI IN LOOP A BOX CATALOG E DEVE CONTINUARE A CHIEDERE A BOX CATALOG TOPIC
-# DELLA TEMPERATURA. UNA VOLTA OTTENUTO, DEVE FARE TUTTA LA SUA MANFRINA DEL CONTROLLO
-# QUINDI, WORKFLOW:
-# - SOTTOSCRIVERSI IN LOOP A BOX CATALOG
-# - CHIEDERE IN LOOP TOPIC DEI SENSORI CHE PUBBLICANO TEMPERATURA
-# - SOLO DOPO AVER RICEVUTO IL TOPIC, POSSO FARE TEMPERATURE CONTROL
 
 class TemperatureControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port, publicURL):
@@ -50,10 +39,6 @@ class TemperatureControl(threading.Thread):
                 time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]
-        # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        #self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        #self.client.stop()
-        #self.client.start()
         for topic in listatopicSensor:
             # self.client.unsubscribe()
             self.client.mySubscribe(topic)
@@ -71,7 +56,6 @@ class TemperatureControl(threading.Thread):
     def notify(self, topic, msg):
         payload = json.loads(msg)
         print(f"\nTemperature Control Service received a message")
-        # Avvisare speaker e mandare dato a thingspeak
         if payload['e'][0]['v'] < 36 or payload['e'][0]['v'] > 38:
             messaggio = {'Temperature':1, "DeviceID": payload['bn']}   # CODICE PER DIRE CHE TEMPERATURA NON VA BENE
         else:
