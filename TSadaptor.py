@@ -128,6 +128,7 @@ class TSadaptor:
                 print("il canale non c'è")
                 self.createnewchannel(nomecanale,'Health Control', self.api_service)
             val = payload[self.numerobox]['Health Status']
+
             r = requests.get(f"https://api.thingspeak.com/update?api_key={self.diz_write_api_service[nomecanale]}&field1={str(val)}")
             print(f"mandato a TS con risultato: {r.status_code} e messaggio {r.text}")
 
