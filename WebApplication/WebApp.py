@@ -101,9 +101,12 @@ class WebApp(object):
                     "Hospital": None,
                     "Boxes": []
                     }
-
-                    indexDesktop2 = env.get_template('indexDesktop2.html')
-                    return indexDesktop2.render(listHospital=self.listHospital, flag=0)
+                    if self.user["Level"] == "3":
+                        indexMobile1 = env.get_template('indexMobile1.html')
+                        return indexMobile1.render(listHospital=self.listHospital, flag=0)
+                    else:
+                        indexDesktop2 = env.get_template('indexDesktop2.html')
+                        return indexDesktop2.render(listHospital=self.listHospital, flag=0)
             
             
             elif uri[0] == "NHSinfo":
