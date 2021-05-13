@@ -54,9 +54,12 @@ class TelegramBot(threading.Thread):
         listatopicService = jsonBody["topics"]
         for topic in listatopicService:
             self.client.mySubscribe(topic)
-        r = requests.get(self.url_catalog+"/GetGPS")
+        r = requests.get(self.url_catalog+"/GetGPS") # Topic GPS richiesto al catalog
         jsonBody = json.loads(r.content)
-        self.client.mySubscribe(jsonBody["topics"][0])    # Topic GPS richiesto al catalog
+        for topic in jsonBody["topics"]:
+            self.client.mySubscribe(topic)
+
+            
 
             
     def request(self):
@@ -90,7 +93,8 @@ class TelegramBot(threading.Thread):
                 self.chatIDs[cont]["Notification"][4] = 1
             else:
                 # Notification flag: Box departure, 20min left, arrived, telegram notifications, insertion userID-psw control only when required
-                self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]}) 
+                self.chatIDs.append({"chatID":chat_ID,"boxID":None,"team":None,"Notification":[1,1,1,"ON",1]})
+            
                 
         elif message == "/changeteam": 
             buttons = [[InlineKeyboardButton(text=f'Transport team ', callback_data=f'transport'),
@@ -116,18 +120,18 @@ class TelegramBot(threading.Thread):
                         InlineKeyboardButton(text=f'Surgical team ', callback_data=f'surgical')]]
                         keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
                         self.bot.sendMessage(chat_ID, text='Who are you?', reply_markup=keyboard)
-                        
+                        print(f"\nNew chat ID: {self.chatIDs[cont]}")
                     else:
                         self.bot.sendMessage(chat_ID, text=f"Invalid user ID or password. \nTry again: ")
 
-        elif message == "/allarmoff":
+        elif message == "/alarmoff":
             buttons = [[InlineKeyboardButton(text=f'Temperature', callback_data=f'TemperatureOFF'),
                         InlineKeyboardButton(text=f'Acceleration', callback_data=f'AccelerationOFF'),
                         InlineKeyboardButton(text=f'Oxygen', callback_data=f'OxygenOFF')]]
             keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
             self.bot.sendMessage(chat_ID, text='Which alarm do you want to silence?', reply_markup=keyboard)
 
-        elif message == "/allarmon":
+        elif message == "/alarmon":
             buttons = [[InlineKeyboardButton(text=f'Temperature', callback_data=f'TemperatureON'),
                         InlineKeyboardButton(text=f'Acceleration', callback_data=f'AccelerationON'),
                         InlineKeyboardButton(text=f'Oxygen', callback_data=f'OxygenON')]]
@@ -137,10 +141,11 @@ class TelegramBot(threading.Thread):
         elif message == "/finish":
             self.chatIDs.pop(cont)
             self.bot.sendMessage(chat_ID, text='Your session has ended. Thank you for using Smart_Organ_Delivery_Bot!')
+            print(f"\nChat ID: {chat_ID} have been removed.")
             
         else:
             self.bot.sendMessage(chat_ID, text="Command not supported")
-        print(self.chatIDs)
+        
     
     def on_callback_query(self,msg):    
         query_ID , chat_ID , query_data = telepot.glance(msg,flavor='callback_query')
@@ -155,6 +160,7 @@ class TelegramBot(threading.Thread):
             messaggio = {query_data[:-2]: "ON", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
+            print(f"\nChat ID: {chat_ID} set {query_data[:-2]} ON on box {boxID}")
             
         elif query_data[-3:] == "OFF":
             boxID = self.chatIDs[cont]["boxID"]
@@ -162,17 +168,18 @@ class TelegramBot(threading.Thread):
             messaggio = {query_data[:-3]: "OFF", "DeviceID": boxID}
             self.client.myPublish(self.payload["Topic"], messaggio)
             self.bot.sendMessage(chat_ID, text=f"{query_data}")
+            print(f"\nChat ID: {chat_ID} set {query_data[:-3]} OFF on box {boxID}")
 
         else:
             self.chatIDs[cont]["team"] = query_data
             self.bot.sendMessage(chat_ID, text=f"Registered as {query_data} team. You will receive notifications from Box {self.chatIDs[cont]['boxID']}.")
-            
+            print(f"\nChat ID: {chat_ID} choose {query_data} team.")
         
     def notify(self,topic,msg):
 
         messaggio= json.loads(msg)
        
-        if topic[-3:] == "GPS":           
+        if topic[-3:] == "GPS":   
             boxID = messaggio["bn"][:3:]           
             for cont,id in enumerate(self.chatIDs):
                 if id["boxID"] == boxID:
