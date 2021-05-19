@@ -10,16 +10,15 @@ class SensorGPS(threading.Thread):
         threading.Thread.__init__(self)
         file = json.load(open("GPSsimulator.json"))
         self.coordinate = file["Coordinates"]
-        self.deviceID = f"{boxID}{deviceID}" # ID deve essere numerico 
+        self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/GPS" # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/GPS"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
             "Resource": "GPS",
             "Timestamp": None
         }
-        #Dati utili per timing
         conf2=json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest=conf2["timerequest"]

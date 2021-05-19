@@ -9,7 +9,7 @@ class SensorOxygen(threading.Thread):
         threading.Thread.__init__(self)
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/oxygen"  # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/oxygen"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,

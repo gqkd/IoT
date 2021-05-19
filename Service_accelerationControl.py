@@ -9,7 +9,7 @@ class AccelerationControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
-        self.topic = topic  # basetopic
+        self.topic = topic
         self.broker = broker
         self.port = port
         self.payload = {
@@ -28,7 +28,7 @@ class AccelerationControl(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
-        requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Service", json=self.payload)
 
     def topicRequest(self):
         # Richiesta GET per topic

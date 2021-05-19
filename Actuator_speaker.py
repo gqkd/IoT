@@ -43,7 +43,7 @@ class Speaker(threading.Thread):
         
         listatopicService = jsonBody["topics"]
         for topic in listatopicService:
-            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+            self.client.mySubscribe(topic)
         try:
             r = requests.get(self.url+"/GetTelegram")
             jsonBody = json.loads(r.content)
@@ -84,7 +84,7 @@ class Speaker(threading.Thread):
                     self.d['Acceleration'][0] = messaggio['Acceleration']
                 elif 'Oxygen' in listachiavi:
                     self.d['Oxygen'][0] = messaggio['Oxygen']
-            if self.d["Mass"]==0 and ((self.d['Temperature'][0]==1 and self.d['Temperature'][1]=="ON")  or (self.d['Acceleration'][0]==1 and self.d['Acceleration'][1]=="ON") or (self.d['Oxygen'][0]==1 and self.d['Oxygen'][1]=="ON")): # abbiamo aggiunto self.d["Mass"] == 0 in modo che quando la massa non è presente (1) non continua a dare allarme 
+            if self.d["Mass"]==0 and ((self.d['Temperature'][0]==1 and self.d['Temperature'][1]=="ON")  or (self.d['Acceleration'][0]==1 and self.d['Acceleration'][1]=="ON") or (self.d['Oxygen'][0]==1 and self.d['Oxygen'][1]=="ON")):
                 print('\nALLARM ON')
 
 

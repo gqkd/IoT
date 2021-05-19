@@ -17,7 +17,6 @@ class SensorAcceleration(threading.Thread):
             "Resource": "Acceleration",
             "Timestamp": None
         }
-        #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest = conf2["timerequest"]
