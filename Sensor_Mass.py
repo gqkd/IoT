@@ -7,8 +7,6 @@ from MyMQTT import *
 class SensorMass(threading.Thread):
     def __init__(self, deviceID, boxID, topic, publicURL):
         threading.Thread.__init__(self)
-        #Definizione di: DeviceID, BoxID e topic
-        #Topic nella forma: base_topic/numero_box/numero_box_numero_sensore/risorsa_misurata
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
         self.topic = f"{topic}/{self.boxID}/{self.deviceID}/mass"  # self.topic= "Ipfsod"
@@ -18,7 +16,6 @@ class SensorMass(threading.Thread):
             "Resource": "Mass",
             "Timestamp": None
         }
-        #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest = conf2["timerequest"]
@@ -42,7 +39,6 @@ class SensorMass(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
-        #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
         print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
 

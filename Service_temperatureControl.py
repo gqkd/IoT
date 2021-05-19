@@ -6,7 +6,7 @@ class TemperatureControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
-        self.topic = topic  # basetopic
+        self.topic = topic
         self.broker = broker
         self.port = port
         self.payload = {
@@ -17,7 +17,6 @@ class TemperatureControl(threading.Thread):
         }
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
         self.client.start()
-        # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
@@ -27,7 +26,7 @@ class TemperatureControl(threading.Thread):
     def request(self):
         # Sottoscrizione al boxcatalog
         self.payload["Timestamp"] = time.time()
-        requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Service", json=self.payload)  #
 
     def topicRequest(self):
         # Richiesta GET per topic
@@ -40,7 +39,6 @@ class TemperatureControl(threading.Thread):
         jsonBody = json.loads(r.content)
         listatopicSensor = jsonBody["topics"]
         for topic in listatopicSensor:
-            # self.client.unsubscribe()
             self.client.mySubscribe(topic)
 
 

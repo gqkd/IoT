@@ -10,14 +10,13 @@ class SensorTemperature(threading.Thread):
         threading.Thread.__init__(self)
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
-        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature" # self.topic= "Ipfsod"
+        self.topic = f"{topic}/{self.boxID}/{self.deviceID}/temperature"
         self.payload = {
             "deviceID": self.deviceID,
             "Topic": self.topic,
             "Resource": "Temperature",
             "Timestamp": None
         }
-        #Dati utili per timing
         conf2=json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest=conf2["timerequest"]
@@ -56,7 +55,7 @@ class SensorTemperature(threading.Thread):
     def sendData(self):
         message = self.__message
         message['e'][0]['t'] = float(time.time())
-        message['e'][0]['v'] = np.random.logistic(37, 0.2, 1).item() #range 35-38.5 (picco 37)
+        message['e'][0]['v'] = np.random.logistic(37, 0.2, 1).item()
         self.client.myPublish(self.topic,message)
         print("\nMessage published by Temperature Sensor")
 

@@ -7,8 +7,6 @@ from MyMQTT import *
 class SensorOxygen(threading.Thread):
     def __init__(self, deviceID, boxID, topic, publicURL):
         threading.Thread.__init__(self)
-        #Definizione di: DeviceID, BoxID e topic
-        #Topic nella forma: base_topic/numero_box/numero_box_numero_sensore/risorsa_misurata
         self.deviceID = f"{boxID}{deviceID}"
         self.boxID = boxID
         self.topic = f"{topic}/{self.boxID}/{self.deviceID}/oxygen"  # self.topic= "Ipfsod"
@@ -18,7 +16,6 @@ class SensorOxygen(threading.Thread):
             "Resource": "Oxygen",
             "Timestamp": None
         }
-        #Definizioni di configurazioni utili per il timing per sottoscrizione a catalog e per inviare dati dal sensore
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timesenddata = conf2["timesenddata"]
         self.timerequest = conf2["timerequest"]
@@ -42,7 +39,6 @@ class SensorOxygen(threading.Thread):
 
     def request(self):
         self.payload["Timestamp"] = time.time()
-        #Mantengo URL inserito da Giulio
         r = requests.put(self.url+"/Device", json=self.payload)
         print(f"\n{self.deviceID} registered to Box Catalog with result {r.status_code}")
 
@@ -59,7 +55,7 @@ class SensorOxygen(threading.Thread):
         #ossigenazione >=96% : tutto ok
         # 93% =< ossigenazione < 95% : possibili problemi
         # ossigenazione <92 % : ossigenazione insufficiente
-        oxy_level = np.random.logistic(100, 0.6, 1).item() #range 95-100 (picco 100)
+        oxy_level = np.random.logistic(100, 0.6, 1).item()
         if oxy_level > 100:
             oxy_level = 100
         message = self.__message

@@ -1,13 +1,12 @@
 import threading
 import requests
-import time
 from MyMQTT import *
 
 
 class Speaker(threading.Thread):
     def __init__(self, speakerID, boxID, broker, port, publicURL):
         threading.Thread.__init__(self)
-        self.speakerID = f"{boxID}{speakerID}"  # ID deve essere numerico
+        self.speakerID = f"{boxID}{speakerID}"
         self.boxID = boxID
         self.broker = broker
         self.port = port
@@ -18,7 +17,7 @@ class Speaker(threading.Thread):
         }
         self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
         self.client.start()
-        self.d = {'Temperature': [0,"ON"], 'Acceleration': [0,"ON"], 'Oxygen': [0,"ON"], 'Mass': 1} # la seconda chiave è per le notifhce 
+        self.d = {'Temperature': [0,"ON"], 'Acceleration': [0,"ON"], 'Oxygen': [0,"ON"], 'Mass': 1}
         # Dati utili per timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
@@ -29,7 +28,7 @@ class Speaker(threading.Thread):
     def request(self):
         # Sottoscrizione al boxcatalog
         self.payload["Timestamp"] = time.time()
-        requests.put(self.url+"/Device", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Device", json=self.payload)
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
@@ -43,10 +42,6 @@ class Speaker(threading.Thread):
             jsonBody = json.loads(r.content)
         
         listatopicService = jsonBody["topics"]
-        # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        #self.client = MyMQTT(self.speakerID, self.broker, self.port, self)
-        #self.client.stop()
-        #self.client.start()
         for topic in listatopicService:
             self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
         try:
@@ -68,13 +63,12 @@ class Speaker(threading.Thread):
             time.sleep(self.timerequestTopic)
 
     def notify(self, topic, msg):
-        # print(f"Actuator {topic}")
         if topic == self.telegramTopic:
             messaggio = json.loads(msg)
             if messaggio['DeviceID'] == self.boxID:
                 listaKeys = list(messaggio.keys())
-                toSilence = listaKeys[0] # Parametro da disattivare o attivare
-                toSilence_state = messaggio[toSilence] # se attivare le notifche o disattivarle
+                toSilence = listaKeys[0]
+                toSilence_state = messaggio[toSilence]
                 self.d[toSilence][1] = toSilence_state
 
         else:

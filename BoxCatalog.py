@@ -121,7 +121,6 @@ class Catalog():
             elif uri[0] == "Get_TSadaptor":
                 return json.dumps({"devices":self.deviceList, "services":self.servicesList})
 
-            #----------------
 
 class cherry:
     def __init__(self):
@@ -140,26 +139,21 @@ class cherry:
 class ngrok:
     def __init__(self):
         time.sleep(5)
-        # os.system('ngrok authtoken 1jrtviNE8MpMMqrakaml6JI68HK_2t6ahDqgiKPxPdQiqXK5k')
         os.system('ngrok http 8070')
 
 class tunneling:
     def __init__(self):
         time.sleep(10)
-        #leggo il publicURL dall'api di ngrok
         r = requests.get('http://localhost:4040/api/tunnels')
         jsonBody=json.loads(r.text)
         publicURL=jsonBody["tunnels"][0]["public_url"]
         print(publicURL)
         conf=json.load(open("settings.json"))
         apikey = conf["publicURL"]["publicURL_write"]
-        #invio il publicURL sul canale Thingspeak creato apposta
         r1 = requests.get(f"https://api.thingspeak.com/update?api_key={apikey}&field1="+publicURL)
         print(r1.text)
 
 if __name__=="__main__":
-
-    # è necessario startare 3 thread per il tunnelling
     t1 = threading.Thread(target=cherry)
     t2 = threading.Thread(target=ngrok)
     t3 = threading.Thread(target=tunneling)
@@ -168,8 +162,6 @@ if __name__=="__main__":
     t2.start()
     t3.start()
 
-    #se si vuole usare il tunneling commentare queste funzione e decommentare sopra
-    # cherry()
 
     
 

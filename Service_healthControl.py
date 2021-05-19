@@ -9,7 +9,7 @@ class HealthControl(threading.Thread):
     def __init__(self, serviceID, topic, broker, port, publicURL):
         threading.Thread.__init__(self)
         self.serviceID = serviceID
-        self.topic = topic  # basetopic
+        self.topic = topic
         self.broker = broker
         self.port = port
         self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
@@ -21,7 +21,6 @@ class HealthControl(threading.Thread):
             "Timestamp": None
         }
         self.dizionario_misure = {}
-        # Dati utili per il timing
         conf2 = json.load(open("settingsboxcatalog.json"))
         self.timerequestTopic = conf2["timerequestTopic"]
         self.timerequest = conf2["timerequest"]
@@ -31,7 +30,7 @@ class HealthControl(threading.Thread):
     def request(self):
         # Sottoscrizione al boxcatalog
         self.payload["Timestamp"] = time.time()
-        requests.put(self.url+"/Service", json=self.payload)  # Sottoscrizione al Catalog
+        requests.put(self.url+"/Service", json=self.payload)
 
     def topicRequest(self):
         # Richiesta GET per topic del servizio
@@ -43,13 +42,8 @@ class HealthControl(threading.Thread):
                 time.sleep(5)
         jsonBody = json.loads(r.content)
         listatopicService = jsonBody["topics"]
-        # Una volta ottenuto il topic, subscriber si sottoscrive a questo topic per ricevere dati
-        # self.client = MyMQTT(self.serviceID, self.broker, self.port, self)
-        # self.client.stop()
-        # self.client.start()
         for topic in listatopicService:
-            # self.client.unsubscribe()
-            self.client.mySubscribe(topic)  # TOPIC RICHIESTO A CATALOG
+            self.client.mySubscribe(topic)
 
     def run(self):
         while True:
@@ -66,11 +60,9 @@ class HealthControl(threading.Thread):
     def notify(self, topic, msg):
         
         messaggio= json.loads(msg)
-        # print(f"Messaggio ricevuto da servizio: {payload}")
         listachiavi = list(messaggio.keys())
         self.deviceID = messaggio['DeviceID'][:3:]
         if self.deviceID in list(self.dizionario_misure.keys()):
-            # self.dizionario_misure[f'{self.deviceID}'] = {}
             if 'Temperature' in listachiavi:
                 self.dizionario_misure[f'{self.deviceID}']['Temperature']=messaggio['Temperature']
             elif 'Acceleration' in listachiavi:
