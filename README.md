@@ -11,7 +11,7 @@ The Node-Red flows are located in the folder Flow Node-red.
 
 The scripts require a ngrok pro licence to run correctly.
 
-## Developer
+## Developers
 
 Marco Bonfanti, Davide Pedroncelli, Giulio Quaglia, Beatrice Zanchi
 
