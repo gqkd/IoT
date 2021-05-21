@@ -58,9 +58,6 @@ class TelegramBot(threading.Thread):
         jsonBody = json.loads(r.content)
         for topic in jsonBody["topics"]:
             self.client.mySubscribe(topic)
-
-            
-
             
     def request(self):
         # Boxcatalog subscription
