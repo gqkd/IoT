@@ -1,7 +1,6 @@
 # IoT Project
 IoT Smart Organ Delivery, educational purpose iot project for Politecnico of Turin in the course Programming for IoT.
 
-![Logo.jpg](https://Logo/Logo.jpg)
 ## Usage
 
 Box.py and Box2.py simulate the operation of the boxes and automaticaly start sensors and services. 
