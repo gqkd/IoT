@@ -78,6 +78,7 @@ if __name__ == '__main__':
     contAcc1.start()
     contMas1.start()
     contHealth1.start()
+    
 
 
 
