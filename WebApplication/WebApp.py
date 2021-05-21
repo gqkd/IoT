@@ -108,7 +108,6 @@ class WebApp(object):
                         indexDesktop2 = env.get_template('indexDesktop2.html')
                         return indexDesktop2.render(listHospital=self.listHospital, flag=0)
             
-            
             elif uri[0] == "NHSinfo":
                 allDataInfo = {}
                 BoxDataInfo = {}
