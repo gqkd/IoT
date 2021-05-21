@@ -1,5 +1,6 @@
 # IoT Project
 IoT Smart Organ Delivery, educational purpose iot project for Politecnico of Turin in the course Programming for IoT.
+It is a smart management system for delivering organs among different hospitals aimed to improve the reliability and efficiency of organs delivery by monitoring the organ' state during the transport and tracking the organ to allow clinicians to know its precise position.
 
 ## Usage
 
